@@ -1,16 +1,20 @@
-import customtkinter as ctk
+import tkinter as tk
 
+from config import Config
+from auth import AuthScreen
+from theme import *
 
-class MyApp(ctk.CTk):
-    def __init__(self):
-        super().__init__()
+if __name__ == '__main__':
+    root = tk.Tk()
+    auth = AuthScreen(root)
 
-        self.title('PiSync')
-        self.geometry('400x300')
+    root.title('Pi-Sync')
+    root.configure(bg=BACKGROUND)
+    root.geometry('500x300')
 
-        hello = ctk.CTkLabel(self, text='Hello there!')
-        hello.grid(row=0, column=0, pady=10, padx=10)
+    config = Config(root)
+    config.set_fullscreen()
+    config.toggle_fullscreen()
 
-
-app = MyApp()
-app.mainloop()
+    auth.login()
+    root.mainloop()
