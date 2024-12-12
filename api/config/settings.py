@@ -6,7 +6,7 @@ SECRET_KEY = 'django-insecure-$_z#f)1-n8f#0vcdr1fd$4r2k3sfy-)!oxc2&b_ey7irf9ruhc
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.68.124', 'localhost']
+ALLOWED_HOSTS = ['192.168.68.124', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'authentication',
+    'testapp'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pi_sync',
+        'NAME': 'pisync',
         'USER': 'postgres',
         'PASSWORD': 'postgres'
     }
