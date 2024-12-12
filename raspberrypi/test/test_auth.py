@@ -1,15 +1,18 @@
 import tkinter as tk
 
-from theme import *
+from src.theme import *
+from test_home import HomeWindow
 
 
-class AuthScreen:
-    def __init__(self, root: tk.Tk):
-        self.root = root
-        self.action = AuthScreenAction(self)
+class AuthWindow(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title('Pi-Sync')
+        self.configure(bg='#333333')
+        self.geometry('500x300')
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-    def login(self):
-        frame = tk.Frame(master=self.root, bg=BACKGROUND)
+        frame = tk.Frame(master=self, bg=BACKGROUND)
         login_label = tk.Label(
             master=frame,
             text='Login',
@@ -43,22 +46,12 @@ class AuthScreen:
         frame.pack(pady=5)
 
     def handle_login(self, username_entry: tk.Entry, password_entry: tk.Entry):
-        is_success = self.action.on_login(
-            username=username_entry,
-            password=password_entry
-        )
+        username = username_entry.get().strip()
+        password = password_entry.get().strip()
+        is_success = username == 'ralphmaron' and password == 'iscute'
         if is_success:
-            self.root.show_frame(self.root.home_screen)
+            self.destroy()  # Close the authentication window
+            HomeWindow().mainloop()  # Open the home window
 
-
-class AuthScreenAction:
-    def __init__(self, root: tk.Tk):
-        self.root = root
-
-    def on_login(self, username: tk.Entry, password: tk.Entry):
-        username = username.get()
-        password = password.get()
-        print(f'Username: {username}, password: {password}')
-        # iff success navigate to lets say home.py
-        is_valid = username == "ralphmaron" and password == "iscute"
-        return is_valid
+    def on_closing(self):
+        self.destroy()
