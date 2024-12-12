@@ -1,15 +1,22 @@
 import tkinter as tk
 
+from src.home import HomeScreen
 from theme import *
 
 
-class AuthScreen:
-    def __init__(self, root: tk.Tk):
-        self.root = root
+class AuthScreen(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title('Pi-Sync | Auth')
+        self.configure(bg='#333333')
+        self.geometry('500x300')
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
         self.action = AuthScreenAction(self)
+        self.login()
 
     def login(self):
-        frame = tk.Frame(master=self.root, bg=BACKGROUND)
+        frame = tk.Frame(master=self, bg=BACKGROUND)
         login_label = tk.Label(
             master=frame,
             text='Login',
@@ -48,7 +55,11 @@ class AuthScreen:
             password=password_entry
         )
         if is_success:
-            self.root.show_frame(self.root.home_screen)
+            self.destroy()
+            HomeScreen().mainloop()
+
+    def on_closing(self):
+        self.destroy()
 
 
 class AuthScreenAction:

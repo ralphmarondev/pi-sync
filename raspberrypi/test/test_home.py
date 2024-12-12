@@ -1,7 +1,7 @@
 import tkinter as tk
 
 
-class HomeWindow(tk.Tk):
+class TestHomeWindow(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Pi-Sync - Home')

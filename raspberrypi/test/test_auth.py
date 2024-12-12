@@ -1,10 +1,10 @@
 import tkinter as tk
 
 from src.theme import *
-from test_home import HomeWindow
+from test_home import TestHomeWindow
 
 
-class AuthWindow(tk.Tk):
+class TestAuthWindow(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Pi-Sync')
@@ -51,7 +51,7 @@ class AuthWindow(tk.Tk):
         is_success = username == 'ralphmaron' and password == 'iscute'
         if is_success:
             self.destroy()  # Close the authentication window
-            HomeWindow().mainloop()  # Open the home window
+            TestHomeWindow().mainloop()  # Open the home window
 
     def on_closing(self):
         self.destroy()
