@@ -1,0 +1,9 @@
+# 1. implement face recognition
+# 2. implement fingerprint recognition
+# 3. implement djangorestframework
+# 4. implement desktop gui
+# 5. implement mobile gui
+# 6. sync desktop and mobile
+# 7. testing
+
+# create a door that can handle both physical key and using the system.

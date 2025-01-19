@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from tkinter import ttk
 import requests
 
 BACKGROUND = '#333333'
@@ -15,6 +15,14 @@ class TestCrud(tk.Tk):
         self.configure(bg=BACKGROUND)
 
         self.insert_data()
+
+        self.table = ttk.Treeview(self, columns=('name', 'action'), show='headings')
+        self.table.heading('name', text='Name')
+        self.table.heading('action', text='Action')
+
+        self.table.pack(pady=10)
+
+        self.get_data()
 
     def insert_data(self):
         frame = tk.Frame(
@@ -53,16 +61,46 @@ class TestCrud(tk.Tk):
         name = name_entry.get().strip()
         print(f'Name: {name}')
 
-        # send data to django
+        # Send data to Django
         url = "http://127.0.0.1:8000/test/person/"
         data = {"name": name}
         response = requests.post(url, json=data)
 
         if response.status_code == 201:
-            name_entry.delete(0, tk.END)  # clear entry field
-            print('Data inserted successfully')
+            name_entry.delete(0, tk.END)  # Clear entry field
+            print("Data inserted successfully")
+            self.get_data()  # Refresh the table
         else:
-            print(f'Error: {response.status_code}')
+            print(f"Error inserting data: {response.status_code}")
+
+    def delete_item(self, item_id):
+        # Send a DELETE request to Django
+        url = f"http://127.0.0.1:8000/test/person/{item_id}/"
+        response = requests.delete(url)
+
+        if response.status_code == 204:
+            self.table.delete(item_id)  # Remove the item from the table
+            print("Item deleted successfully")
+        else:
+            print(f"Error deleting item: {response.status_code}")
+
+    def get_data(self):
+        url = "http://127.0.0.1:8000/test/person/"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            data = response.json()
+            self.table.delete(*self.table.get_children())  # Clear existing data
+            for item in data:
+                self.table.insert('', 'end', values=(item['name'], item['id']))
+                self.__create_delete_button(item)
+        else:
+            print(f'Error fetching data: {response.status_code}')
+
+    def __create_delete_button(self, item):
+        delete_button = tk.Button(self.table, text="Delete", command=lambda item_id=item['id']: self.delete_item(item_id))
+        self.table.insert("", "end", values=(item['name'], delete_button))
+        delete_button.pack(side="left")
 
 
 if __name__ == '__main__':

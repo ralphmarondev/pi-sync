@@ -1,0 +1,15 @@
+{
+  "id": 0,
+  "full_name": "Ralph Maron Eda",
+  "username": "ralphmaron",
+  "password": "iscute",
+  "password_hint": "!isnotcute",
+  "fingerprint": "fingerprint-1234",
+  "image": "img-1234",
+  "is_admin": true,
+  "registered_doors": [
+    "room-100",
+    "room-101"
+  ]
+}
+
