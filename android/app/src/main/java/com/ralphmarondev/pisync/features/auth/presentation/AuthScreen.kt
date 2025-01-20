@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ralphmarondev.pisync.features.auth.presentation.components.ForgotPasswordDialog
 import com.ralphmarondev.pisync.features.auth.presentation.components.NormalTextField
 import com.ralphmarondev.pisync.features.auth.presentation.components.PasswordTextField
 
@@ -48,6 +49,7 @@ fun AuthScreen(
     val context = LocalContext.current
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
+    val showPasswordDialog by viewModel.showForgotPasswordDialog.collectAsState()
 
     val focusManager = LocalFocusManager.current
 
@@ -137,7 +139,7 @@ fun AuthScreen(
                         }
                     )
                     TextButton(
-                        onClick = {}
+                        onClick = viewModel::toggleForgotPasswordDialog
                     ) {
                         Text(
                             text = "Forgot Password?",
@@ -171,6 +173,12 @@ fun AuthScreen(
                 }
             }
         }
+    }
+
+    if (showPasswordDialog) {
+        ForgotPasswordDialog(
+            onDismiss = viewModel::toggleForgotPasswordDialog
+        )
     }
 }
 
