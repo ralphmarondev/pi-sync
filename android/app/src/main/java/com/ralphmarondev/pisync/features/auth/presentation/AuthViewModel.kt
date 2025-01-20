@@ -37,6 +37,11 @@ class AuthViewModel : ViewModel() {
     fun login(
         response: (Boolean, String?) -> Unit
     ) {
+        if (_username.value.trim().isBlank() || _password.value.trim().isBlank()) {
+            response(false, "Username or password cannot be empty")
+            return
+        }
+
         viewModelScope.launch {
             val loginRequest = LoginRequest(_username.value.trim(), _password.value.trim())
             loginUseCase.login(loginRequest, response)
