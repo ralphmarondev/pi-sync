@@ -19,12 +19,19 @@ class AuthViewModel : ViewModel() {
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> get() = _password
 
+    private val _showForgotPasswordDialog = MutableStateFlow(false)
+    val showForgotPasswordDialog: StateFlow<Boolean> get() = _showForgotPasswordDialog
+
     fun onUsernameChange(value: String) {
         _username.value = value
     }
 
     fun onPasswordChange(value: String) {
         _password.value = value
+    }
+
+    fun toggleForgotPasswordDialog() {
+        _showForgotPasswordDialog.value = !_showForgotPasswordDialog.value
     }
 
     fun login(
