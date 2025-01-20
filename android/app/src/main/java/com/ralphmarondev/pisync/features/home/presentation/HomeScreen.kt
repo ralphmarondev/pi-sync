@@ -27,12 +27,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ralphmarondev.pisync.features.home.presentation.components.DoorCard
 import com.ralphmarondev.pisync.features.home.presentation.components.GreetingsCard
-import com.ralphmarondev.pisync.ui.theme.PiSyncTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -122,15 +120,5 @@ fun HomeScreen(
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun HomeScreenPreview() {
-    PiSyncTheme {
-        HomeScreen(
-            darkTheme = false
-        ) { }
     }
 }

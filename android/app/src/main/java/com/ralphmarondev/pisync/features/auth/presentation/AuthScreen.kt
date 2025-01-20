@@ -18,13 +18,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -44,8 +43,8 @@ fun AuthScreen(
     viewModel: AuthViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    val username by viewModel.username.collectAsState()
+    val password by viewModel.password.collectAsState()
 
     Scaffold(
         topBar = {
@@ -107,7 +106,7 @@ fun AuthScreen(
 
                     NormalTextField(
                         value = username,
-                        onValueChanged = { username = it },
+                        onValueChanged = viewModel::onUsernameChange,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -116,20 +115,27 @@ fun AuthScreen(
 
                     PasswordTextField(
                         value = password,
-                        onValueChanged = { password = it },
+                        onValueChanged = viewModel::onPasswordChange,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         label = "Password"
                     )
+                    TextButton(
+                        onClick = {}
+                    ) {
+                        Text(
+                            text = "Forgot Password?",
+                            fontFamily = FontFamily.Monospace,
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                    }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Button(
                         onClick = {
                             viewModel.login(
-                                username = username.trim(),
-                                password = password.trim(),
                                 response = { isSuccess, msg ->
                                     if (isSuccess) {
                                         navigateToHome()
