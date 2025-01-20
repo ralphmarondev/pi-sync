@@ -1,6 +1,8 @@
 package com.ralphmarondev.pisync.features.auth.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.Clear
@@ -14,6 +16,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 
@@ -24,6 +28,7 @@ fun NormalTextField(
     onValueChanged: (String) -> Unit,
     label: String,
     maxLines: Int = 1,
+    onNext: () -> Unit,
     leadingIcon: ImageVector = Icons.Outlined.AccountBox
 ) {
     OutlinedTextField(
@@ -34,8 +39,6 @@ fun NormalTextField(
             Text(
                 text = label,
                 fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.W500,
-                fontSize = 16.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -61,6 +64,13 @@ fun NormalTextField(
                     )
                 }
             }
-        }
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(
+            onNext = { onNext() }
+        )
     )
 }
