@@ -12,3 +12,5 @@ class Config:
     def toggle_fullscreen(self, event=None):
         current_state = self.root.attributes('-fullscreen')
         self.root.attributes('-fullscreen', not current_state)
+
+BASE_URL = 'http://localhost:8000/api/'

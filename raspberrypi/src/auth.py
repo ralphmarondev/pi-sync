@@ -1,5 +1,8 @@
 import tkinter as tk
 
+import requests
+
+from src.config import BASE_URL
 from src.home import HomeScreen
 from theme import *
 
@@ -70,6 +73,15 @@ class AuthScreenAction:
         username = username.get()
         password = password.get()
         print(f'Username: {username}, password: {password}')
-        # iff success navigate to lets say home.py
-        is_valid = username == "ralphmaron" and password == "iscute"
-        return is_valid
+
+        try:
+            response = requests.post(f'{BASE_URL}login/', data={'username': username, 'password': password})
+            if response.status_code == 200:
+                print(f'Login successful:', response.json())
+                return True
+            else:
+                print('Login failed:', response.status_code, response.text)
+                return False
+        except requests.RequestException as e:
+            print(f'Error connecting to the server: {e}')
+            return False
