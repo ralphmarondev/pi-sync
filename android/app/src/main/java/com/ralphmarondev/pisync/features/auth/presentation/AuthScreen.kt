@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.auth.presentation
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +26,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +48,8 @@ fun AuthScreen(
     val context = LocalContext.current
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
+
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
         topBar = {
@@ -110,7 +115,10 @@ fun AuthScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
-                        label = "Username"
+                        label = "Username",
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Next)
+                        }
                     )
 
                     PasswordTextField(
@@ -119,7 +127,14 @@ fun AuthScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
-                        label = "Password"
+                        label = "Password",
+                        onDone = {
+                            onLogin(
+                                viewModel = viewModel,
+                                navigateToHome = navigateToHome,
+                                context = context
+                            )
+                        }
                     )
                     TextButton(
                         onClick = {}
@@ -135,23 +150,10 @@ fun AuthScreen(
 
                     Button(
                         onClick = {
-                            viewModel.login(
-                                response = { isSuccess, msg ->
-                                    if (isSuccess) {
-                                        navigateToHome()
-                                        Toast.makeText(
-                                            context,
-                                            "Success. Token: $msg",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            "Error: $msg",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                }
+                            onLogin(
+                                viewModel = viewModel,
+                                navigateToHome = navigateToHome,
+                                context = context
                             )
                         },
                         modifier = Modifier
@@ -170,4 +172,29 @@ fun AuthScreen(
             }
         }
     }
+}
+
+private fun onLogin(
+    viewModel: AuthViewModel,
+    navigateToHome: () -> Unit,
+    context: Context
+) {
+    viewModel.login(
+        response = { isSuccess, msg ->
+            if (isSuccess) {
+                navigateToHome()
+                Toast.makeText(
+                    context,
+                    "Success. Token: $msg",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    context,
+                    "Error: $msg",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    )
 }

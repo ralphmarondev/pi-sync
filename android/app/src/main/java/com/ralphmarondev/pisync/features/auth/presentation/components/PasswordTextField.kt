@@ -1,6 +1,8 @@
 package com.ralphmarondev.pisync.features.auth.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Password
 import androidx.compose.material.icons.outlined.Visibility
@@ -19,6 +21,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,6 +35,7 @@ fun PasswordTextField(
     onValueChanged: (String) -> Unit,
     label: String,
     maxLines: Int = 1,
+    onDone: () -> Unit,
     leadingIcon: ImageVector = Icons.Outlined.Password
 ) {
     var show by remember { mutableStateOf(false) }
@@ -43,8 +48,6 @@ fun PasswordTextField(
             Text(
                 text = label,
                 fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.W500,
-                fontSize = 16.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -73,6 +76,13 @@ fun PasswordTextField(
                 }
             }
         },
-        visualTransformation = if (show) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (show) VisualTransformation.None else PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = { onDone() }
+        )
     )
 }
