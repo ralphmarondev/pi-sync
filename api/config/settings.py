@@ -6,7 +6,7 @@ SECRET_KEY = 'django-insecure-$_z#f)1-n8f#0vcdr1fd$4r2k3sfy-)!oxc2&b_ey7irf9ruhc
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.68.124', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -87,5 +87,3 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = 'authentication.FamilyMember'
