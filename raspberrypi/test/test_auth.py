@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from src.theme import *
+from app.theme import *
 from test_home import TestHomeWindow
 
 
