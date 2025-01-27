@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 
 from app.auth.auth_view_model import AuthViewModel
 from app.home.home_screen import HomeScreen
@@ -55,8 +56,11 @@ class AuthScreen(tk.Tk):
 			password=password_entry
 		)
 		if is_success:
+			messagebox.showinfo('Login successful', 'You have logged in successfully!')
 			self.destroy()
 			HomeScreen().mainloop()
+		else:
+			messagebox.showerror('Login failed', 'Please try again later.')
 
 	def on_closing(self):
 		self.destroy()
