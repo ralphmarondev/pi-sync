@@ -2,7 +2,7 @@ import tkinter as tk
 
 import requests
 
-from app.config import BASE_URL
+from app.constants import API_BASE_URL
 from app.home.home import HomeScreen
 from app.theme import *
 
@@ -52,11 +52,10 @@ class AuthScreen(tk.Tk):
 		frame.pack(pady=5)
 
 	def handle_login(self, username_entry: tk.Entry, password_entry: tk.Entry):
-		# is_success = self.action.on_login(
-		# 	username=username_entry,
-		# 	password=password_entry
-		# )
-		is_success = True
+		is_success = self.action.on_login(
+			username=username_entry,
+			password=password_entry
+		)
 		if is_success:
 			self.destroy()
 			HomeScreen().mainloop()
@@ -74,7 +73,10 @@ class AuthScreenAction:
 		print(f'Username: {username}, password: {password}')
 
 		try:
-			response = requests.post(f'{BASE_URL}login/', data={'username': username, 'password': password})
+			response = requests.post(
+				url=f'{API_BASE_URL}login/',
+				data={'username': username, 'password': password}
+			)
 			if response.status_code == 200:
 				print(f'Login successful:', response.json())
 				return True
