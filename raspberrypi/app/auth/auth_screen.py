@@ -13,10 +13,10 @@ class AuthScreen(tk.Tk):
 		self.geometry('500x300')
 		self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-		self.action = AuthViewModel(self)
-		self.login()
+		self.view_model = AuthViewModel()
+		self.login_ui()
 
-	def login(self):
+	def login_ui(self):
 		frame = tk.Frame(master=self, bg=BACKGROUND)
 		login_label = tk.Label(
 			master=frame,
@@ -51,16 +51,17 @@ class AuthScreen(tk.Tk):
 		frame.pack(pady=5)
 
 	def handle_login(self, username_entry: tk.Entry, password_entry: tk.Entry):
-		is_success = self.action.on_login(
-			username=username_entry,
-			password=password_entry
-		)
+		self.view_model.set_username(username_entry.get())
+		self.view_model.set_password(password_entry.get())
+
+		is_success, message = self.view_model.login()
+
 		if is_success:
 			messagebox.showinfo('Login successful', 'You have logged in successfully!')
 			self.destroy()
 			HomeScreen().mainloop()
 		else:
-			messagebox.showerror('Login failed', 'Please try again later.')
+			messagebox.showerror(title='Login failed', message=message)
 
 	def on_closing(self):
 		self.destroy()
