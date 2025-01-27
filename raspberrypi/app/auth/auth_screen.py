@@ -1,9 +1,7 @@
 import tkinter as tk
 
-import requests
-
-from app.constants import API_BASE_URL
-from app.home.home import HomeScreen
+from app.auth.auth_view_model import AuthViewModel
+from app.home.home_screen import HomeScreen
 from app.theme import *
 
 class AuthScreen(tk.Tk):
@@ -14,7 +12,7 @@ class AuthScreen(tk.Tk):
 		self.geometry('500x300')
 		self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-		self.action = AuthScreenAction(self)
+		self.action = AuthViewModel(self)
 		self.login()
 
 	def login(self):
@@ -62,30 +60,6 @@ class AuthScreen(tk.Tk):
 
 	def on_closing(self):
 		self.destroy()
-
-class AuthScreenAction:
-	def __init__(self, root: tk.Tk):
-		self.root = root
-
-	def on_login(self, username: tk.Entry, password: tk.Entry):
-		username = username.get()
-		password = password.get()
-		print(f'Username: {username}, password: {password}')
-
-		try:
-			response = requests.post(
-				url=f'{API_BASE_URL}login/',
-				data={'username': username, 'password': password}
-			)
-			if response.status_code == 200:
-				print(f'Login successful:', response.json())
-				return True
-			else:
-				print('Login failed:', response.status_code, response.text)
-				return False
-		except requests.RequestException as e:
-			print(f'Error connecting to the server: {e}')
-			return False
 
 if __name__ == '__main__':
 	root = AuthScreen()
