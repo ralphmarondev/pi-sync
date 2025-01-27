@@ -116,7 +116,6 @@ class HomeScreen(tk.Tk):
 		self.set_active_button(self.about_button)
 
 	def set_active_button(self, button):
-		# Remove the previous indicator
 		if self.active_indicator:
 			self.active_indicator.place_forget()
 
@@ -128,7 +127,6 @@ class HomeScreen(tk.Tk):
 		self.active_indicator.place(x=0, y=button.winfo_y(), width=5, height=button.winfo_height())
 
 	def update_content(self, text):
-		# Clear existing widgets in the content frame
 		for widget in self.content_frame.winfo_children():
 			widget.destroy()
 
