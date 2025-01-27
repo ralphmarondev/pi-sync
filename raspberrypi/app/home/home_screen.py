@@ -2,7 +2,7 @@ import tkinter as tk
 
 BACKGROUND = "#f5f5f5"
 NAVBAR_COLOR = "#c3c3c3"
-ACTIVE_COLOR = "#158aff"
+ACTIVE_COLOR = "#FF3399"
 INACTIVE_COLOR = "#c3c3c3"
 
 class HomeScreen(tk.Tk):
@@ -48,10 +48,11 @@ class HomeScreen(tk.Tk):
 			text='Thesis',
 			fg='#ffffff',
 			bg='#5E3B8E',
-			font=('monospace', 12),
-			anchor='center'
+			font=('monospace', 14),
+			anchor='w',
+			padx=5
 		)
-		thesis_label.pack(fill=tk.X, side=tk.TOP, ipady=15)
+		thesis_label.pack(fill=tk.X, side=tk.TOP, ipady=16)
 
 		self.dashboard_button = self.create_nav_button(navigation_frame, 'Dashboard', self.show_dashboard)
 		self.rooms_button = self.create_nav_button(navigation_frame, 'Rooms', self.show_rooms)
@@ -90,10 +91,10 @@ class HomeScreen(tk.Tk):
 			text='Ralph Maron Eda',
 			fg='#ffffff',
 			bg='#5E3B8E',
-			font=('monospace', 12),
+			font=('monospace', 16),
 			anchor='e'
 		)
-		user_label.pack(side=tk.RIGHT, padx=10, pady=15)
+		user_label.pack(side=tk.RIGHT, padx=10, ipady=15)
 
 		self.content_frame = tk.Frame(content_wrapper, bg='#ffffff')
 		self.content_frame.pack(fill=tk.BOTH, expand=True)
