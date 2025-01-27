@@ -1,9 +1,10 @@
 import tkinter as tk
 
 import requests
-from config import BASE_URL
-from home.home import HomeScreen
-from theme import *
+
+from app.config import BASE_URL
+from app.home.home import HomeScreen
+from app.theme import *
 
 class AuthScreen(tk.Tk):
 	def __init__(self):
@@ -83,3 +84,7 @@ class AuthScreenAction:
 		except requests.RequestException as e:
 			print(f'Error connecting to the server: {e}')
 			return False
+
+if __name__ == '__main__':
+	root = AuthScreen()
+	root.mainloop()
