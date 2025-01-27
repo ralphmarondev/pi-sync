@@ -1,3 +1,5 @@
 BACKGROUND = '#333333'
 FOREGROUND = '#FFFFFF'
+
 FONT_DEFAULT = ('monospace', 16)
+FONT_LABEL = ('monospace', 12)
