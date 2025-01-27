@@ -1,29 +1,34 @@
-import tkinter as tk
-
 import requests
 
 from app.constants import API_BASE_URL
 
 class AuthViewModel:
-	def __init__(self, root: tk.Tk):
-		self.root = root
+	def __init__(self):
+		self.username = ''
+		self.password = ''
 
-	def on_login(self, username: tk.Entry, password: tk.Entry):
-		username = username.get()
-		password = password.get()
-		print(f'Username: {username}, password: {password}')
+	def set_username(self, username: str):
+		self.username = username
+
+	def set_password(self, password: str):
+		self.password = password
+
+	def login(self):
+		if not self.username.strip() or not self.password.strip():
+			return False, 'Username or password cannot be empty!'
 
 		try:
 			response = requests.post(
 				url=f'{API_BASE_URL}login/',
-				data={'username': username, 'password': password}
+				data={'username': self.username, 'password': self.password}
 			)
 			if response.status_code == 200:
 				print(f'Login successful:', response.json())
-				return True
+				return True, None
 			else:
 				print('Login failed:', response.status_code, response.text)
-				return False
+				return False, response.text
 		except requests.RequestException as e:
-			print(f'Error connecting to the server: {e}')
-			return False
+			message = f'Error connecting to the server: {e}'
+			print(message)
+			return False, message
