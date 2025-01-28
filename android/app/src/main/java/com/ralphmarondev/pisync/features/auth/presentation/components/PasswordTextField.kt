@@ -35,7 +35,6 @@ fun PasswordTextField(
     value: String,
     onValueChanged: (String) -> Unit,
     label: String,
-    maxLines: Int = 1,
     onDone: () -> Unit,
     leadingIcon: ImageVector = Icons.Outlined.Password
 ) {
@@ -59,7 +58,7 @@ fun PasswordTextField(
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.secondary
         ),
-        maxLines = maxLines,
+        singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = leadingIcon,
