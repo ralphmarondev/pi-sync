@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 
-from PIL.ImageColor import colormap
-
 from app.auth.auth_view_model import AuthViewModel
 from app.home.home_screen import HomeScreen
 from app.theme import *
