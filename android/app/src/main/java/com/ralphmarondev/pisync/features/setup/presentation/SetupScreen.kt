@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
+import androidx.compose.material.icons.outlined.Router
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -81,15 +83,37 @@ fun SetupScreen(
             OutlinedTextField(
                 value = ipAddress,
                 onValueChange = { viewModel.onIpAddressChange(it) },
-                label = { Text("Enter IP Address") },
+                label = {
+                    Text(
+                        text = "Enter IP Address",
+                        fontFamily = FontFamily.Monospace
+                    )
+                },
+                textStyle = TextStyle(
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.W500,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.secondary
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
                 isError = ipAddress.isEmpty(),
                 supportingText = {
                     if (ipAddress.isEmpty()) {
-                        Text("IP Address cannot be empty", color = MaterialTheme.colorScheme.error)
+                        Text(
+                            text = "IP Address cannot be empty",
+                            color = MaterialTheme.colorScheme.error,
+                            fontFamily = FontFamily.Monospace
+                        )
                     }
+                },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Router,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
