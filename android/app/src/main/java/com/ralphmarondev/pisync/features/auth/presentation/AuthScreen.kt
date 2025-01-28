@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentPasteGo
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,6 +45,8 @@ import com.ralphmarondev.pisync.features.auth.presentation.components.PasswordTe
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(
+    darkTheme: Boolean,
+    toggleDarkTheme: () -> Unit,
     navigateToHome: () -> Unit,
     viewModel: AuthViewModel = viewModel()
 ) {
@@ -67,6 +71,16 @@ fun AuthScreen(
                         Icon(
                             imageVector = Icons.Outlined.ContentPasteGo,
                             contentDescription = ""
+                        )
+                    }
+                    IconButton(
+                        onClick = toggleDarkTheme
+                    ) {
+                        val imageVector =
+                            if (darkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = "Theme switcher"
                         )
                     }
                 },
