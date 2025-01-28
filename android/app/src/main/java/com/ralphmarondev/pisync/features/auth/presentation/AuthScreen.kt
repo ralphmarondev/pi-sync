@@ -1,7 +1,5 @@
 package com.ralphmarondev.pisync.features.auth.presentation
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,9 +9,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ContentPasteGo
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.SettingsInputAntenna
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -50,7 +47,6 @@ fun AuthScreen(
     navigateToHome: () -> Unit,
     viewModel: AuthViewModel = viewModel()
 ) {
-    val context = LocalContext.current
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
     val showPasswordDialog by viewModel.showForgotPasswordDialog.collectAsState()
@@ -67,15 +63,13 @@ fun AuthScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = navigateToHome) {
+                    IconButton(onClick = {}) {
                         Icon(
-                            imageVector = Icons.Outlined.ContentPasteGo,
-                            contentDescription = ""
+                            imageVector = Icons.Outlined.SettingsInputAntenna,
+                            contentDescription = "Settings"
                         )
                     }
-                    IconButton(
-                        onClick = toggleDarkTheme
-                    ) {
+                    IconButton(onClick = toggleDarkTheme) {
                         val imageVector =
                             if (darkTheme) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
                         Icon(
@@ -144,13 +138,7 @@ fun AuthScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         label = "Password",
-                        onDone = {
-                            onLogin(
-                                viewModel = viewModel,
-                                navigateToHome = navigateToHome,
-                                context = context
-                            )
-                        }
+                        onDone = navigateToHome
                     )
                     TextButton(
                         onClick = viewModel::toggleForgotPasswordDialog
@@ -165,13 +153,7 @@ fun AuthScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Button(
-                        onClick = {
-                            onLogin(
-                                viewModel = viewModel,
-                                navigateToHome = navigateToHome,
-                                context = context
-                            )
-                        },
+                        onClick = navigateToHome,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
@@ -194,29 +176,4 @@ fun AuthScreen(
             onDismiss = viewModel::toggleForgotPasswordDialog
         )
     }
-}
-
-private fun onLogin(
-    viewModel: AuthViewModel,
-    navigateToHome: () -> Unit,
-    context: Context
-) {
-    viewModel.login(
-        response = { isSuccess, msg ->
-            if (isSuccess) {
-                navigateToHome()
-                Toast.makeText(
-                    context,
-                    "Success. Token: $msg",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    context,
-                    "Error: $msg",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    )
 }
