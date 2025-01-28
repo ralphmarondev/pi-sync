@@ -5,7 +5,11 @@ class RoomScreen:
 		self.root = parent_frame
 
 	def content(self):
-		dashboard_frame = tk.Frame(self.root)
+		dashboard_frame = tk.Frame(
+			master=self.root,
+			highlightbackground='purple',
+			highlightthickness=2
+		)
 		lb = tk.Label(
 			master=dashboard_frame,
 			text='Room Screen',
