@@ -19,6 +19,9 @@ class AuthViewModel : ViewModel() {
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> get() = _password
 
+    private val _rememberMe = MutableStateFlow(false)
+    val rememberMe: StateFlow<Boolean> get() = _rememberMe
+
     private val _showForgotPasswordDialog = MutableStateFlow(false)
     val showForgotPasswordDialog: StateFlow<Boolean> get() = _showForgotPasswordDialog
 
@@ -28,6 +31,10 @@ class AuthViewModel : ViewModel() {
 
     fun onPasswordChange(value: String) {
         _password.value = value
+    }
+
+    fun toggleRememberMe() {
+        _rememberMe.value = !_rememberMe.value
     }
 
     fun toggleForgotPasswordDialog() {
