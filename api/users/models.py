@@ -15,7 +15,7 @@ class User(AbstractUser):
 	created_by = models.CharField(max_length=200, blank=True, null=True)
 	is_deleted = models.BooleanField(default=False)
 	update_date = models.DateTimeField(auto_now=True)
-	registered_doors = models.ManyToManyField("Door", related_name='users', blank=True)
+	registered_doors = models.ManyToManyField('rooms.Door', related_name='users', blank=True)
 
 	def set_password(self, raw_password):
 		self.password = make_password(raw_password)
