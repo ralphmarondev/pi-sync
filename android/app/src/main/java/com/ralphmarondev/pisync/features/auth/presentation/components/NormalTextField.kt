@@ -28,7 +28,6 @@ fun NormalTextField(
     value: String,
     onValueChanged: (String) -> Unit,
     label: String,
-    maxLines: Int = 1,
     onNext: () -> Unit,
     leadingIcon: ImageVector = Icons.Outlined.AccountBox
 ) {
@@ -50,7 +49,7 @@ fun NormalTextField(
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.secondary
         ),
-        maxLines = maxLines,
+        singleLine = true,
         leadingIcon = {
             Icon(
                 imageVector = leadingIcon,
