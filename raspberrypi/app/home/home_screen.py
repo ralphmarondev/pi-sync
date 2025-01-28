@@ -1,5 +1,6 @@
 import tkinter as tk
 
+from app.dashboard.dashboard_screen import DashboardScreen
 BACKGROUND = "#f5f5f5"
 NAVBAR_COLOR = "#c3c3c3"
 ACTIVE_COLOR = "#FF3399"
@@ -20,6 +21,12 @@ class HomeScreen(tk.Tk):
 		self.main_frame = None
 		self.rooms_button = None
 		self.active_indicator = None
+
+		# screens
+		self.dashboard_screen = None
+		self.room_screen = None
+		self.user_screen = None
+		self.about_screen = None
 
 		self.create_widgets()
 		self.after(100, self.set_default_active_button)
@@ -54,12 +61,12 @@ class HomeScreen(tk.Tk):
 		)
 		thesis_label.pack(fill=tk.X, side=tk.TOP, ipady=16)
 
-		self.dashboard_button = self.create_nav_button(navigation_frame, 'Dashboard', self.show_dashboard)
-		self.rooms_button = self.create_nav_button(navigation_frame, 'Rooms', self.show_rooms)
-		self.users_button = self.create_nav_button(navigation_frame, 'Users', self.show_users)
-		self.about_button = self.create_nav_button(navigation_frame, 'About', self.show_about)
+		self.dashboard_button = self.create_nav_button(navigation_frame, 'Dashboard', self.update_content, 'dashboard')
+		self.rooms_button = self.create_nav_button(navigation_frame, 'Rooms', self.update_content, 'rooms')
+		self.users_button = self.create_nav_button(navigation_frame, 'Users', self.update_content, 'users')
+		self.about_button = self.create_nav_button(navigation_frame, 'About', self.update_content, 'about')
 
-	def create_nav_button(self, parent, text, command):
+	def create_nav_button(self, parent, text, command, arg):
 		button = tk.Button(
 			master=parent,
 			text=text,
@@ -70,7 +77,7 @@ class HomeScreen(tk.Tk):
 			anchor='w',
 			padx=15,
 			pady=5,
-			command=command
+			command=lambda: command(arg)
 		)
 		button.pack(fill=tk.X, pady=5)
 		return button
@@ -100,22 +107,6 @@ class HomeScreen(tk.Tk):
 		self.content_frame.pack(fill=tk.BOTH, expand=True)
 		self.content_frame.pack_propagate(False)
 
-	def show_dashboard(self):
-		self.update_content("Dashboard Content")
-		self.set_active_button(self.dashboard_button)
-
-	def show_rooms(self):
-		self.update_content("Rooms Content")
-		self.set_active_button(self.rooms_button)
-
-	def show_users(self):
-		self.update_content("Users Content")
-		self.set_active_button(self.users_button)
-
-	def show_about(self):
-		self.update_content("About Content")
-		self.set_active_button(self.about_button)
-
 	def set_active_button(self, button):
 		if self.active_indicator:
 			self.active_indicator.place_forget()
@@ -127,17 +118,87 @@ class HomeScreen(tk.Tk):
 		)
 		self.active_indicator.place(x=0, y=button.winfo_y(), width=5, height=button.winfo_height())
 
-	def update_content(self, text):
+	def update_content(self, screen_name):
 		for widget in self.content_frame.winfo_children():
 			widget.destroy()
 
-		content_label = tk.Label(
-			self.content_frame,
-			text=text,
-			font=('monospace', 24),
-			bg='#ffffff'
+		if screen_name == 'dashboard':
+			self.dashboard_screen = DashboardScreen(self.content_frame)
+			frame = self.dashboard_screen.content()
+			if frame is not None:
+				frame.pack(fill=tk.BOTH, expand=True)
+				self.set_active_button(self.dashboard_button)
+			else:
+				print('Error: Dashboard screen content is None')
+
+		elif screen_name == 'rooms':
+			self.room_screen = RoomsScreen(self.content_frame)
+			frame = self.room_screen.content()
+			if frame is not None:
+				frame.pack(fill=tk.BOTH, expand=True)
+				self.set_active_button(self.rooms_button)
+			else:
+				print('Error: Rooms screen content is None')
+
+		elif screen_name == 'users':
+			self.user_screen = UsersScreen(self.content_frame)
+			frame = self.user_screen.content()
+			if frame is not None:
+				frame.pack(fill=tk.BOTH, expand=True)
+				self.set_active_button(self.users_button)
+			else:
+				print('Error: Users screen content is None')
+
+		elif screen_name == 'about':
+			self.about_screen = AboutScreen(self.content_frame)
+			frame = self.about_screen.content()
+			if frame is not None:
+				frame.pack(fill=tk.BOTH, expand=True)
+				self.set_active_button(self.about_button)
+			else:
+				print('Error: About screen content is None')
+
+class RoomsScreen:
+	def __init__(self, parent_frame):
+		self.parent_frame = parent_frame
+
+	def content(self):
+		rooms_frame = tk.Frame(self.parent_frame)
+		lb = tk.Label(
+			master=rooms_frame,
+			text='Rooms',
+			font=('Bold', 30)
 		)
-		content_label.pack(expand=True)
+		lb.pack()
+		return rooms_frame
+
+class UsersScreen:
+	def __init__(self, parent_frame):
+		self.parent_frame = parent_frame
+
+	def content(self):
+		users_frame = tk.Frame(self.parent_frame)
+		lb = tk.Label(
+			master=users_frame,
+			text='Users',
+			font=('Bold', 30)
+		)
+		lb.pack()
+		return users_frame
+
+class AboutScreen:
+	def __init__(self, parent_frame):
+		self.parent_frame = parent_frame
+
+	def content(self):
+		about_frame = tk.Frame(self.parent_frame)
+		lb = tk.Label(
+			master=about_frame,
+			text='About',
+			font=('Bold', 30)
+		)
+		lb.pack()
+		return about_frame
 
 if __name__ == '__main__':
 	home = HomeScreen()
