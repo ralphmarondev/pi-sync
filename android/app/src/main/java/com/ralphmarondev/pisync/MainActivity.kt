@@ -16,12 +16,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var darkTheme by remember { mutableStateOf(false) }
+            val preferences = MyApp.preferences
+            var darkTheme by remember { mutableStateOf(preferences.isDarkTheme()) }
 
             PiSyncTheme(darkTheme = darkTheme) {
                 AppNavigation(
                     darkTheme = darkTheme,
-                    toggleDarkTheme = { darkTheme = !darkTheme }
+                    toggleDarkTheme = {
+                        darkTheme = !darkTheme
+                        preferences.toggleDarkTheme()
+                    },
+                    preferences = preferences
                 )
             }
         }
