@@ -1,7 +1,9 @@
 package com.ralphmarondev.pisync.features.auth.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +15,8 @@ import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.SettingsInputAntenna
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,6 +29,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
@@ -49,6 +54,7 @@ fun AuthScreen(
 ) {
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
+    val rememberMe by viewModel.rememberMe.collectAsState()
     val showPasswordDialog by viewModel.showForgotPasswordDialog.collectAsState()
 
     val focusManager = LocalFocusManager.current
@@ -140,16 +146,35 @@ fun AuthScreen(
                         label = "Password",
                         onDone = navigateToHome
                     )
-                    TextButton(
-                        onClick = viewModel::toggleForgotPasswordDialog
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 8.dp, bottom = 4.dp, top = 4.dp)
+                            .clickable { viewModel.toggleRememberMe() },
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
+                        Checkbox(
+                            checked = rememberMe,
+                            onCheckedChange = { viewModel.toggleRememberMe() },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = MaterialTheme.colorScheme.primary,
+                                uncheckedColor = MaterialTheme.colorScheme.secondary
+                            )
+                        )
                         Text(
-                            text = "Forgot Password?",
+                            text = "Remember me",
                             fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.tertiary
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.W500,
+                            color = when (rememberMe) {
+                                true -> MaterialTheme.colorScheme.primary
+                                false -> MaterialTheme.colorScheme.secondary
+                            },
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
-
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Button(
@@ -164,6 +189,17 @@ fun AuthScreen(
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.W500,
                             fontSize = 16.sp
+                        )
+                    }
+
+                    TextButton(
+                        onClick = viewModel::toggleForgotPasswordDialog,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text(
+                            text = "Forgot Password?",
+                            fontFamily = FontFamily.Monospace,
+                            color = MaterialTheme.colorScheme.tertiary
                         )
                     }
                 }
