@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,13 +56,15 @@ fun PasswordTextField(
         textStyle = TextStyle(
             fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.W500,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.secondary
         ),
         maxLines = maxLines,
         leadingIcon = {
             Icon(
                 imageVector = leadingIcon,
-                contentDescription = ""
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.secondary
             )
         },
         trailingIcon = {
@@ -71,7 +74,8 @@ fun PasswordTextField(
 
                     Icon(
                         imageVector = icon,
-                        contentDescription = ""
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.secondary
                     )
                 }
             }

@@ -8,6 +8,7 @@ import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,13 +47,15 @@ fun NormalTextField(
         textStyle = TextStyle(
             fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.W500,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.secondary
         ),
         maxLines = maxLines,
         leadingIcon = {
             Icon(
                 imageVector = leadingIcon,
-                contentDescription = ""
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.secondary
             )
         },
         trailingIcon = {
@@ -60,7 +63,8 @@ fun NormalTextField(
                 IconButton(onClick = { onValueChanged("") }) {
                     Icon(
                         imageVector = Icons.Outlined.Clear,
-                        contentDescription = ""
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.secondary
                     )
                 }
             }
