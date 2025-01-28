@@ -9,11 +9,20 @@ class AppPreferences(context: Context) {
         private const val FIRST_LAUNCH = "first_launch"
         private const val DARK_THEME = "dark_theme"
         private const val CURRENT_USER = "current_user"
+        private const val IP_ADDRESS = "ip_address"
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         PREFERENCES_NAME, Context.MODE_PRIVATE
     )
+
+    fun saveIpAddress(value: String) {
+        sharedPreferences.edit().putString(IP_ADDRESS, value).apply()
+    }
+
+    fun getIpAddress(): String? {
+        return sharedPreferences.getString(IP_ADDRESS, null)
+    }
 
     fun isFirstLaunch(): Boolean {
         return sharedPreferences.getBoolean(FIRST_LAUNCH, true)
