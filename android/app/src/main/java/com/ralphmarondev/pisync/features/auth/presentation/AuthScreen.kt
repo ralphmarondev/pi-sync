@@ -50,6 +50,7 @@ fun AuthScreen(
     darkTheme: Boolean,
     toggleDarkTheme: () -> Unit,
     navigateToHome: () -> Unit,
+    navigateToSetup: () -> Unit,
     viewModel: AuthViewModel = viewModel()
 ) {
     val username by viewModel.username.collectAsState()
@@ -69,7 +70,7 @@ fun AuthScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = navigateToSetup) {
                         Icon(
                             imageVector = Icons.Outlined.SettingsInputAntenna,
                             contentDescription = "Settings"
