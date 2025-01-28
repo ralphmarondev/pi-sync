@@ -17,7 +17,7 @@ class MyApp : Application() {
         preferences = AppPreferences(applicationContext)
 
         val ipAddress = preferences.getIpAddress()
-        if (ipAddress != null) {
+        if (ipAddress != null && isValidIpAddress(ipAddress)) {
             val baseUrl = "http://$ipAddress:8000/api/"
             RetrofitInstance.initialize(baseUrl)
             Log.d("MyApp", "Retrofit initialized with baseUrl: $baseUrl")
@@ -29,5 +29,11 @@ class MyApp : Application() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    private fun isValidIpAddress(ip: String): Boolean {
+        val regex =
+            """^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$""".toRegex()
+        return regex.matches(ip)
     }
 }
