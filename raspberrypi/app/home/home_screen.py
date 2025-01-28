@@ -1,6 +1,9 @@
 import tkinter as tk
 
+from app.about.about_screen import AboutScreen
 from app.dashboard.dashboard_screen import DashboardScreen
+from app.room.room_screen import RoomScreen
+from app.user.user_screen import UserScreen
 BACKGROUND = "#f5f5f5"
 NAVBAR_COLOR = "#c3c3c3"
 ACTIVE_COLOR = "#FF3399"
@@ -132,7 +135,7 @@ class HomeScreen(tk.Tk):
 				print('Error: Dashboard screen content is None')
 
 		elif screen_name == 'rooms':
-			self.room_screen = RoomsScreen(self.content_frame)
+			self.room_screen = RoomScreen(self.content_frame)
 			frame = self.room_screen.content()
 			if frame is not None:
 				frame.pack(fill=tk.BOTH, expand=True)
@@ -141,7 +144,7 @@ class HomeScreen(tk.Tk):
 				print('Error: Rooms screen content is None')
 
 		elif screen_name == 'users':
-			self.user_screen = UsersScreen(self.content_frame)
+			self.user_screen = UserScreen(self.content_frame)
 			frame = self.user_screen.content()
 			if frame is not None:
 				frame.pack(fill=tk.BOTH, expand=True)
@@ -157,48 +160,6 @@ class HomeScreen(tk.Tk):
 				self.set_active_button(self.about_button)
 			else:
 				print('Error: About screen content is None')
-
-class RoomsScreen:
-	def __init__(self, parent_frame):
-		self.parent_frame = parent_frame
-
-	def content(self):
-		rooms_frame = tk.Frame(self.parent_frame)
-		lb = tk.Label(
-			master=rooms_frame,
-			text='Rooms',
-			font=('Bold', 30)
-		)
-		lb.pack()
-		return rooms_frame
-
-class UsersScreen:
-	def __init__(self, parent_frame):
-		self.parent_frame = parent_frame
-
-	def content(self):
-		users_frame = tk.Frame(self.parent_frame)
-		lb = tk.Label(
-			master=users_frame,
-			text='Users',
-			font=('Bold', 30)
-		)
-		lb.pack()
-		return users_frame
-
-class AboutScreen:
-	def __init__(self, parent_frame):
-		self.parent_frame = parent_frame
-
-	def content(self):
-		about_frame = tk.Frame(self.parent_frame)
-		lb = tk.Label(
-			master=about_frame,
-			text='About',
-			font=('Bold', 30)
-		)
-		lb.pack()
-		return about_frame
 
 if __name__ == '__main__':
 	home = HomeScreen()
