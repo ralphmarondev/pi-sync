@@ -18,14 +18,13 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = if (preferences.isFirstLaunch()) Routes.Auth else Routes.Home
+        startDestination = Routes.Auth
     ) {
         composable<Routes.Auth> {
             AuthScreen(
                 darkTheme = darkTheme,
                 toggleDarkTheme = toggleDarkTheme,
                 navigateToHome = {
-                    preferences.setFirstLaunch()
                     navController.navigate(Routes.Home) {
                         launchSingleTop = true
                     }
