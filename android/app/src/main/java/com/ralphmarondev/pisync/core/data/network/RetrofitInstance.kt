@@ -1,17 +1,18 @@
 package com.ralphmarondev.pisync.core.data.network
 
-import com.ralphmarondev.pisync.core.utils.IP_ADDRESS
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "http://$IP_ADDRESS:8000/api/"
+    private var retrofit: Retrofit? = null
+    val api: ApiService
+        get() = retrofit?.create(ApiService::class.java)
+            ?: throw IllegalStateException("Retrofit is not initialized. Call initialize() first.")
 
-    val api: ApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
+    fun initialize(baseUrl: String) {
+        retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(ApiService::class.java)
     }
 }
