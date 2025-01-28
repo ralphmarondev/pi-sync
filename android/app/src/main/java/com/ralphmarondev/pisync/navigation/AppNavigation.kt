@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.pisync.core.data.preferences.AppPreferences
 import com.ralphmarondev.pisync.features.auth.presentation.AuthScreen
 import com.ralphmarondev.pisync.features.home.presentation.HomeScreen
+import com.ralphmarondev.pisync.features.setup.presentation.SetupScreen
 
 @Composable
 fun AppNavigation(
@@ -28,6 +29,11 @@ fun AppNavigation(
                     navController.navigate(Routes.Home) {
                         launchSingleTop = true
                     }
+                },
+                navigateToSetup = {
+                    navController.navigate(Routes.Setup) {
+                        launchSingleTop = true
+                    }
                 }
             )
         }
@@ -35,6 +41,13 @@ fun AppNavigation(
             HomeScreen(
                 darkTheme = darkTheme,
                 toggleDarkTheme = toggleDarkTheme
+            )
+        }
+        composable<Routes.Setup> {
+            SetupScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
             )
         }
     }
