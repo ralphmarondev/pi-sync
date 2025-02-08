@@ -15,7 +15,14 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = '__all__'
 
 		extra_kwargs = {
-			'password': {'write_only': True}
+			'password': {'write_only': True},
+			# hide not needed fields
+			'last_login': {'write_only': True},
+			'is_staff': {'write_only': True},
+			'is_active': {'write_only': True},
+			'date_joined': {'write_only': True},
+			'groups': {'write_only': True},
+			'user_permissions': {'write_only': True}
 		}
 
 	def create(self, validated_data):
