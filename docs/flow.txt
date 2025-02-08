@@ -1,0 +1,55 @@
+Features:
+  Dashboard [Admin Only]
+  - Auth
+    - Login
+
+  - Home
+    - Dashboard
+    - Rooms
+    - Tenants
+    - Users
+    - Manual
+    - Logout
+
+
+  ----------
+  Dashboard:
+    List of grid of doors to open including thier current status.
+  Rooms:
+    List of rooms, can add new one, update and delete.
+  Tenants:
+    List of tenants, can be categorized by room. 
+    Can also perfrom CRUD operation.
+  Users:
+    List of super users [admin]
+  Manual:
+    Brief manual of the system.
+  Logout:
+    Just a button that is when clicked it will go back to [AuthScreen]
+
+Flow:
+  Auth -> Home 
+
+  Home:
+    -> Dashboard [Default Screen]
+    -> Rooms
+    -> Tenants
+    -> Users
+    -> Manual 
+
+  --- Home ---
+  Dashboard:
+    -> Pressable card representing a room, [it should display name of room, status [on/off]]
+  Tenants:
+    -> List of Tenant Screen [default]
+    -> New Tenant Screen 
+    -> Update Tentant Screen
+    -> Delete Tenant Confimration dialog.
+  Users:
+    -> List of Users Screen [default]
+    -> New Users Screen 
+    -> Update Users Screen
+    -> Delete Users Confimration dialog.
+  Manual:
+    -> List of features [when clicked we will hide the current content and show content related to it].
+
