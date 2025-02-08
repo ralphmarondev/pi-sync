@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 from app.auth.auth_view_model import AuthViewModel
+from app.config import Config
 from app.home.home_screen import HomeScreen
 from app.theme import *
 
@@ -12,6 +13,10 @@ class AuthScreen(tk.Tk):
 		self.configure(bg='#333333')
 		self.geometry('600x400')
 		self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+		config = Config(self)
+		config.set_fullscreen()
+		config.toggle_fullscreen()
 
 		self.view_model = AuthViewModel()
 		self.login_ui()

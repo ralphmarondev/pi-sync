@@ -1,6 +1,7 @@
 import tkinter as tk
 
 from app.about.about_screen import AboutScreen
+from app.config import Config
 from app.dashboard.dashboard_screen import DashboardScreen
 from app.room.room_screen import RoomScreen
 from app.user.user_screen import UserScreen
@@ -16,6 +17,10 @@ class HomeScreen(tk.Tk):
 		self.configure(bg=BACKGROUND)
 		self.geometry('800x600')
 		self.protocol('WM_DELETE_WINDOW', self.on_closing)
+
+		config = Config(self)
+		config.set_fullscreen()
+		config.toggle_fullscreen()
 
 		self.content_frame = None
 		self.about_button = None

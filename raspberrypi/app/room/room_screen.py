@@ -90,11 +90,30 @@ class RoomScreen:
 		""" Display an action menu when clicking the 'Actions' column. """
 		menu = tk.Menu(self.root, tearoff=0)
 		menu.add_command(label="View Details", command=lambda: self.show_details(first, last, email))
+		menu.add_command(label="Update Details", command=lambda: self.update_details(first, last, email))
+		menu.add_command(label="Delete Details", command=lambda: self.delete_details(first, last, email))
 		menu.post(event.x_root, event.y_root)
 
 	def show_details(self, first, last, email):
-		""" Print row details when action button is clicked. """
-		print(f"Selected: {first} {last} - {email}")
+		""" Print row details when 'View Details' is clicked. """
+		print(f"Viewing details for: {first} {last} - {email}")
+
+	def update_details(self, first, last, email):
+		""" Simulate updating details when 'Update Details' is clicked. """
+		print(f"Updating details for: {first} {last} - {email}")
+		# In a real application, you would prompt the user for new details and update the database.
+
+	def delete_details(self, first, last, email):
+		""" Simulate deleting details when 'Delete Details' is clicked. """
+		print(f"Deleting details for: {first} {last} - {email}")
+		# In a real application, this would delete the row from the table/database.
+		# For now, we'll just remove the item from the table.
+		for item in self.table.get_children():
+			values = self.table.item(item, "values")
+			if values and values[0] == first and values[1] == last:
+				self.table.delete(item)
+				print(f"Deleted {first} {last}")
+				break
 
 	def new_action(self):
 		print("New button clicked!")
