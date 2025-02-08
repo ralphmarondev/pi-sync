@@ -4,6 +4,7 @@ from app.about.about_screen import AboutScreen
 from app.config import Config
 from app.dashboard.dashboard_screen import DashboardScreen
 from app.room.room_screen import RoomScreen
+from app.tenant.tenant_screen import TenantScreen
 from app.user.user_screen import UserScreen
 BACKGROUND = "#f5f5f5"
 NAVBAR_COLOR = "#c3c3c3"
@@ -28,11 +29,13 @@ class HomeScreen(tk.Tk):
 		self.dashboard_button = None
 		self.main_frame = None
 		self.rooms_button = None
+		self.tenant_button = None
 		self.active_indicator = None
 
 		# screens
 		self.dashboard_screen = None
 		self.room_screen = None
+		self.tenant_screen = None
 		self.user_screen = None
 		self.about_screen = None
 
@@ -71,6 +74,7 @@ class HomeScreen(tk.Tk):
 
 		self.dashboard_button = self.create_nav_button(navigation_frame, 'Dashboard', self.update_content, 'dashboard')
 		self.rooms_button = self.create_nav_button(navigation_frame, 'Rooms', self.update_content, 'rooms')
+		self.tenant_button = self.create_nav_button(navigation_frame, 'Tenants', self.update_content, 'tenants')
 		self.users_button = self.create_nav_button(navigation_frame, 'Users', self.update_content, 'users')
 		self.about_button = self.create_nav_button(navigation_frame, 'About', self.update_content, 'about')
 
@@ -147,6 +151,15 @@ class HomeScreen(tk.Tk):
 				self.set_active_button(self.rooms_button)
 			else:
 				print('Error: Rooms screen content is None')
+
+		elif screen_name == 'tenants':
+			self.tenant_screen = TenantScreen(self.content_frame)
+			frame = self.tenant_screen.content()
+			if frame is not None:
+				frame.pack(fill=tk.BOTH, expand=True)
+				self.set_active_button(self.tenant_button)
+			else:
+				print('Error: Tenant screen content is None')
 
 		elif screen_name == 'users':
 			self.user_screen = UserScreen(self.content_frame)
