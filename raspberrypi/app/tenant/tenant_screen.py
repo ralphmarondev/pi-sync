@@ -3,6 +3,8 @@ from tkinter import ttk
 
 from numpy.random import choice
 
+from app.tenant.new_tenant_dialog import NewTenantDialog
+
 class TenantScreen:
 	def __init__(self, parent_frame):
 		self.root = parent_frame
@@ -116,7 +118,9 @@ class TenantScreen:
 				break
 
 	def new_action(self):
-		print("New button clicked!")
+		# print("New button clicked!")
+		dialog = NewTenantDialog(self.root)
+		dialog.grab_set() # block interaction from main window
 
 	def room_action(self):
 		print("Room button clicked!")
