@@ -26,8 +26,12 @@ class AuthViewModel:
 				print(f'Login successful:', response.json())
 				return True, None
 			else:
-				print('Login failed:', response.status_code, response.text)
-				return False, response.text
+				try:
+					error_message = response.json().get('message', 'Login failed')
+				except ValueError:
+					error_message = 'Login failed with unexpected response'
+				print('Login failed:', response.status_code, error_message)
+				return False, error_message
 		except requests.RequestException as e:
 			message = f'Error connecting to the server: {e}'
 			print(message)
