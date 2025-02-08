@@ -6,6 +6,7 @@ from numpy.random import choice
 class RoomScreen:
 	def __init__(self, parent_frame):
 		self.root = parent_frame
+		self.table = None
 
 	def content(self):
 		first_names = ['Ralph Maron', 'Triesha Mae', 'Jezlyn', 'Jack']
@@ -42,28 +43,58 @@ class RoomScreen:
 		new_button.pack(side="left", padx=5)
 
 		# tree view
-		table = ttk.Treeview(dashboard_frame, columns=('first', 'last', 'email'), show='headings')
-		table.heading('first', text='First name')
-		table.heading('last', text='Last name')
-		table.heading('email', text='Email')
-		table.pack(fill='both', expand=True, padx=5, pady=5)
+		columns = ('first', 'last', 'email', 'actions')
+		self.table = ttk.Treeview(dashboard_frame, columns=columns, show='headings')
 
-		# insert values into a table
-		# table.insert(parent='', index = 0, values=('Angel', 'Apay', 'apayangel@gmail.com'))
-		for i in range(20):
+		self.table.heading('first', text='First name')
+		self.table.heading('last', text='Last name')
+		self.table.heading('email', text='Email')
+		self.table.heading('actions', text='Actions')  # Actions Column
+
+		self.table.column('first', width=150)
+		self.table.column('last', width=150)
+		self.table.column('email', width=200)
+		self.table.column('actions', width=80, anchor="center")  # Fixed width for Actions column
+
+		self.table.pack(fill='both', expand=True, padx=5, pady=5)
+
+		# Insert values into the table
+		for _ in range(20):
 			first = choice(first_names)
 			last = choice(last_names)
-			email = f'{first.lower()}{last.lower()}@gmail.com'.replace(' ','')
-			data = (first, last, email)
-			table.insert(parent='', index=0,values=data)
+			email = f'{first.lower()}{last.lower()}@gmail.com'.replace(' ', '')
 
-		table.insert(parent='', index=0, values=('xxxx','yyyy','zzzz'))
+			# Insert row into table
+			row_id = self.table.insert('', 'end', values=(first, last, email, "..."))
 
-		# events
-		table.bind('<<TreeviewSelect>>', self.item_select)
-		table.bind('<Delete>', self.delete_items)
+		# Bind the treeview to capture clicks on the Actions column
+		self.table.bind('<ButtonRelease-1>', self.handle_click)
 
 		return dashboard_frame
+
+	def handle_click(self, event):
+		""" Show details when a row is clicked. """
+		region = self.table.identify_region(event.x, event.y)
+		if region == "cell":
+			row_id = self.table.identify_row(event.y)
+			col = self.table.identify_column(event.x)
+
+			# Check if the click is in the Actions column
+			if col == '#4':  # The "Actions" column
+				values = self.table.item(row_id, "values")
+				if values:
+					first, last, email, _ = values
+					self.show_action_menu(event, first, last, email)
+
+	def show_action_menu(self, event, first, last, email):
+		""" Display an action menu when clicking the 'Actions' column. """
+		menu = tk.Menu(self.root, tearoff=0)
+		menu.add_command(label="View Details", command=lambda: self.show_details(first, last, email))
+		menu.post(event.x_root, event.y_root)
+
+	def show_details(self, first, last, email):
+		""" Print row details when action button is clicked. """
+		print(f"Selected: {first} {last} - {email}")
 
 	def new_action(self):
 		print("New button clicked!")
@@ -76,17 +107,6 @@ class RoomScreen:
 
 	def search_action(self):
 		print("Search button clicked!")
-
-	def item_select(self, event):
-		table = event.widget
-		for i in table.selection():
-			print(table.item(i)['values'])
-
-	def delete_items(self, event):
-		table = event.widget
-		for i in table.selection():
-			table.delete(i)
-
 
 if __name__ == '__main__':
 	root = tk.Tk()
