@@ -3,6 +3,7 @@ import tkinter as tk
 from app.about.about_screen import AboutScreen
 from app.config import Config
 from app.dashboard.dashboard_screen import DashboardScreen
+from app.manual.manual_screen import ManualScreen
 from app.room.room_screen import RoomScreen
 from app.tenant.tenant_screen import TenantScreen
 from app.user.user_screen import UserScreen
@@ -30,6 +31,7 @@ class HomeScreen(tk.Tk):
 		self.main_frame = None
 		self.rooms_button = None
 		self.tenant_button = None
+		self.manual_button = None
 		self.active_indicator = None
 
 		# screens
@@ -37,6 +39,7 @@ class HomeScreen(tk.Tk):
 		self.room_screen = None
 		self.tenant_screen = None
 		self.user_screen = None
+		self.manual_screen = None
 		self.about_screen = None
 
 		self.create_widgets()
@@ -76,6 +79,7 @@ class HomeScreen(tk.Tk):
 		self.rooms_button = self.create_nav_button(navigation_frame, 'Rooms', self.update_content, 'rooms')
 		self.tenant_button = self.create_nav_button(navigation_frame, 'Tenants', self.update_content, 'tenants')
 		self.users_button = self.create_nav_button(navigation_frame, 'Users', self.update_content, 'users')
+		self.manual_button = self.create_nav_button(navigation_frame, 'Manual', self.update_content, 'manual')
 		self.about_button = self.create_nav_button(navigation_frame, 'About', self.update_content, 'about')
 
 	def create_nav_button(self, parent, text, command, arg):
@@ -169,6 +173,15 @@ class HomeScreen(tk.Tk):
 				self.set_active_button(self.users_button)
 			else:
 				print('Error: Users screen content is None')
+
+		elif screen_name == 'manual':
+			self.manual_screen = ManualScreen(self.content_frame)
+			frame = self.manual_screen.content()
+			if frame is not None:
+				frame.pack(fill=tk.BOTH, expand=True)
+				self.set_active_button(self.manual_button)
+			else:
+				print('Error: Manual screen content is None')
 
 		elif screen_name == 'about':
 			self.about_screen = AboutScreen(self.content_frame)
