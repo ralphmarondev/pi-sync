@@ -23,7 +23,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ralphmarondev.pisync.features.history.presentation.HistoryScreen
 import com.ralphmarondev.pisync.features.home.presentation.HomeScreen
+import com.ralphmarondev.pisync.features.settings.presentation.SettingScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -42,21 +44,36 @@ fun HomeNavigation(
             defaultIcon = Icons.Outlined.Home,
             selectedIcon = Icons.Filled.Home,
             isSelected = selectedScreen == 0,
-            onClick = { selectedScreen = 0 }
+            onClick = {
+                selectedScreen = 0
+                navController.navigate(Routes.HomeNav.Dashboard) {
+                    launchSingleTop = true
+                }
+            }
         ),
         HomeNavItems(
             name = "History",
             defaultIcon = Icons.Outlined.History,
             selectedIcon = Icons.Filled.History,
             isSelected = selectedScreen == 1,
-            onClick = { selectedScreen = 1 }
+            onClick = {
+                selectedScreen = 1
+                navController.navigate(Routes.HomeNav.History) {
+                    launchSingleTop = true
+                }
+            }
         ),
         HomeNavItems(
             name = "Settings",
             defaultIcon = Icons.Outlined.Settings,
             selectedIcon = Icons.Filled.Settings,
             isSelected = selectedScreen == 2,
-            onClick = { selectedScreen = 2 }
+            onClick = {
+                selectedScreen = 2
+                navController.navigate(Routes.HomeNav.Settings) {
+                    launchSingleTop = true
+                }
+            }
         )
     )
 
@@ -91,6 +108,14 @@ fun HomeNavigation(
                 HomeScreen(
                     darkTheme = darkTheme,
                     toggleDarkTheme = toggleDarkTheme
+                )
+            }
+            composable<Routes.HomeNav.History> {
+                HistoryScreen()
+            }
+            composable<Routes.HomeNav.Settings> {
+                SettingScreen(
+                    logout = navigateToAuth
                 )
             }
         }
