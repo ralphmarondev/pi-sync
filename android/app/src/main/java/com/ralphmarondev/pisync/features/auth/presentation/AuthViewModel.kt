@@ -1,7 +1,6 @@
 package com.ralphmarondev.pisync.features.auth.presentation
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.MyApp
 import com.ralphmarondev.pisync.core.model.LoginRequest
@@ -11,22 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class AuthViewModelFactory(
-    private val navigateToHome: () -> Unit
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isInstance(AuthViewModel::class.java)) {
-            return AuthViewModel(
-                navigateToHome = navigateToHome
-            ) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
-
-class AuthViewModel(
-    private val navigateToHome: () -> Unit
-) : ViewModel() {
+class AuthViewModel : ViewModel() {
     private val preferences = MyApp.preferences
     private val repository = AuthRepositoryImpl()
     private val loginUseCase = LoginUseCase(repository)
