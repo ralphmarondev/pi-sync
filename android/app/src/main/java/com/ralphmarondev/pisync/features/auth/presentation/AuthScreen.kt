@@ -52,11 +52,7 @@ fun AuthScreen(
     navigateToHome: () -> Unit,
     navigateToSetup: () -> Unit
 ) {
-    val viewModel: AuthViewModel = viewModel(
-        factory = AuthViewModelFactory(
-            navigateToHome = navigateToHome
-        )
-    )
+    val viewModel: AuthViewModel = viewModel()
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
     val rememberMe by viewModel.rememberMe.collectAsState()
@@ -186,7 +182,9 @@ fun AuthScreen(
                         onClick = {
                             viewModel.login(
                                 response = { isSuccess, msg ->
-
+                                    if (isSuccess) {
+                                        navigateToHome()
+                                    }
                                 }
                             )
                         },
