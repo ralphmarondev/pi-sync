@@ -190,19 +190,15 @@ fun AuthScreen(
 
                     Button(
                         onClick = {
-                            viewModel.login(
-                                response = { isSuccess, message ->
-                                    scope.launch {
-                                        snackbar.showSnackbar(
-                                            message = message!!
-                                        )
-                                    }
+                            val result = viewModel.login()
 
-                                    if (isSuccess) {
-                                        navigateToHome()
-                                    }
-                                }
-                            )
+                            scope.launch {
+                                snackbar.showSnackbar(message = result.message)
+                            }
+
+                            if (result.success) {
+                                navigateToHome()
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
