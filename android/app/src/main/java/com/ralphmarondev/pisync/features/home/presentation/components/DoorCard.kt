@@ -36,11 +36,6 @@ fun DoorCard(
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Switch(
-                checked = checked,
-                onCheckedChange = { toggleChecked() }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = label,
                 fontFamily = FontFamily.Monospace,
@@ -48,6 +43,11 @@ fun DoorCard(
                 fontWeight = FontWeight.W600,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Switch(
+                checked = checked,
+                onCheckedChange = { toggleChecked() }
             )
         }
     }
