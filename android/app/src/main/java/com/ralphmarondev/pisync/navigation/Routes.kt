@@ -15,4 +15,15 @@ object Routes {
 
     @Serializable
     data object Setup
+
+    object HomeNav {
+        @Serializable
+        data object Dashboard
+
+        @Serializable
+        data object History
+
+        @Serializable
+        data object Settings
+    }
 }
