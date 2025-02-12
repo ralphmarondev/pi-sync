@@ -1,8 +1,10 @@
 package com.ralphmarondev.pisync.features.home.presentation
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -82,14 +84,15 @@ fun HomeScreen(
             }
 
             item {
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Doors",
+                    text = "Registered doors",
                     fontFamily = FontFamily.Monospace,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.W500,
                     color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )

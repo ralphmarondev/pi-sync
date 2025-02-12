@@ -1,6 +1,7 @@
 package com.ralphmarondev.pisync.features.settings.presentation
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedButton
@@ -44,28 +45,29 @@ fun SettingScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Settings Screen",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.W500,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(16.dp)
-            )
-
-            ElevatedButton(
-                onClick = logout,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.BottomCenter)
-            ) {
+            Column {
                 Text(
-                    text = "Logout",
-                    fontSize = 18.sp,
+                    text = "Settings Screen",
+                    fontSize = 24.sp,
                     fontWeight = FontWeight.W500,
                     textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(16.dp)
                 )
+
+                ElevatedButton(
+                    onClick = logout,
+                    modifier = Modifier
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = "Logout",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.W500,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
             }
         }
     }
