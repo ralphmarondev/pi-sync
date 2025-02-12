@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
@@ -40,8 +41,8 @@ fun HomeScreen(
     darkTheme: Boolean,
     toggleDarkTheme: () -> Unit
 ) {
-    var mainDoor by remember { mutableStateOf(false) }
-    var doorOne by remember { mutableStateOf(false) }
+    // The state must came from our api
+    var doorState by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -101,24 +102,15 @@ fun HomeScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     DoorCard(
-                        checked = mainDoor,
-                        toggleChecked = { mainDoor = !mainDoor },
-                        label = "Main",
+                        checked = doorState,
+                        toggleChecked = { doorState = !doorState },
+                        label = "Room 04",
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-                    )
-                    DoorCard(
-                        checked = doorOne,
-                        toggleChecked = { doorOne = !doorOne },
-                        label = "Door 1",
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp)
+                            .sizeIn(minWidth = 180.dp)
                     )
                 }
             }
