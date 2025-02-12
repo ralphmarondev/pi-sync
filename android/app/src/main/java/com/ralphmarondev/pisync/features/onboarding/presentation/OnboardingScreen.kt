@@ -92,11 +92,12 @@ fun OnboardingScreen(
 
             Text(
                 text = items[state.currentPage].title,
-                fontSize = 22.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.W500,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
+                minLines = 2
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
