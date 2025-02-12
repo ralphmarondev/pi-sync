@@ -31,7 +31,8 @@ fun AppNavigation(
             OnboardingScreen(
                 onCompleted = {
                     // TODO: Uncomment this when onboarding screen is completed!
-                    // preferences.setFirstLaunch()
+                    preferences.setFirstLaunch()
+                    navController.popBackStack() // we are not going back here
                     navController.navigate(Routes.Auth) {
                         launchSingleTop = true
                     }
@@ -44,6 +45,7 @@ fun AppNavigation(
                 darkTheme = darkTheme,
                 toggleDarkTheme = toggleDarkTheme,
                 navigateToHome = {
+                    navController.popBackStack() // we are not going back here unless on logout
                     navController.navigate(Routes.Home) {
                         launchSingleTop = true
                     }
