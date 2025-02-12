@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">PiSync</string>
+
+    <!--onboarding-->
+    <string name="page1_title">Welcome to Smart Door!</string>
+    <string name="page1_description">Access control made simple and secure.</string>
+
+    <string name="page2_title">Unlock Doors with Ease!</string>
+    <string name="page2_description">Use mobile controls or facial recognition with fingerprint to open doors remotely. No need for keys!</string>
+
+    <string name="page3_title">Smart Features for Your Convenience!</string>
+    <string name="page3_description">Enjoy seamless access and better security. Control all your doors from your phone, anytime, anywhere.</string>
 </resources>
