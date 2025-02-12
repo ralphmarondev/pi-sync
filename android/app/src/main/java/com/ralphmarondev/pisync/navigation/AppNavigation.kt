@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.pisync.core.data.preferences.AppPreferences
 import com.ralphmarondev.pisync.features.auth.presentation.AuthScreen
 import com.ralphmarondev.pisync.features.home.presentation.HomeScreen
+import com.ralphmarondev.pisync.features.onboarding.presentation.OnboardingScreen
 import com.ralphmarondev.pisync.features.setup.presentation.SetupScreen
 
 @Composable
@@ -17,10 +18,27 @@ fun AppNavigation(
     preferences: AppPreferences,
     navController: NavHostController = rememberNavController()
 ) {
+    val startDestination: Any = when (preferences.isFirstLaunch()) {
+        true -> Routes.Onboarding
+        false -> Routes.Auth
+    }
+
     NavHost(
         navController = navController,
-        startDestination = Routes.Auth
+        startDestination = startDestination
     ) {
+        composable<Routes.Onboarding> {
+            OnboardingScreen(
+                onCompleted = {
+                    // TODO: Uncomment this when onboarding screen is completed!
+                    // preferences.setFirstLaunch()
+                    navController.navigate(Routes.Auth) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
         composable<Routes.Auth> {
             AuthScreen(
                 darkTheme = darkTheme,
