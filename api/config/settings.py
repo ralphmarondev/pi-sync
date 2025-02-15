@@ -18,7 +18,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'users',
-    'rooms'
+    'rooms',
+    'history',
 ]
 
 MIDDLEWARE = [
