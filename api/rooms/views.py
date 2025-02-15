@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
 
+from history.models import History
 from rooms.serializers import DoorSerializer
 from .models import Door
 
@@ -112,6 +113,17 @@ class OpenDoorView(APIView):
         if not door.is_open:
             door.is_open = True
             door.save(update_fields=['is_open'])
+
+        # NOTE: log action to history
+        description = request.data.get('description', 'Opened via unknown')
+        username = request.data.get('username', 'Unknown')
+        history_entry = History(
+            room=door,
+            username=username,
+            description=description
+        )
+        history_entry.save()
+
         return Response(
             data={
                 'success': True,
@@ -127,6 +139,17 @@ class CloseDoorView(APIView):
         if door.is_open:
             door.is_open = False
             door.save(update_fields=['is_open'])
+
+        # NOTE: log action to history
+        description = request.data.get('description', 'Closed via unknown')
+        username = request.data.get('username', 'Unknown')
+        history_entry = History(
+            room=door,
+            username=username,
+            description=description
+        )
+        history_entry.save()
+
         return Response(
             data={
                 'success': True,
