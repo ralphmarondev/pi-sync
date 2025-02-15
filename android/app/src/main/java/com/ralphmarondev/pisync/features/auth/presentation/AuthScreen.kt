@@ -193,10 +193,10 @@ fun AuthScreen(
                             val result = viewModel.login()
 
                             scope.launch {
-                                snackbar.showSnackbar(message = result.message)
+                                snackbar.showSnackbar(message = result.message!!)
                             }
 
-                            if (result.success) {
+                            if (result.success == true) {
                                 navigateToHome()
                             }
                         },

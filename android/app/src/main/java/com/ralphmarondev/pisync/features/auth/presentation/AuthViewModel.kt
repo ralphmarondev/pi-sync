@@ -1,12 +1,15 @@
 package com.ralphmarondev.pisync.features.auth.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.MyApp
-import com.ralphmarondev.pisync.core.data.model.Result
+import com.ralphmarondev.pisync.core.domain.Result
+import com.ralphmarondev.pisync.core.model.LoginRequest
 import com.ralphmarondev.pisync.features.auth.data.repository.AuthRepositoryImpl
 import com.ralphmarondev.pisync.features.auth.domain.usecases.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
     private val preferences = MyApp.preferences
@@ -25,7 +28,7 @@ class AuthViewModel : ViewModel() {
     private val _showForgotPasswordDialog = MutableStateFlow(false)
     val showForgotPasswordDialog: StateFlow<Boolean> get() = _showForgotPasswordDialog
 
-    private val _response = MutableStateFlow(Result(success = false, message = ""))
+    private val _response = MutableStateFlow(Result())
 
     init {
         if (preferences.isRememberMeChecked()) {
@@ -70,16 +73,16 @@ class AuthViewModel : ViewModel() {
             preferences.setCurrentUserPassword(_password.value.trim())
         }
 
-//        viewModelScope.launch {
-//            val loginRequest = LoginRequest(_username.value.trim(), _password.value.trim())
-//            _response.value = loginUseCase.login(loginRequest)
-//        }
+        viewModelScope.launch {
+            val loginRequest = LoginRequest(_username.value.trim(), _password.value.trim())
+            _response.value = loginUseCase.login(loginRequest)
+        }
 
-//        return _response.value
+        return _response.value
 
-        return Result(
-            success = true,
-            message = "Login successful."
-        )
+//        return Result(
+//            success = true,
+//            message = "Login successful."
+//        )
     }
 }
