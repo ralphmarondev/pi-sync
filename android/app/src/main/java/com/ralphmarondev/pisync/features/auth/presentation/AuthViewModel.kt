@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class AuthViewModel : ViewModel() {
     private val preferences = MyApp.preferences
-    private val repository = AuthRepositoryImpl()
+    private val repository = AuthRepositoryImpl(preferences)
     private val loginUseCase = LoginUseCase(repository)
 
     private val _username = MutableStateFlow("")
