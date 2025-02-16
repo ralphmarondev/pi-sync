@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.auth.presentation
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ralphmarondev.pisync.features.auth.presentation.components.ForgotPasswordDialog
 import com.ralphmarondev.pisync.features.auth.presentation.components.NormalTextField
 import com.ralphmarondev.pisync.features.auth.presentation.components.PasswordTextField
+import com.ralphmarondev.pisync.features.auth.presentation.components.SetupIpDialog
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,14 +56,14 @@ import kotlinx.coroutines.launch
 fun AuthScreen(
     darkTheme: Boolean,
     toggleDarkTheme: () -> Unit,
-    navigateToHome: () -> Unit,
-    navigateToSetup: () -> Unit
+    navigateToHome: () -> Unit
 ) {
     val viewModel: AuthViewModel = viewModel()
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
     val rememberMe by viewModel.rememberMe.collectAsState()
     val showPasswordDialog by viewModel.showForgotPasswordDialog.collectAsState()
+    val showSetupIpDialog by viewModel.showSetupIpDialog.collectAsState()
 
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
@@ -77,7 +79,7 @@ fun AuthScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = navigateToSetup) {
+                    IconButton(onClick = viewModel::toggleSetupIpDialog) {
                         Icon(
                             imageVector = Icons.Outlined.SettingsInputAntenna,
                             contentDescription = "Settings"
@@ -155,7 +157,21 @@ fun AuthScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         label = "Password",
-                        onDone = navigateToHome
+                        onDone = {
+                            val result = viewModel.login()
+                            Log.d(
+                                "Auth",
+                                "UI: success: `${result.success}`, message: `${result.message}`"
+                            )
+
+                            scope.launch {
+                                snackbar.showSnackbar(message = result.message ?: "Hello!")
+                            }
+
+                            if (result.success == true) {
+                                navigateToHome()
+                            }
+                        }
                     )
 
                     Row(
@@ -191,9 +207,13 @@ fun AuthScreen(
                     Button(
                         onClick = {
                             val result = viewModel.login()
+                            Log.d(
+                                "Auth",
+                                "UI: success: `${result.success}`, message: `${result.message}`"
+                            )
 
                             scope.launch {
-                                snackbar.showSnackbar(message = result.message!!)
+                                snackbar.showSnackbar(message = result.message ?: "Hello!")
                             }
 
                             if (result.success == true) {
@@ -231,6 +251,17 @@ fun AuthScreen(
     if (showPasswordDialog) {
         ForgotPasswordDialog(
             onDismiss = viewModel::toggleForgotPasswordDialog
+        )
+    }
+
+    if (showSetupIpDialog) {
+        SetupIpDialog(
+            onDismiss = {
+                viewModel.toggleSetupIpDialog()
+            },
+            onSave = { ipAddress ->
+                viewModel.saveServerIpAddress(ipAddress)
+            }
         )
     }
 }

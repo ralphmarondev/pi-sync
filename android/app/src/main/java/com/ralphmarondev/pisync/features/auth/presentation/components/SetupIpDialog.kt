@@ -33,7 +33,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 
 @Composable
-fun SettingsDialog(
+fun SetupIpDialog(
     onDismiss: () -> Unit,
     onSave: (String) -> Unit
 ) {

@@ -48,11 +48,6 @@ fun AppNavigation(
                     navController.navigate(Routes.Home) {
                         launchSingleTop = true
                     }
-                },
-                navigateToSetup = {
-                    navController.navigate(Routes.Setup) {
-                        launchSingleTop = true
-                    }
                 }
             )
         }
