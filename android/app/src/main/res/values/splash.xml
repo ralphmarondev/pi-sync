@@ -2,7 +2,7 @@
 <resources>
 
     <style name="App.Theme.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/happy</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="postSplashScreenTheme">@style/Theme.PiSync</item>
     </style>
