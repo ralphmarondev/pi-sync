@@ -8,7 +8,6 @@ import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.pisync.core.data.preferences.AppPreferences
 import com.ralphmarondev.pisync.features.auth.presentation.AuthScreen
 import com.ralphmarondev.pisync.features.onboarding.presentation.OnboardingScreen
-import com.ralphmarondev.pisync.features.setup.presentation.SetupScreen
 
 @Composable
 fun AppNavigation(
@@ -60,13 +59,6 @@ fun AppNavigation(
                 },
                 darkTheme = darkTheme,
                 toggleDarkTheme = toggleDarkTheme
-            )
-        }
-        composable<Routes.Setup> {
-            SetupScreen(
-                navigateBack = {
-                    navController.navigateUp()
-                }
             )
         }
     }

@@ -13,9 +13,6 @@ object Routes {
     @Serializable
     data object Home
 
-    @Serializable
-    data object Setup
-
     object HomeNav {
         @Serializable
         data object Dashboard
