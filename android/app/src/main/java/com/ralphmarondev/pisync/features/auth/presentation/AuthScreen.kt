@@ -176,14 +176,19 @@ fun AuthScreen(
 
                     PasswordTextField(
                         value = password,
-                        onValueChanged = viewModel::onPasswordChange,
+                        onValueChange = viewModel::onPasswordChange,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         label = "Password",
-                        onDone = {
-                            focusManager.clearFocus()
-                        }
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.moveFocus(FocusDirection.Next)
+                            }
+                        )
                     )
 
                     Row(
