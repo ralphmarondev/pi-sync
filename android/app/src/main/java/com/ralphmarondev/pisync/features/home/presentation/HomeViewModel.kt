@@ -28,6 +28,7 @@ class HomeViewModel : ViewModel() {
     private val _currentUser = MutableStateFlow("")
     val username: StateFlow<String> get() = _currentUser
 
+    // TODO: get the state from api
     private val _doorState = MutableStateFlow(false)
     val doorState: StateFlow<Boolean> get() = _doorState
 
