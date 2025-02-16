@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,13 +37,11 @@ fun NormalTextField(
         label = {
             Text(
                 text = label,
-                fontFamily = FontFamily.Monospace,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         },
         textStyle = TextStyle(
-            fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.W500,
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.secondary

@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -77,7 +76,6 @@ fun SetupServerIpDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "Setup Server",
-                    fontFamily = FontFamily.Monospace,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.secondary
                 )
@@ -87,14 +85,12 @@ fun SetupServerIpDialog(
                     value = serverIp,
                     onValueChange = { serverIp = it },
                     textStyle = TextStyle(
-                        fontFamily = FontFamily.Monospace,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W500
                     ),
                     placeholder = {
                         Text(
                             text = "192.68.xx.xx",
-                            fontFamily = FontFamily.Monospace,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -102,7 +98,6 @@ fun SetupServerIpDialog(
                     label = {
                         Text(
                             text = "IP Address",
-                            fontFamily = FontFamily.Monospace,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -138,7 +133,6 @@ fun SetupServerIpDialog(
                     ) {
                         Text(
                             text = " SAVE ",
-                            fontFamily = FontFamily.Monospace,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W500
                         )
@@ -149,7 +143,6 @@ fun SetupServerIpDialog(
                     ) {
                         Text(
                             text = "CANCEL",
-                            fontFamily = FontFamily.Monospace,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W500
                         )

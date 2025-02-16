@@ -38,7 +38,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -94,8 +93,7 @@ fun AuthScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Authentication",
-                        fontFamily = FontFamily.Monospace
+                        text = "Authentication"
                     )
                 },
                 actions = {
@@ -139,7 +137,6 @@ fun AuthScreen(
                 ) {
                     Text(
                         text = "Welcome back!",
-                        fontFamily = FontFamily.Monospace,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.W500,
                         maxLines = 1,
@@ -149,7 +146,6 @@ fun AuthScreen(
                     )
                     Text(
                         text = "Please enter your credentials.",
-                        fontFamily = FontFamily.Monospace,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.W400,
                         maxLines = 2,
@@ -199,7 +195,6 @@ fun AuthScreen(
                         )
                         Text(
                             text = "Remember me",
-                            fontFamily = FontFamily.Monospace,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.W500,
                             color = when (rememberMe) {
@@ -223,7 +218,6 @@ fun AuthScreen(
                         Text(
                             text = "LOGIN",
                             textAlign = TextAlign.Center,
-                            fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.W500,
                             fontSize = 16.sp
                         )
@@ -235,7 +229,6 @@ fun AuthScreen(
                     ) {
                         Text(
                             text = "Forgot Password?",
-                            fontFamily = FontFamily.Monospace,
                             color = MaterialTheme.colorScheme.tertiary
                         )
                     }

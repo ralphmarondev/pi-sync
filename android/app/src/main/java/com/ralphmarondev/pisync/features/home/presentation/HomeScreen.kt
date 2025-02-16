@@ -26,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -50,7 +49,6 @@ fun HomeScreen(
                 title = {
                     Text(
                         text = "Home",
-                        fontFamily = FontFamily.Monospace
                     )
                 },
                 actions = {
@@ -88,7 +86,6 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Registered doors",
-                    fontFamily = FontFamily.Monospace,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.W500,

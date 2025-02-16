@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -50,7 +49,6 @@ fun GreetingsCard(modifier: Modifier = Modifier) {
             Column {
                 Text(
                     text = "Ralph Maron Eda",
-                    fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
                     maxLines = 1,
@@ -59,7 +57,6 @@ fun GreetingsCard(modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = "MEMBER",
-                    fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.W400,
                     fontSize = 16.sp,
                     maxLines = 1,
