@@ -115,7 +115,16 @@ fun HomeNavigation(
             }
             composable<Routes.HomeNav.Settings> {
                 SettingScreen(
-                    logout = navigateToAuth
+                    logout = {
+                        navController.navigate(Routes.HomeNav.Dashboard) {
+                            // clears the back stack ^^ bye:)
+                            popUpTo(Routes.HomeNav.Dashboard) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
+                        navigateToAuth()
+                    }
                 )
             }
         }
