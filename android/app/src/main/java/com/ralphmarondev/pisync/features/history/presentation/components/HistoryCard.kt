@@ -12,6 +12,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ralphmarondev.pisync.features.history.domain.model.DoorLog
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun HistoryCard(
@@ -39,11 +42,18 @@ fun HistoryCard(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = doorLog.timestamp,
+                text = formatTimeStamp(doorLog.timestamp),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W300,
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
     }
+}
+
+private fun formatTimeStamp(timeStamp: String): String {
+    val formatter = DateTimeFormatter.ofPattern("hh:mm a • MMMM dd, yyyy")
+    val instant = Instant.parse(timeStamp)
+    val dateTime = instant.atZone(ZoneId.systemDefault()).toLocalDateTime()
+    return dateTime.format(formatter)
 }
