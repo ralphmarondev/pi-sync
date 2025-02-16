@@ -44,9 +44,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ralphmarondev.pisync.core.presentation.components.NormalTextField
+import com.ralphmarondev.pisync.core.presentation.components.PasswordTextField
 import com.ralphmarondev.pisync.features.auth.presentation.components.ForgotPasswordDialog
-import com.ralphmarondev.pisync.features.auth.presentation.components.NormalTextField
-import com.ralphmarondev.pisync.features.auth.presentation.components.PasswordTextField
 import com.ralphmarondev.pisync.features.auth.presentation.components.SetupServerIpDialog
 import kotlinx.coroutines.launch
 
