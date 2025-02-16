@@ -12,6 +12,9 @@ class AppPreferences(context: Context) {
         private const val CURRENT_USER_USERNAME = "current_user_username"
         private const val CURRENT_USER_PASSWORD = "current_user_password"
         private const val IP_ADDRESS = "ip_address"
+
+        // This is used to get the information about the currently logged in user :>
+        private const val ACTIVE_USER_USERNAME = "active_user_username"
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
@@ -64,5 +67,13 @@ class AppPreferences(context: Context) {
 
     fun getCurrentUserPassword(): String {
         return sharedPreferences.getString(CURRENT_USER_PASSWORD, "no_user")!!
+    }
+
+    fun setActiveUserUsername(value: String) {
+        sharedPreferences.edit().putString(ACTIVE_USER_USERNAME, value).apply()
+    }
+
+    fun getActiveUserUsername(): String? {
+        return sharedPreferences.getString(ACTIVE_USER_USERNAME, null)
     }
 }

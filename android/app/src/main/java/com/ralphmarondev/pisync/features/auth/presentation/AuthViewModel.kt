@@ -92,6 +92,9 @@ class AuthViewModel : ViewModel() {
             )
             _response.value = loginUseCase.login(user)
         }
+
+        Log.d("Auth", "Setting active user: ${_username.value.trim()}")
+        preferences.setActiveUserUsername(_username.value.trim())
     }
 
     fun saveServerIpAddress(ipAddress: String) {

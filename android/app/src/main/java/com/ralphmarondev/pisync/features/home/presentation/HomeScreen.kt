@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.home.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,17 +21,20 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ralphmarondev.pisync.MyApp
 import com.ralphmarondev.pisync.features.home.presentation.components.DoorCard
 import com.ralphmarondev.pisync.features.home.presentation.components.GreetingsCard
 
@@ -42,13 +46,25 @@ fun HomeScreen(
 ) {
     // The state must came from our api
     var doorState by remember { mutableStateOf(false) }
+    val preferences = MyApp.preferences
+
+    val context = LocalContext.current
+    val currentUser = preferences.getActiveUserUsername()
+
+    LaunchedEffect(currentUser) {
+        if (currentUser.isNullOrBlank()) {
+            Toast.makeText(context, "Hello $currentUser", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Invalid username!", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = "Home",
+                        text = "Home $currentUser",
                     )
                 },
                 actions = {
