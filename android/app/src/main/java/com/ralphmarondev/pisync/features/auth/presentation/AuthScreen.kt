@@ -13,8 +13,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Password
 import androidx.compose.material.icons.outlined.SettingsInputAntenna
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -164,6 +166,7 @@ fun AuthScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         label = "Username",
+                        leadingIcon = Icons.Outlined.AccountBox,
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Next
                         ),
@@ -181,12 +184,13 @@ fun AuthScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         label = "Password",
+                        leadingIcon = Icons.Outlined.Password,
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Done
                         ),
                         keyboardActions = KeyboardActions(
                             onDone = {
-                                focusManager.moveFocus(FocusDirection.Next)
+                                focusManager.clearFocus()
                             }
                         )
                     )
