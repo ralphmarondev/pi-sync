@@ -3,6 +3,12 @@ package com.ralphmarondev.pisync.features.home.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.MyApp
+import com.ralphmarondev.pisync.core.data.network.RetrofitInstance
+import com.ralphmarondev.pisync.features.home.data.repository.DoorRepositoryImpl
+import com.ralphmarondev.pisync.features.home.domain.model.DoorActionRequest
+import com.ralphmarondev.pisync.features.home.domain.model.DoorActionResponse
+import com.ralphmarondev.pisync.features.home.domain.usecases.CloseDoorUseCase
+import com.ralphmarondev.pisync.features.home.domain.usecases.OpenDoorUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,6 +20,10 @@ import kotlinx.coroutines.launch
  */
 class HomeViewModel : ViewModel() {
     private val preferences = MyApp.preferences
+    private val api = RetrofitInstance.api
+    private val repository = DoorRepositoryImpl(api)
+    private val openDoorUseCase = OpenDoorUseCase(repository)
+    private val closeDoorUseCase = CloseDoorUseCase(repository)
 
     private val _currentUser = MutableStateFlow("")
     val username: StateFlow<String> get() = _currentUser
@@ -27,7 +37,30 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun toggleDoorState() {
-        _doorState.value = !_doorState.value
+    fun toggleDoorState(
+        onResult: (DoorActionResponse) -> Unit
+    ) {
+        val description = if (_doorState.value) {
+            "Opened via mobile app."
+        } else {
+            "Closed via mobile app."
+        }
+
+        val request = DoorActionRequest(
+            doorId = 1,
+            description = description,
+            username = _currentUser.value
+        )
+
+        viewModelScope.launch {
+            val response = if (_doorState.value) {
+                closeDoorUseCase(request)
+            } else {
+                openDoorUseCase(request)
+            }
+
+            onResult(response)
+            _doorState.value = !_doorState.value
+        }
     }
 }

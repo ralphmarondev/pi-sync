@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.home.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,6 +43,7 @@ fun HomeScreen(
 ) {
     val viewModel: HomeViewModel = viewModel()
     val doorState by viewModel.doorState.collectAsState()
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -103,7 +106,20 @@ fun HomeScreen(
                 ) {
                     DoorCard(
                         checked = doorState,
-                        toggleChecked = viewModel::toggleDoorState,
+                        toggleChecked = {
+                            viewModel.toggleDoorState { response ->
+                                if (response.success) {
+                                    Toast.makeText(context, response.message, Toast.LENGTH_SHORT)
+                                        .show()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Failed to toggle door.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        },
                         label = "Room 04",
                         modifier = Modifier
                             .sizeIn(minWidth = 180.dp)
