@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.MyApp
 import com.ralphmarondev.pisync.core.domain.Result
-import com.ralphmarondev.pisync.core.model.LoginRequest
 import com.ralphmarondev.pisync.features.auth.data.repository.AuthRepositoryImpl
+import com.ralphmarondev.pisync.features.auth.domain.model.User
 import com.ralphmarondev.pisync.features.auth.domain.usecases.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -86,8 +86,11 @@ class AuthViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            val loginRequest = LoginRequest(_username.value.trim(), _password.value.trim())
-            _response.value = loginUseCase.login(loginRequest)
+            val user = User(
+                username = _username.value.trim(),
+                password = _password.value.trim()
+            )
+            _response.value = loginUseCase.login(user)
         }
     }
 
