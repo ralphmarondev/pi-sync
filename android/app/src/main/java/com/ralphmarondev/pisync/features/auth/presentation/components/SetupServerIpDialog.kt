@@ -41,7 +41,7 @@ import com.ralphmarondev.pisync.MyApp
 import com.ralphmarondev.pisync.R
 
 @Composable
-fun SetupIpDialog(
+fun SetupServerIpDialog(
     onDismiss: () -> Unit,
     onSave: (String) -> Unit
 ) {

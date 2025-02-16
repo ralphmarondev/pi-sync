@@ -48,7 +48,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ralphmarondev.pisync.features.auth.presentation.components.ForgotPasswordDialog
 import com.ralphmarondev.pisync.features.auth.presentation.components.NormalTextField
 import com.ralphmarondev.pisync.features.auth.presentation.components.PasswordTextField
-import com.ralphmarondev.pisync.features.auth.presentation.components.SetupIpDialog
+import com.ralphmarondev.pisync.features.auth.presentation.components.SetupServerIpDialog
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -251,7 +251,7 @@ fun AuthScreen(
     }
 
     if (showSetupIpDialog) {
-        SetupIpDialog(
+        SetupServerIpDialog(
             onDismiss = {
                 viewModel.toggleSetupIpDialog()
             },
