@@ -123,8 +123,11 @@ fun HomeNavigation(
                             }
                             launchSingleTop = true
                         }
+                        selectedScreen = 0
                         navigateToAuth()
-                    }
+                    },
+                    darkTheme = darkTheme,
+                    toggleDarkTheme = toggleDarkTheme
                 )
             }
         }
