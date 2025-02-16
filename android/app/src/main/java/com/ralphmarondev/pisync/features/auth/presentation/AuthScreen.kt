@@ -1,6 +1,5 @@
 package com.ralphmarondev.pisync.features.auth.presentation
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,6 +29,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -64,10 +64,30 @@ fun AuthScreen(
     val rememberMe by viewModel.rememberMe.collectAsState()
     val showPasswordDialog by viewModel.showForgotPasswordDialog.collectAsState()
     val showSetupIpDialog by viewModel.showSetupIpDialog.collectAsState()
+    val response by viewModel.response.collectAsState()
 
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
+
+    LaunchedEffect(response) {
+        response?.let { result ->
+            if (result.success == true) {
+                scope.launch {
+                    snackbar.showSnackbar(
+                        message = "Login successful!"
+                    )
+                }
+                navigateToHome()
+            } else {
+                scope.launch {
+                    snackbar.showSnackbar(
+                        message = result.message ?: "Login failed!"
+                    )
+                }
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -158,19 +178,7 @@ fun AuthScreen(
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         label = "Password",
                         onDone = {
-                            val result = viewModel.login()
-                            Log.d(
-                                "Auth",
-                                "UI: success: `${result.success}`, message: `${result.message}`"
-                            )
-
-                            scope.launch {
-                                snackbar.showSnackbar(message = result.message ?: "Hello!")
-                            }
-
-                            if (result.success == true) {
-                                navigateToHome()
-                            }
+                            focusManager.clearFocus()
                         }
                     )
 
@@ -206,19 +214,7 @@ fun AuthScreen(
 
                     Button(
                         onClick = {
-                            val result = viewModel.login()
-                            Log.d(
-                                "Auth",
-                                "UI: success: `${result.success}`, message: `${result.message}`"
-                            )
-
-                            scope.launch {
-                                snackbar.showSnackbar(message = result.message ?: "Hello!")
-                            }
-
-                            if (result.success == true) {
-                                navigateToHome()
-                            }
+                            viewModel.login()
                         },
                         modifier = Modifier
                             .fillMaxWidth()

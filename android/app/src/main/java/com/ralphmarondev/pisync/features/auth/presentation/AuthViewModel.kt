@@ -32,7 +32,8 @@ class AuthViewModel : ViewModel() {
     private val _showSetupIpDialog = MutableStateFlow(false)
     val showSetupIpDialog: StateFlow<Boolean> get() = _showSetupIpDialog
 
-    private val _response = MutableStateFlow(Result())
+    private val _response = MutableStateFlow<Result?>(null)
+    val response: StateFlow<Result?> get() = _response
 
     init {
         if (preferences.isRememberMeChecked()) {
@@ -71,9 +72,12 @@ class AuthViewModel : ViewModel() {
         _showSetupIpDialog.value = !_showSetupIpDialog.value
     }
 
-    fun login(): Result {
+    fun login() {
         if (_username.value.trim().isBlank() || _password.value.trim().isBlank()) {
-            return Result(success = false, message = "Username or password cannot be empty!")
+            _response.value = Result(
+                success = false,
+                message = "Username or password cannot be empty!"
+            )
         }
 
         if (_rememberMe.value) {
@@ -85,8 +89,6 @@ class AuthViewModel : ViewModel() {
             val loginRequest = LoginRequest(_username.value.trim(), _password.value.trim())
             _response.value = loginUseCase.login(loginRequest)
         }
-
-        return _response.value
     }
 
     fun saveServerIpAddress(ipAddress: String) {
