@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.auth.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.MyApp
@@ -27,6 +28,9 @@ class AuthViewModel : ViewModel() {
 
     private val _showForgotPasswordDialog = MutableStateFlow(false)
     val showForgotPasswordDialog: StateFlow<Boolean> get() = _showForgotPasswordDialog
+
+    private val _showSetupIpDialog = MutableStateFlow(false)
+    val showSetupIpDialog: StateFlow<Boolean> get() = _showSetupIpDialog
 
     private val _response = MutableStateFlow(Result())
 
@@ -63,6 +67,10 @@ class AuthViewModel : ViewModel() {
         _showForgotPasswordDialog.value = !_showForgotPasswordDialog.value
     }
 
+    fun toggleSetupIpDialog() {
+        _showSetupIpDialog.value = !_showSetupIpDialog.value
+    }
+
     fun login(): Result {
         if (_username.value.trim().isBlank() || _password.value.trim().isBlank()) {
             return Result(success = false, message = "Username or password cannot be empty!")
@@ -79,10 +87,16 @@ class AuthViewModel : ViewModel() {
         }
 
         return _response.value
+    }
 
-//        return Result(
-//            success = true,
-//            message = "Login successful."
-//        )
+    fun saveServerIpAddress(ipAddress: String) {
+        viewModelScope.launch {
+            try {
+                preferences.saveIpAddress(ipAddress)
+                Log.d("Auth", "IP address saved. IP: `$ipAddress`")
+            } catch (e: Exception) {
+                Log.e("Auth", "Error saving IP address: ${e.message}")
+            }
+        }
     }
 }
