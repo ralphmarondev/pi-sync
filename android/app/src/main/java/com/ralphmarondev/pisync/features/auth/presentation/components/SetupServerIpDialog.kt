@@ -1,6 +1,5 @@
 package com.ralphmarondev.pisync.features.auth.presentation.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,14 +10,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.NetworkWifi
 import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,9 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -38,6 +32,7 @@ import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.pisync.MyApp
 import com.ralphmarondev.pisync.R
+import com.ralphmarondev.pisync.core.presentation.components.NormalTextField
 
 @Composable
 fun SetupServerIpDialog(
@@ -81,40 +76,14 @@ fun SetupServerIpDialog(
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
-                OutlinedTextField(
+                NormalTextField(
                     value = serverIp,
                     onValueChange = { serverIp = it },
-                    textStyle = TextStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W500
-                    ),
-                    placeholder = {
-                        Text(
-                            text = "192.68.xx.xx",
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = "IP Address",
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    },
-                    singleLine = true,
-                    trailingIcon = {
-                        AnimatedVisibility(serverIp.isNotEmpty()) {
-                            IconButton(onClick = { serverIp = "" }) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Clear,
-                                    contentDescription = "Clear"
-                                )
-                            }
-                        }
-                    },
+                    placeholder = "192.68.0.0",
+                    label = "Ip Address",
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                    leadingIcon = Icons.Outlined.NetworkWifi
                 )
 
                 Row(
