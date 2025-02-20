@@ -26,7 +26,14 @@ import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.pisync.R
 
 @Composable
-fun GreetingsCard(modifier: Modifier = Modifier) {
+fun GreetingsCard(
+    modifier: Modifier = Modifier,
+    fullName: String,
+    role: String,
+    profilePictureUrl: String? = null
+) {
+    val image = profilePictureUrl ?: R.drawable.app_icon
+
     ElevatedCard(
         modifier = modifier
     ) {
@@ -38,7 +45,7 @@ fun GreetingsCard(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Image(
-                painter = rememberAsyncImagePainter(R.drawable.cute_me),
+                painter = rememberAsyncImagePainter(image),
                 contentDescription = "Image",
                 modifier = Modifier
                     .size(100.dp)
@@ -48,7 +55,7 @@ fun GreetingsCard(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.width(8.dp))
             Column {
                 Text(
-                    text = "Ralph Maron Eda",
+                    text = fullName,
                     fontWeight = FontWeight.W600,
                     fontSize = 20.sp,
                     maxLines = 1,
@@ -56,7 +63,7 @@ fun GreetingsCard(modifier: Modifier = Modifier) {
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
-                    text = "SUPERUSER",
+                    text = role,
                     fontWeight = FontWeight.W400,
                     fontSize = 16.sp,
                     maxLines = 1,
