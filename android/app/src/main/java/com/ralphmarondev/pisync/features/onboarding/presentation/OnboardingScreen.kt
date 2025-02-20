@@ -74,6 +74,8 @@ fun OnboardingScreen(
             ) {
                 Box(
                     modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.tertiaryContainer)
                         .fillMaxWidth()
                         .height(340.dp)
                         .padding(16.dp),
@@ -83,7 +85,7 @@ fun OnboardingScreen(
                         painter = rememberAsyncImagePainter(items[state.currentPage].image),
                         contentDescription = items[state.currentPage].title,
                         modifier = Modifier
-                            .height(200.dp)
+                            .height(300.dp)
                             .clip(RoundedCornerShape(8.dp)),
                         contentScale = ContentScale.Crop
                     )
