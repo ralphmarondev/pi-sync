@@ -9,6 +9,7 @@ import com.ralphmarondev.pisync.core.data.preferences.AppPreferences
 import com.ralphmarondev.pisync.features.auth.presentation.AuthScreen
 import com.ralphmarondev.pisync.features.onboarding.presentation.OnboardingScreen
 import com.ralphmarondev.pisync.features.settings.presentation.about.AboutScreen
+import com.ralphmarondev.pisync.features.settings.presentation.developer.DeveloperScreen
 
 @Composable
 fun AppNavigation(
@@ -79,7 +80,13 @@ fun AppNavigation(
             )
         }
 
-        composable<Routes.Developer> { }
+        composable<Routes.Developer> {
+            DeveloperScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
 
         composable<Routes.Licenses> { }
     }
