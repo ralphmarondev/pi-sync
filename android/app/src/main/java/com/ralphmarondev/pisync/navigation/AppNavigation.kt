@@ -29,10 +29,11 @@ fun AppNavigation(
         composable<Routes.Onboarding> {
             OnboardingScreen(
                 onCompleted = {
-                    // TODO: Uncomment this when onboarding screen is completed!
                     preferences.setFirstLaunch()
-                    navController.popBackStack() // we are not going back here
                     navController.navigate(Routes.Auth) {
+                        popUpTo<Routes.Onboarding> {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 }
@@ -44,17 +45,23 @@ fun AppNavigation(
                 darkTheme = darkTheme,
                 toggleDarkTheme = toggleDarkTheme,
                 navigateToHome = {
-                    navController.popBackStack() // we are not going back here unless on logout
                     navController.navigate(Routes.Home) {
+                        popUpTo<Routes.Auth> {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 }
             )
         }
+
         composable<Routes.Home> {
             HomeNavigation(
                 navigateToAuth = {
                     navController.navigate(Routes.Auth) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 },
