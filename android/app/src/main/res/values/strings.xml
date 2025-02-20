@@ -10,4 +10,8 @@
 
     <string name="page3_title">Smart Features for Your Convenience!</string>
     <string name="page3_description">Enjoy seamless access and better security. Control all your doors from your phone, anytime, anywhere.</string>
+
+    <!--about-->
+    <string name="project_overview">Thesis project designed to revolutionize access control in condominiums by integrating modern technologies with centralized management. The system features a Raspberry Pi 5 as the core, syncing mobile, web, and desktop platforms for seamless door management and access tracking.</string>
+
 </resources>
