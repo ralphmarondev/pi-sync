@@ -1,0 +1,16 @@
+
+# missing endpoints
+[auth]
+=> display password hint on auth using username
+/forgot-password/<id>
+
+[home]
+=> to display name, image, role and to get registered doors
+/get-user-details
+
+
+
+[for-syncing]
+/get-door-status
+
+
