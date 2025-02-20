@@ -10,6 +10,7 @@ import com.ralphmarondev.pisync.features.auth.presentation.AuthScreen
 import com.ralphmarondev.pisync.features.onboarding.presentation.OnboardingScreen
 import com.ralphmarondev.pisync.features.settings.presentation.about.AboutScreen
 import com.ralphmarondev.pisync.features.settings.presentation.developer.DeveloperScreen
+import com.ralphmarondev.pisync.features.settings.presentation.licenses.LicensesScreen
 
 @Composable
 fun AppNavigation(
@@ -88,6 +89,12 @@ fun AppNavigation(
             )
         }
 
-        composable<Routes.Licenses> { }
+        composable<Routes.Licenses> {
+            LicensesScreen(
+                navigateBack = {
+                    navController.navigateUp()
+                }
+            )
+        }
     }
 }
