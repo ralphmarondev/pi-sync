@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.history.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +24,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ralphmarondev.pisync.features.history.presentation.components.HistoryCard
 
@@ -69,6 +73,18 @@ fun HistoryScreen() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             item { Spacer(modifier = Modifier.height(8.dp)) }
+            item {
+                AnimatedVisibility(history.isEmpty()) {
+                    Text(
+                        text = "History is empty!",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.W500,
+                        color = MaterialTheme.colorScheme.secondary,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
             items(history) { item ->
                 HistoryCard(
                     doorLog = item,
