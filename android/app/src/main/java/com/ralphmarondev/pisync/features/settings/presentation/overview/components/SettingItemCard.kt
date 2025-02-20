@@ -1,4 +1,4 @@
-package com.ralphmarondev.pisync.features.settings.presentation.components
+package com.ralphmarondev.pisync.features.settings.presentation.overview.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

@@ -25,7 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.pisync.features.history.presentation.HistoryScreen
 import com.ralphmarondev.pisync.features.home.presentation.HomeScreen
-import com.ralphmarondev.pisync.features.settings.presentation.SettingScreen
+import com.ralphmarondev.pisync.features.settings.presentation.overview.SettingScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -33,6 +33,7 @@ fun HomeNavigation(
     navigateToAuth: () -> Unit,
     toggleDarkTheme: () -> Unit,
     darkTheme: Boolean,
+    appNavigation: NavHostController,
     navController: NavHostController = rememberNavController()
 ) {
     var selectedScreen by rememberSaveable {
@@ -127,7 +128,22 @@ fun HomeNavigation(
                         navigateToAuth()
                     },
                     darkTheme = darkTheme,
-                    toggleDarkTheme = toggleDarkTheme
+                    toggleDarkTheme = toggleDarkTheme,
+                    navigateToAbout = {
+                        appNavigation.navigate(Routes.About) {
+                            launchSingleTop = true
+                        }
+                    },
+                    navigateToDeveloper = {
+                        appNavigation.navigate(Routes.Developer) {
+                            launchSingleTop = true
+                        }
+                    },
+                    navigateToLicenses = {
+                        appNavigation.navigate(Routes.Licenses) {
+                            launchSingleTop = true
+                        }
+                    }
                 )
             }
         }

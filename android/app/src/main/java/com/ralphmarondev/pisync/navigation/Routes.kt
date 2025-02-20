@@ -23,4 +23,13 @@ object Routes {
         @Serializable
         data object Settings
     }
+
+    @Serializable
+    data object About
+
+    @Serializable
+    data object Developer
+
+    @Serializable
+    data object Licenses
 }

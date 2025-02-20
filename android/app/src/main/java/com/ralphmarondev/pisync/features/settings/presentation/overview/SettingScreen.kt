@@ -1,4 +1,4 @@
-package com.ralphmarondev.pisync.features.settings.presentation
+package com.ralphmarondev.pisync.features.settings.presentation.overview
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -34,15 +34,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.pisync.R
-import com.ralphmarondev.pisync.features.settings.presentation.components.SettingItemCard
-import com.ralphmarondev.pisync.features.settings.presentation.components.ThemeToggleCard
+import com.ralphmarondev.pisync.features.settings.presentation.overview.components.SettingItemCard
+import com.ralphmarondev.pisync.features.settings.presentation.overview.components.ThemeToggleCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
     darkTheme: Boolean,
     toggleDarkTheme: () -> Unit,
-    logout: () -> Unit
+    logout: () -> Unit,
+    navigateToAbout: () -> Unit,
+    navigateToDeveloper: () -> Unit,
+    navigateToLicenses: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -103,7 +106,7 @@ fun SettingScreen(
                 )
                 SettingItemCard(
                     modifier = Modifier
-                        .clickable {}
+                        .clickable { navigateToAbout() }
                         .fillMaxWidth()
                         .padding(16.dp),
                     label = "About",
@@ -111,7 +114,7 @@ fun SettingScreen(
                 )
                 SettingItemCard(
                     modifier = Modifier
-                        .clickable { }
+                        .clickable { navigateToDeveloper() }
                         .fillMaxWidth()
                         .padding(16.dp),
                     label = "Developer",
@@ -119,7 +122,7 @@ fun SettingScreen(
                 )
                 SettingItemCard(
                     modifier = Modifier
-                        .clickable { }
+                        .clickable { navigateToLicenses() }
                         .fillMaxWidth()
                         .padding(16.dp),
                     label = "Licenses",
