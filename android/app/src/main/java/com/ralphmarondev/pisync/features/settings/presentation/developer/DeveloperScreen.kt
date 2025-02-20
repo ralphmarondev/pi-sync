@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.settings.presentation.developer
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -56,8 +57,8 @@ fun DeveloperScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp),
+                .padding(innerPadding),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             item { Spacer(modifier = Modifier.height(16.dp)) }
             item {

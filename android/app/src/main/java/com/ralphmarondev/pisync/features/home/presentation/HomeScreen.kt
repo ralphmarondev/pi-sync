@@ -76,6 +76,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            item { Spacer(modifier = Modifier.height(8.dp)) }
             item {
                 GreetingsCard(
                     modifier = Modifier
