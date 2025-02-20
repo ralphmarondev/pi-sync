@@ -65,15 +65,15 @@ fun AppNavigation(
         }
 
         composable<Routes.About> {
-            AboutScreen (
+            AboutScreen(
                 navigateBack = {
                     navController.navigateUp()
                 }
             )
         }
 
-        composable<Routes.Developer> {  }
+        composable<Routes.Developer> { }
 
-        composable<Routes.Licenses> {  }
+        composable<Routes.Licenses> { }
     }
 }

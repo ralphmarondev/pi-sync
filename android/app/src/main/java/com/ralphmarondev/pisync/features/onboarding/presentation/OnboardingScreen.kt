@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.ralphmarondev.pisync.R
+import kotlinx.coroutines.delay
 
 @Composable
 fun OnboardingScreen(
@@ -56,8 +59,14 @@ fun OnboardingScreen(
     )
     val state = rememberPagerState { items.size }
 
-    // TODO: Add a launch effect to automatically scroll to the next page,
-    // TODO: and when it reached the last page, it will go back to the first page.
+    LaunchedEffect(state.currentPage) {
+        while (true) {
+            delay(3000)
+            val nextPage = (state.currentPage + 1) % items.size
+//            state.animateScrollToPage(nextPage)
+            state.scrollToPage(nextPage)
+        }
+    }
 
     Scaffold { innerPadding ->
         Column(
@@ -85,7 +94,8 @@ fun OnboardingScreen(
                         painter = rememberAsyncImagePainter(items[state.currentPage].image),
                         contentDescription = items[state.currentPage].title,
                         modifier = Modifier
-                            .height(300.dp)
+                            .fillMaxHeight()
+                            .fillMaxWidth()
                             .clip(RoundedCornerShape(8.dp)),
                         contentScale = ContentScale.Crop
                     )
