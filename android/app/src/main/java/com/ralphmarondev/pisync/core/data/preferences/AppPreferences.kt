@@ -53,19 +53,19 @@ class AppPreferences(context: Context) {
         return sharedPreferences.getBoolean(REMEMBER_ME, false)
     }
 
-    fun setCurrentUserUsername(value: String) {
+    fun setUsernameToRemember(value: String) {
         sharedPreferences.edit().putString(CURRENT_USER_USERNAME, value).apply()
     }
 
-    fun getCurrentUserUsername(): String {
+    fun getRememberedUsername(): String {
         return sharedPreferences.getString(CURRENT_USER_USERNAME, "no_user")!!
     }
 
-    fun setCurrentUserPassword(value: String) {
+    fun setPasswordToRemember(value: String) {
         sharedPreferences.edit().putString(CURRENT_USER_PASSWORD, value).apply()
     }
 
-    fun getCurrentUserPassword(): String {
+    fun getRememberedPassword(): String {
         return sharedPreferences.getString(CURRENT_USER_PASSWORD, "no_user")!!
     }
 

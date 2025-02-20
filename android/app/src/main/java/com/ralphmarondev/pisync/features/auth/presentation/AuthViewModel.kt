@@ -37,8 +37,8 @@ class AuthViewModel : ViewModel() {
 
     init {
         if (preferences.isRememberMeChecked()) {
-            val savedUsername = preferences.getCurrentUserUsername()
-            val savedPassword = preferences.getCurrentUserPassword()
+            val savedUsername = preferences.getRememberedUsername()
+            val savedPassword = preferences.getRememberedPassword()
 
             _username.value = when (savedUsername != "no_user") {
                 true -> savedUsername
@@ -81,8 +81,8 @@ class AuthViewModel : ViewModel() {
         }
 
         if (_rememberMe.value) {
-            preferences.setCurrentUserUsername(_username.value.trim())
-            preferences.setCurrentUserPassword(_password.value.trim())
+            preferences.setUsernameToRemember(_username.value.trim())
+            preferences.setPasswordToRemember(_password.value.trim())
         }
 
         viewModelScope.launch {
@@ -91,6 +91,10 @@ class AuthViewModel : ViewModel() {
                 password = _password.value.trim()
             )
             _response.value = loginUseCase.login(user)
+
+            if (_response.value!!.success == true) {
+                preferences.setActiveUserUsername(_username.value.trim())
+            }
         }
 
         Log.d("Auth", "Setting active user: ${_username.value.trim()}")

@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.home.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.MyApp
@@ -34,7 +35,13 @@ class HomeViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
+            Log.d("Home", "Getting current active user's username...")
             _currentUser.value = preferences.getActiveUserUsername() ?: "Invalid User!"
+            Log.d("Home", "Current User: `${_currentUser.value}`")
+
+            Log.d("Home", "Getting user details...")
+            Log.d("Home", "Getting registered doors to user: `${_currentUser.value}`...")
+            Log.d("Home", "Getting state of registered doors...")
         }
     }
 
