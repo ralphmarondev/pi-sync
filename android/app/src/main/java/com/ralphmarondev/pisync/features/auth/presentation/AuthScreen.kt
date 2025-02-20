@@ -267,6 +267,12 @@ fun AuthScreen(
             },
             onSave = { ipAddress ->
                 viewModel.saveServerIpAddress(ipAddress)
+                viewModel.toggleSetupIpDialog()
+                scope.launch {
+                    snackbar.showSnackbar(
+                        message = "Server setup successfully!"
+                    )
+                }
             }
         )
     }
