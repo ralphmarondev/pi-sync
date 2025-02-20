@@ -80,14 +80,14 @@ fun DeveloperScreen(
                     fontWeight = FontWeight.W300,
                     color = MaterialTheme.colorScheme.tertiary
                 )
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-
-                Text(
-                    text = "Contributors:",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.W500,
-                    color = MaterialTheme.colorScheme.primary
-                )
+//                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+//
+//                Text(
+//                    text = "Contributors:",
+//                    fontSize = 18.sp,
+//                    fontWeight = FontWeight.W500,
+//                    color = MaterialTheme.colorScheme.primary
+//                )
                 Text(
                     text = "Jack Cabigayan",
                     fontSize = 16.sp,
@@ -147,7 +147,6 @@ fun DeveloperScreen(
                     fontWeight = FontWeight.W300,
                     color = MaterialTheme.colorScheme.tertiary
                 )
-
             }
             item { Spacer(modifier = Modifier.height(100.dp)) }
         }
