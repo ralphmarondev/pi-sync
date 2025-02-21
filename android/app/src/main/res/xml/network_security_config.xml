@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.68.124</domain>
-        <domain includeSubdomains="true">10.0.2.2</domain>
+        <!--NOTE: this allow all private IP addresses in the local network-->
+        <domain includeSubdomains="true">*.local</domain>
+        <domain includeSubdomains="true">192.168.*.*</domain>
+        <domain includeSubdomains="true">10.*.*.*</domain>
     </domain-config>
 </network-security-config>

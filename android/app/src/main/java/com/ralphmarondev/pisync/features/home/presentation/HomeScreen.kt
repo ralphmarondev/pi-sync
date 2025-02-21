@@ -123,7 +123,7 @@ fun HomeScreen(
                                 }
                             }
                         },
-                        label = "Room 04",
+                        label = "Room A14",
                         modifier = Modifier
                             .sizeIn(minWidth = 180.dp)
                     )
