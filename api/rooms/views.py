@@ -158,3 +158,15 @@ class CloseDoorView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+class DoorStatusView(APIView):
+    def get(self, request, pk):
+        door = get_object_or_404(Door, pk=pk, is_deleted=False)
+        return Response(
+            data={
+                'success': True,
+                'message': 'Door status retrieved successfully',
+                'is_open': door.is_open
+            },
+            status=HTTP_200_OK
+        )
