@@ -27,12 +27,12 @@ IP_ADDRESS=$(ipconfig | grep -A 10 "Wireless LAN adapter Wi-Fi" | grep "IPv4 Add
 # Running Django on 0.0.0.0 makes the server accessible on any IP address on your network.
 # You are setting the host to 0.0.0.0 and port to 8000 for external access.
 
-echo "Running Django development server on: http://$IP_ADDRESS:8000"
+echo "Running Django development server on: https://$IP_ADDRESS:8000"
 
 # Explanation:
 # This command runs the Django server, making it available on all interfaces (0.0.0.0)
 # Port 8000 is the default port, but you can change it if needed.
-python manage.py runserver 0.0.0.0:8000
+python manage.py runsslserver --certificate certs/cert.pem --key certs/key.pem 0.0.0.0:8000
 
 # To stop the server, press CTRL+C in the terminal where it's running.
 
