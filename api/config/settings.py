@@ -18,8 +18,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'sslserver',
-    'django_extensions',
     'users',
     'rooms',
     'history',
@@ -95,13 +93,3 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
-
-# Secure cookies
-SESSION_COOKIE_SECURE = True  # Only send session cookies over HTTPS
-CSRF_COOKIE_SECURE = True  # Only send CSRF cookies over HTTPS
-
-# Secure HTTP headers
-SECURE_SSL_REDIRECT = True  # Redirect all HTTP requests to HTTPS
-SECURE_HSTS_SECONDS = 3600  # Send HTTP Strict Transport Security header
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
-SECURE_HSTS_PRELOAD = True  # Enable preloading of HSTS
