@@ -9,6 +9,7 @@ import com.ralphmarondev.pisync.features.home.data.repository.DoorRepositoryImpl
 import com.ralphmarondev.pisync.features.home.domain.model.DoorActionRequest
 import com.ralphmarondev.pisync.features.home.domain.model.DoorActionResponse
 import com.ralphmarondev.pisync.features.home.domain.usecases.CloseDoorUseCase
+import com.ralphmarondev.pisync.features.home.domain.usecases.GetDoorStatusUseCase
 import com.ralphmarondev.pisync.features.home.domain.usecases.OpenDoorUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +26,7 @@ class HomeViewModel : ViewModel() {
     private val repository = DoorRepositoryImpl(api)
     private val openDoorUseCase = OpenDoorUseCase(repository)
     private val closeDoorUseCase = CloseDoorUseCase(repository)
+    private val getDoorStatusUseCase = GetDoorStatusUseCase(repository)
 
     private val _currentUser = MutableStateFlow("")
     val username: StateFlow<String> get() = _currentUser
@@ -42,33 +44,40 @@ class HomeViewModel : ViewModel() {
             Log.d("Home", "Getting user details...")
             Log.d("Home", "Getting registered doors to user: `${_currentUser.value}`...")
             Log.d("Home", "Getting state of registered doors...")
+            _doorState.value = getDoorStatusUseCase(1).isOpen
+            Log.d("Home", "Door state: ${_doorState.value}")
         }
     }
 
     fun toggleDoorState(
         onResult: (DoorActionResponse) -> Unit
     ) {
-        val description = if (_doorState.value) {
-            "Opened via mobile app."
-        } else {
-            "Closed via mobile app."
-        }
-
-        val request = DoorActionRequest(
-            doorId = 1,
-            description = description,
-            username = _currentUser.value
-        )
-
         viewModelScope.launch {
+//            _doorState.value = getDoorStatusUseCase(1).isOpen
+//            Log.d("Home", "Door state: ${_doorState.value}")
+
+            val description = if (_doorState.value) {
+                "Opened via mobile app."
+            } else {
+                "Closed via mobile app."
+            }
+
+            val request = DoorActionRequest(
+                doorId = 1,
+                description = description,
+                username = _currentUser.value
+            )
+
             val response = if (_doorState.value) {
+                Log.d("Home", "Closing door.")
                 closeDoorUseCase(request)
             } else {
+                Log.d("Home", "Opening door.")
                 openDoorUseCase(request)
             }
 
             onResult(response)
-            _doorState.value = !_doorState.value
+            _doorState.value = getDoorStatusUseCase(1).isOpen
         }
     }
 }

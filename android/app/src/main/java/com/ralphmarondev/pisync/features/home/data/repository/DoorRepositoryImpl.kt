@@ -15,4 +15,8 @@ class DoorRepositoryImpl(
     override suspend fun closeDoor(request: DoorActionRequest): DoorActionResponse {
         return api.closeDoor(request.doorId, request)
     }
+
+    override suspend fun getDoorStatus(id: Int): DoorActionResponse {
+        return api.doorStatus(id)
+    }
 }

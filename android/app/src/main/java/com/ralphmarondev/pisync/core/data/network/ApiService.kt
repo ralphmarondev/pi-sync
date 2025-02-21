@@ -32,6 +32,11 @@ interface ApiService {
         @Body request: DoorActionRequest
     ): DoorActionResponse
 
+    @GET("door/status/{id}/")
+    suspend fun doorStatus(
+        @Path("id") doorId: Int
+    ): DoorActionResponse
+
     @GET("history/")
     suspend fun getHistory(): List<DoorLog>
 }
