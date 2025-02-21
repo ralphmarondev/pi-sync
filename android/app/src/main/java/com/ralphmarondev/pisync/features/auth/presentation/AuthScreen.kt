@@ -69,6 +69,7 @@ fun AuthScreen(
     val showPasswordDialog by viewModel.showForgotPasswordDialog.collectAsState()
     val showSetupIpDialog by viewModel.showSetupIpDialog.collectAsState()
     val response by viewModel.response.collectAsState()
+    val passwordHint by viewModel.passwordHint.collectAsState()
 
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
@@ -256,7 +257,8 @@ fun AuthScreen(
 
     if (showPasswordDialog) {
         ForgotPasswordDialog(
-            onDismiss = viewModel::toggleForgotPasswordDialog
+            onDismiss = viewModel::toggleForgotPasswordDialog,
+            passwordHint = passwordHint?.passwordHint ?: "No hint available."
         )
     }
 

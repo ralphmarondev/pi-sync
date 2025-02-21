@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.MyApp
 import com.ralphmarondev.pisync.core.domain.Result
 import com.ralphmarondev.pisync.features.auth.data.repository.AuthRepositoryImpl
+import com.ralphmarondev.pisync.features.auth.domain.model.PasswordHintResponse
 import com.ralphmarondev.pisync.features.auth.domain.model.User
+import com.ralphmarondev.pisync.features.auth.domain.usecases.GetPasswordHintUseCase
 import com.ralphmarondev.pisync.features.auth.domain.usecases.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,6 +18,7 @@ class AuthViewModel : ViewModel() {
     private val preferences = MyApp.preferences
     private val repository = AuthRepositoryImpl(preferences)
     private val loginUseCase = LoginUseCase(repository)
+    private val getPasswordHintUseCase = GetPasswordHintUseCase(repository)
 
     private val _username = MutableStateFlow("")
     val username: StateFlow<String> get() = _username
@@ -35,6 +38,9 @@ class AuthViewModel : ViewModel() {
     private val _response = MutableStateFlow<Result?>(null)
     val response: StateFlow<Result?> get() = _response
 
+    private val _passwordHint = MutableStateFlow<PasswordHintResponse?>(null)
+    val passwordHint: StateFlow<PasswordHintResponse?> get() = _passwordHint
+
     init {
         if (preferences.isRememberMeChecked()) {
             val savedUsername = preferences.getRememberedUsername()
@@ -48,6 +54,22 @@ class AuthViewModel : ViewModel() {
                 true -> savedPassword
                 false -> ""
             }
+        }
+    }
+
+    private fun getPasswordHint() {
+        viewModelScope.launch {
+            if (_username.value.trim().isBlank()) {
+                _passwordHint.value = PasswordHintResponse(
+                    success = false,
+                    message = "Username cannot be empty!",
+                    passwordHint = "No hint available."
+                )
+            } else {
+                val response = getPasswordHintUseCase(_username.value)
+                _passwordHint.value = response
+            }
+            Log.d("Auth", "PasswordHint: ${_passwordHint.value}")
         }
     }
 
@@ -65,6 +87,7 @@ class AuthViewModel : ViewModel() {
     }
 
     fun toggleForgotPasswordDialog() {
+        getPasswordHint()
         _showForgotPasswordDialog.value = !_showForgotPasswordDialog.value
     }
 

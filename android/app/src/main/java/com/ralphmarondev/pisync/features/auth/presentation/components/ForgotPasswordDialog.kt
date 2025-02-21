@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun ForgotPasswordDialog(
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    passwordHint: String
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -26,7 +27,7 @@ fun ForgotPasswordDialog(
         },
         text = {
             Text(
-                text = "Sit back, relax and try remembering it again.",
+                text = passwordHint,
                 color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center,
                 fontSize = 18.sp
