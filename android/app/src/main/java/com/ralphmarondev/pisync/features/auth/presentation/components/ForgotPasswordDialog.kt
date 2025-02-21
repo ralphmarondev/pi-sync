@@ -17,6 +17,10 @@ fun ForgotPasswordDialog(
     onDismiss: () -> Unit,
     passwordHint: String
 ) {
+    val hint = passwordHint.ifBlank {
+        "No hint available."
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -27,7 +31,7 @@ fun ForgotPasswordDialog(
         },
         text = {
             Text(
-                text = passwordHint,
+                text = hint,
                 color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center,
                 fontSize = 18.sp

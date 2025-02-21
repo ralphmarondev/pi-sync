@@ -4,6 +4,6 @@
         <!--NOTE: this allow all private IP addresses in the local network-->
         <domain includeSubdomains="true">*.local</domain>
         <domain includeSubdomains="true">192.168.*.*</domain>
-        <domain includeSubdomains="true">10.*.*.*</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
     </domain-config>
 </network-security-config>
