@@ -1,4 +1,8 @@
 [api]
+- Rewrite the api, update the response to return same values [a.k.a] json format.
+
+
+[api]
   Add fingerprint and image for face recognition field on users.
 
   
