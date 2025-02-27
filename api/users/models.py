@@ -9,6 +9,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=200, blank=True, null=True)
     password = models.CharField(max_length=200, blank=True, null=True)
     hint_password = models.CharField(max_length=200, blank=True, null=True)
+    is_superuser = models.BooleanField(default=False)
     GENDER_CHOICES = [('Male', 'Male'), ('Female', 'Female')]
     gender = models.CharField(max_length=100, choices=GENDER_CHOICES, blank=True, null=True)
     create_date = models.DateTimeField(auto_now=True)
