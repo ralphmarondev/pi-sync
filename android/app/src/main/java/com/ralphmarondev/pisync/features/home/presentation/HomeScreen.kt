@@ -8,6 +8,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,6 +27,7 @@ fun HomeScreen(
     toggleDarkTheme: () -> Unit
 ) {
     val viewModel: HomeViewModel = viewModel()
+    val user by viewModel.user.collectAsState()
 
     Scaffold(
         topBar = {
@@ -39,13 +42,24 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            GreetingsCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                fullName = "Ralph Maron Eda",
-                role = "SUPERUSER"
-            )
+
+            user?.let { u ->
+                GreetingsCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    fullName = "${u.firstName} ${u.lastName}",
+                    role = if (u.isSuperuser) "Superuser" else "User"
+                )
+            } ?: run {
+                GreetingsCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    fullName = "Loading...",
+                    role = "Loading..."
+                )
+            }
 
             Text(
                 text = "Registered doors",

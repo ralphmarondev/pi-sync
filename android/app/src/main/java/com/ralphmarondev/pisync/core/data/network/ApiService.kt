@@ -6,6 +6,8 @@ import com.ralphmarondev.pisync.features.auth.domain.model.User
 import com.ralphmarondev.pisync.features.history.domain.model.DoorLog
 import com.ralphmarondev.pisync.features.home.domain.model.DoorActionRequest
 import com.ralphmarondev.pisync.features.home.domain.model.DoorActionResponse
+import com.ralphmarondev.pisync.features.home.domain.model.UserResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -19,6 +21,11 @@ interface ApiService {
     suspend fun getPasswordHint(
         @Path("username") username: String
     ): PasswordHintResponse
+
+    @GET("user/username/{username}/")
+    suspend fun getUserByUsername(
+        @Path("username") username: String
+    ): Response<UserResponse>
 
     @POST("door/open/{id}/")
     suspend fun openDoor(

@@ -8,12 +8,14 @@ import com.ralphmarondev.pisync.core.data.network.RetrofitInstance
 import com.ralphmarondev.pisync.features.home.data.repository.DoorRepositoryImpl
 import com.ralphmarondev.pisync.features.home.domain.model.DoorActionRequest
 import com.ralphmarondev.pisync.features.home.domain.model.DoorActionResponse
+import com.ralphmarondev.pisync.features.home.domain.model.User
+import com.ralphmarondev.pisync.features.home.domain.model.UserResponse
 import com.ralphmarondev.pisync.features.home.domain.usecases.CloseDoorUseCase
-import com.ralphmarondev.pisync.features.home.domain.usecases.GetDoorStatusUseCase
 import com.ralphmarondev.pisync.features.home.domain.usecases.OpenDoorUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 /* TODO:
     - Get doors registered to the current user.
@@ -26,7 +28,6 @@ class HomeViewModel : ViewModel() {
     private val repository = DoorRepositoryImpl(api)
     private val openDoorUseCase = OpenDoorUseCase(repository)
     private val closeDoorUseCase = CloseDoorUseCase(repository)
-    private val getDoorStatusUseCase = GetDoorStatusUseCase(repository)
 
     private val _currentUser = MutableStateFlow("")
     val username: StateFlow<String> get() = _currentUser
@@ -34,6 +35,9 @@ class HomeViewModel : ViewModel() {
     // TODO: get the state from api
     private val _doorState = MutableStateFlow(false)
     val doorState: StateFlow<Boolean> get() = _doorState
+
+    private val _user = MutableStateFlow<User?>(null)
+    val user: StateFlow<User?> get() = _user
 
     init {
         viewModelScope.launch {
@@ -46,6 +50,21 @@ class HomeViewModel : ViewModel() {
             Log.d("Home", "Getting state of registered doors...")
 //            _doorState.value = getDoorStatusUseCase(1).isOpen
             Log.d("Home", "Door state: ${_doorState.value}")
+            fetchUserDetails(_currentUser.value)
+        }
+    }
+
+    private suspend fun fetchUserDetails(username: String) {
+        try{
+            val response: Response<UserResponse> = api.getUserByUsername(username)
+            if(response.isSuccessful){
+                _user.value = response.body()?.user
+                Log.d("Home", "User details fetched successfully!")
+            }else{
+                Log.e("Home", "Error fetching user details: ${response.code()}")
+            }
+        }catch (e: Exception){
+            Log.e("Home", "Error fetching user details: ${e.message}")
         }
     }
 
@@ -53,9 +72,6 @@ class HomeViewModel : ViewModel() {
         onResult: (DoorActionResponse) -> Unit
     ) {
         viewModelScope.launch {
-//            _doorState.value = getDoorStatusUseCase(1).isOpen
-//            Log.d("Home", "Door state: ${_doorState.value}")
-
             val description = if (!_doorState.value) {
                 "Opened via mobile app."
             } else {
@@ -77,7 +93,6 @@ class HomeViewModel : ViewModel() {
             }
 
             onResult(response)
-//            _doorState.value = getDoorStatusUseCase(1).isOpen
             _doorState.value = !_doorState.value
         }
     }
