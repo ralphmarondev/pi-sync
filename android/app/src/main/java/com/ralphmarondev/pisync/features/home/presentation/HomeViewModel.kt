@@ -11,6 +11,7 @@ import com.ralphmarondev.pisync.features.home.domain.model.DoorActionResponse
 import com.ralphmarondev.pisync.features.home.domain.model.User
 import com.ralphmarondev.pisync.features.home.domain.model.UserResponse
 import com.ralphmarondev.pisync.features.home.domain.usecases.CloseDoorUseCase
+import com.ralphmarondev.pisync.features.home.domain.usecases.GetDoorStatusUseCase
 import com.ralphmarondev.pisync.features.home.domain.usecases.OpenDoorUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +29,7 @@ class HomeViewModel : ViewModel() {
     private val repository = DoorRepositoryImpl(api)
     private val openDoorUseCase = OpenDoorUseCase(repository)
     private val closeDoorUseCase = CloseDoorUseCase(repository)
+    private val getDoorStatusUseCase = GetDoorStatusUseCase(repository)
 
     private val _currentUser = MutableStateFlow("")
     val username: StateFlow<String> get() = _currentUser
@@ -38,6 +40,9 @@ class HomeViewModel : ViewModel() {
 
     private val _user = MutableStateFlow<User?>(null)
     val user: StateFlow<User?> get() = _user
+
+    private val _door = MutableStateFlow<Int?>(null)
+    val door: StateFlow<Int?> get() = _door
 
     init {
         viewModelScope.launch {
@@ -51,19 +56,21 @@ class HomeViewModel : ViewModel() {
 //            _doorState.value = getDoorStatusUseCase(1).isOpen
             Log.d("Home", "Door state: ${_doorState.value}")
             fetchUserDetails(_currentUser.value)
+            _doorState.value = getDoorStatusUseCase(_door.value ?: 0).isOpen
         }
     }
 
     private suspend fun fetchUserDetails(username: String) {
-        try{
+        try {
             val response: Response<UserResponse> = api.getUserByUsername(username)
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 _user.value = response.body()?.user
+                _door.value = response.body()?.user?.registeredDoors?.get(0)
                 Log.d("Home", "User details fetched successfully!")
-            }else{
+            } else {
                 Log.e("Home", "Error fetching user details: ${response.code()}")
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.e("Home", "Error fetching user details: ${e.message}")
         }
     }

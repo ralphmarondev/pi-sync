@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.ralphmarondev.pisync.features.home.domain.model.Door
 import com.ralphmarondev.pisync.features.home.presentation.HomeViewModel
 
 @Composable
@@ -24,41 +22,7 @@ fun DoorList(
     val context = LocalContext.current
     val doorState by viewModel.doorState.collectAsState()
 
-    val doors = listOf(
-        Door(
-            id = 1,
-            label = "A14",
-            status = doorState,
-            onClick = {
-                viewModel.toggleDoorState(
-                    onResult = { response ->
-                    }
-                )
-            }
-        ),
-        Door(
-            id = 1,
-            label = "A15",
-            status = doorState,
-            onClick = {
-                viewModel.toggleDoorState(
-                    onResult = { response ->
-                    }
-                )
-            }
-        ),
-        Door(
-            id = 1,
-            label = "A16",
-            status = doorState,
-            onClick = {
-                viewModel.toggleDoorState(
-                    onResult = { response ->
-                    }
-                )
-            }
-        )
-    )
+    val door by viewModel.door.collectAsState()
 
 
     LazyVerticalGrid(
@@ -69,7 +33,7 @@ fun DoorList(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        items(doors) { door ->
+        item {
             DoorCard(
                 checked = doorState,
                 toggleChecked = {
@@ -86,7 +50,7 @@ fun DoorList(
                         }
                     }
                 },
-                label = door.label,
+                label = "Door: $door",
                 modifier = Modifier
                     .fillMaxWidth()
             )
