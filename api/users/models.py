@@ -13,7 +13,7 @@ class User(AbstractUser):
     GENDER_CHOICES = [('Male', 'Male'), ('Female', 'Female')]
     gender = models.CharField(max_length=100, choices=GENDER_CHOICES, blank=True, null=True)
     create_date = models.DateTimeField(auto_now=True)
-    created_by = models.CharField(max_length=200, blank=True, null=True, default='Admin')
+    created_by = models.CharField(max_length=200, default='Admin')
     is_deleted = models.BooleanField(default=False)
     update_date = models.DateTimeField(auto_now=True)
     registered_doors = models.ManyToManyField('rooms.Door', related_name='users', blank=True)

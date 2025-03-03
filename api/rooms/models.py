@@ -6,7 +6,7 @@ class Door(models.Model):
     is_active = models.BooleanField(default=True)
     is_open = models.BooleanField(default=False)
     create_date = models.DateTimeField(auto_now=True)
-    created_by = models.CharField(max_length=200, blank=True, null=True)
+    created_by = models.CharField(max_length=200, default="Admin")
     is_deleted = models.BooleanField(default=False)
     update_date = models.DateTimeField(auto_now=True)
 
