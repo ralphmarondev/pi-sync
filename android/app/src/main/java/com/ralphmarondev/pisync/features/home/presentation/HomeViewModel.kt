@@ -44,7 +44,7 @@ class HomeViewModel : ViewModel() {
             Log.d("Home", "Getting user details...")
             Log.d("Home", "Getting registered doors to user: `${_currentUser.value}`...")
             Log.d("Home", "Getting state of registered doors...")
-            _doorState.value = getDoorStatusUseCase(1).isOpen
+//            _doorState.value = getDoorStatusUseCase(1).isOpen
             Log.d("Home", "Door state: ${_doorState.value}")
         }
     }
@@ -56,7 +56,7 @@ class HomeViewModel : ViewModel() {
 //            _doorState.value = getDoorStatusUseCase(1).isOpen
 //            Log.d("Home", "Door state: ${_doorState.value}")
 
-            val description = if (_doorState.value) {
+            val description = if (!_doorState.value) {
                 "Opened via mobile app."
             } else {
                 "Closed via mobile app."
@@ -77,7 +77,8 @@ class HomeViewModel : ViewModel() {
             }
 
             onResult(response)
-            _doorState.value = getDoorStatusUseCase(1).isOpen
+//            _doorState.value = getDoorStatusUseCase(1).isOpen
+            _doorState.value = !_doorState.value
         }
     }
 }
