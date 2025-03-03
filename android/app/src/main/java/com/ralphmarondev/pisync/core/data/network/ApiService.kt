@@ -20,13 +20,13 @@ interface ApiService {
         @Path("username") username: String
     ): PasswordHintResponse
 
-    @POST("door/{id}/open/")
+    @POST("door/open/{id}/")
     suspend fun openDoor(
         @Path("id") doorId: Int,
         @Body request: DoorActionRequest
     ): DoorActionResponse
 
-    @POST("door/{id}/close/")
+    @POST("door/close/{id}/")
     suspend fun closeDoor(
         @Path("id") doorId: Int,
         @Body request: DoorActionRequest
