@@ -3,7 +3,7 @@ from tkinter import ttk
 
 from numpy.random import choice
 
-from app.tenant.new_tenant_dialog import NewTenantDialog
+from tenant.new_tenant_dialog import NewTenantDialog
 
 class TenantScreen:
 	def __init__(self, parent_frame):
