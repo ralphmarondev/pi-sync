@@ -48,3 +48,12 @@ class HistoryView(APIView):
             )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RoomHistoryView(APIView):
+    def get(self, request, room_id):
+        histories = History.objects.filter(room_id=room_id).order_by('-timestamp')
+        serializer = HistorySerializer(histories, many=True)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
