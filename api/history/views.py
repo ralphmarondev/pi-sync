@@ -57,3 +57,13 @@ class RoomHistoryView(APIView):
             serializer.data,
             status=status.HTTP_200_OK
         )
+
+class UserHistoryView(APIView):
+    def get(self, request, username):
+        histories = History.objects.filter(username=username).order_by('-timestamp')
+
+        if not histories.exists():
+            return Response({'message': 'No history found for this username'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = HistorySerializer(histories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
