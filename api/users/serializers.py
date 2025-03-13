@@ -10,6 +10,8 @@ class UserSerializer(serializers.ModelSerializer):
         required=False
     )
 
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = '__all__'
@@ -31,3 +33,8 @@ class UserSerializer(serializers.ModelSerializer):
         if doors:
             user.registered_doors.set(doors)
         return user
+
+    def get_image_url(self, obj):
+        if obj.image:
+            return obj.image.url
+        return None

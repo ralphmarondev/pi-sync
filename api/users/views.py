@@ -4,14 +4,26 @@ from rest_framework.views import APIView
 
 from .models import User
 from .serializers import UserSerializer
+import base64
 
 class UserRegisterView(APIView):
     def post(self, request):
         data = request.data
         serializer = UserSerializer(data=data)
+
+        image = request.FILES.get('image')
+        fingerprint_template = data.get('fingerprint_template')
+
         if serializer.is_valid():
             user = serializer.save()
             user.set_password(data['password'])
+
+            if image:
+                user.image = image
+            if fingerprint_template:
+                if isinstance(fingerprint_template, str):
+                    fingerprint_template = base64.b64decode(fingerprint_template)
+                user.save_fingerprint(fingerprint_template)
             user.save()
 
             registered_doors = data.get('registered_doors', [])
@@ -80,10 +92,14 @@ class UserDetailView(APIView):
             )
 
         serializer = UserSerializer(user)
+        user_data = serializer.data
+        user_data['image_url'] = user.get_image_url()
+        user_data['fingerprint_template'] = user.get_fingerprint()
+
         return Response(
             data={
                 'success': True,
-                'message': serializer.data
+                'message': user_data
             },
             status=status.HTTP_200_OK
         )
