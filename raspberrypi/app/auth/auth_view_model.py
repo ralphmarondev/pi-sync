@@ -10,6 +10,9 @@ class AuthViewModel:
         self.password = password
 
     def login(self):
+        # for testing [no need to enter some credentials]
+        return True, 'Login successful!'
+
         if not self.username.strip() or not self.password.strip():
             return False, 'Username or password cannot be empty!'
 
