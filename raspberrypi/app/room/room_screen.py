@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from .update_room_dialog import UpdateRoomDialog
+
 class RoomScreen:
     def __init__(self, parent_frame):
         self.root = parent_frame
@@ -10,9 +12,9 @@ class RoomScreen:
     def content(self):
         dashboard_frame = tk.Frame(self.root)
 
-        # title label, can be a search field later
+        # Add title above the table
         title_label = tk.Label(dashboard_frame, text='Rooms', font=('Arial', 14, 'bold'))
-        title_label.pack(pady=(10, 5))
+        title_label.pack(pady=(10, 5))  # Add space above and below the label
 
         # Define columns
         columns = ('Name', 'Tenant', 'isActive')
@@ -30,11 +32,7 @@ class RoomScreen:
 
         # Style to change the background of the heading
         style = ttk.Style()
-        style.configure('Treeview.Heading', font=('Arial', 10, 'bold'), background='white', foreground='#4A90E2')
-
-        # Apply custom style to frame to simulate header background color
-        header_frame = tk.Frame(dashboard_frame, bg='#4A90E2')  # Header background color
-        header_frame.pack(fill='x')
+        style.configure('Treeview.Heading', font=('Arial', 10, 'bold'), foreground='white', background='#4A90E2')
 
         self.table.pack(fill='both', expand=True, padx=5, pady=5)
 
@@ -46,8 +44,8 @@ class RoomScreen:
         ]
         self.populate_table()
 
-        # Bind click event to open menu
-        self.table.bind('<ButtonRelease-1>', self.handle_click)
+        # Bind right-click event to open menu
+        self.table.bind('<ButtonRelease-3>', self.handle_right_click)
 
         return dashboard_frame
 
@@ -67,29 +65,40 @@ class RoomScreen:
         self.data.sort(key=lambda x: x[col_index], reverse=self.sorting_order[column])
         self.populate_table()
 
-    def handle_click(self, event):
-        """ Show menu when clicking any row. """
+    def handle_right_click(self, event):
+        """ Show menu when right-clicking any row. """
         row_id = self.table.identify_row(event.y)
 
         if row_id:
             values = self.table.item(row_id, 'values')
             if values:
                 room_name, tenant_count, is_active = values
-                self.show_action_menu(event, room_name)
+                self.show_action_menu(event, room_name, tenant_count, is_active)
 
-    def show_action_menu(self, event, room_name):
-        """ Display action menu when clicking any row. """
+    def show_action_menu(self, event, room_name, tenant_count, is_active):
+        """ Display action menu when right-clicking any row. """
         menu = tk.Menu(self.root, tearoff=0)
         menu.add_command(label='View Details', command=lambda: self.view_details(room_name))
-        menu.add_command(label='Update', command=lambda: self.update_room(room_name))
+        menu.add_command(label='Update', command=lambda: self.update_room(room_name, tenant_count, is_active))
         menu.add_command(label='Delete', command=lambda: self.delete_room(room_name))
         menu.post(event.x_root, event.y_root)
 
+    def update_room(self, room_name, tenant_count, is_active):
+        """ Open the Update Room Dialog with current room details. """
+        UpdateRoomDialog(self.root, room_name, tenant_count, is_active, self.update_room_data)
+
+    def update_room_data(self, room_name, new_tenant_count, new_is_active):
+        """ Update room data in the table. """
+        # Update the room data in the list
+        for i, row in enumerate(self.data):
+            if row[0] == room_name:
+                self.data[i] = (room_name, new_tenant_count, new_is_active)
+                break
+        # Repopulate the table with updated data
+        self.populate_table()
+
     def view_details(self, room_name):
         print(f'Viewing details for room: {room_name}')
-
-    def update_room(self, room_name):
-        print(f'Updating room: {room_name}')
 
     def delete_room(self, room_name):
         print(f'Deleting room: {room_name}')
