@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 # Initialize global variables
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-reference_image_path = "reference2.jpg"
+reference_image_path = "reference3.jpg"
 result_text = ""
 
 def train_reference_image():
