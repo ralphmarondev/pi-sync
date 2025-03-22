@@ -16,7 +16,7 @@ class RoomFrame(ctk.CTkFrame):
         self.search_entry.grid(row=0, column=0, padx=10, pady=5, sticky="ew")
 
         self.new_room_button = ctk.CTkButton(search_frame, text="New Room", width=120, height=30,
-                                             command=self.add_new_room)
+                                             command=self.open_new_room_dialog)
         self.new_room_button.grid(row=0, column=1, padx=10, pady=5, sticky='e')
 
         # Table Frame (Soft Background)
@@ -52,6 +52,39 @@ class RoomFrame(ctk.CTkFrame):
         for col in range(len(headers)):
             table_frame.columnconfigure(col, weight=1)
 
-    def add_new_room(self):
-        print("New Room Button Pressed")
-        # Add functionality for adding a new room, like opening a new form, etc.
+    def open_new_room_dialog(self):
+        # Create a new Toplevel window (Dialog)
+        dialog = ctk.CTkToplevel(self)
+        dialog.title("Add New Room")
+
+        # Set the dialog to stay on top of the main window
+        dialog.transient(self)  # Makes the dialog window stay on top of the main window
+        dialog.grab_set()  # Ensures no interaction with the main window until the dialog is closed
+
+        # Room Name entry with label on top
+        room_name_label = ctk.CTkLabel(dialog, text="Room Name:")
+        room_name_label.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="w")
+        room_name_entry = ctk.CTkEntry(dialog, width=250)
+        room_name_entry.grid(row=1, column=0, padx=10, pady=(0, 10))
+        room_name_entry.insert(0, "")  # Default value
+
+        # Buttons below (Submit and Cancel)
+        button_frame = ctk.CTkFrame(dialog, fg_color="transparent")  # Frame for buttons
+        button_frame.grid(row=2, column=0, columnspan=2, pady=10)
+
+        submit_button = ctk.CTkButton(button_frame, text="Submit", width=120, height=30,
+                                      command=lambda: self.submit_new_room(dialog, room_name_entry))
+        submit_button.grid(row=0, column=0, padx=10)
+
+        cancel_button = ctk.CTkButton(button_frame, text="Cancel", width=120, height=30, command=dialog.destroy)
+        cancel_button.grid(row=0, column=1, padx=10)
+
+    def submit_new_room(self, dialog, room_name_entry):
+        # Collect data from the room name entry
+        room_name = room_name_entry.get()
+
+        # Print the collected data (for now)
+        print(f"Room Name: {room_name}")
+
+        # Close the dialog
+        dialog.destroy()
