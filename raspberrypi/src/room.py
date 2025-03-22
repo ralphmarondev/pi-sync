@@ -23,9 +23,9 @@ class RoomFrame(ctk.CTkFrame):
 
         # Sample Data (With a Cute Soft Style)
         data = [
-            ["Room 101", "John Doe", "Yes", "Available"],
-            ["Room 102", "Jane Smith", "No", "Occupied"],
-            ["Room 103", "Mike Brown", "Yes", "Available"],
+            ["Room 101", "4", "Yes", "Open"],
+            ["Room 102", "3", "No", "Close"],
+            ["Room 103", "1", "Yes", "Close"],
         ]
 
         row_colors = ["#ffffff", "#f8f9fa"]  # Alternating soft white and light gray
