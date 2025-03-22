@@ -32,7 +32,7 @@ class RoomScreen:
 
         # Style to change the background of the heading
         style = ttk.Style()
-        style.configure('Treeview.Heading', font=('Arial', 10, 'bold'), foreground='white', background='#4A90E2')
+        style.configure('Treeview.Heading', font=('Roboto Mono', 16, 'bold'), foreground='#4A90E2', background='white')
 
         self.table.pack(fill='both', expand=True, padx=5, pady=5)
 
