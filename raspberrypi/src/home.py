@@ -69,7 +69,7 @@ class App(ctk.CTk):
         )
 
         # show dashboard by default
-        self.main_content_frame.show_frame(DashboardFrame)
+        self.main_content_frame.show_frame(RoomFrame)
 
 if __name__ == '__main__':
     app = App()
