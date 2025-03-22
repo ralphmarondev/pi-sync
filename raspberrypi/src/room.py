@@ -4,9 +4,20 @@ class RoomFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
 
-        # Title Label
-        title_label = ctk.CTkLabel(self, text="Room", font=("Arial", 24, "bold"))
-        title_label.pack(pady=10)
+        # Search Field and New Room Button
+        search_frame = ctk.CTkFrame(self)
+        search_frame.pack(padx=20, pady=10, fill="x")
+
+        # Configure search frame grid to make button align to the right
+        search_frame.grid_columnconfigure(0, weight=1)  # Make column 0 (search entry) expandable
+        search_frame.grid_columnconfigure(1, weight=0)  # Make column 1 (new room button) fixed width
+
+        self.search_entry = ctk.CTkEntry(search_frame, placeholder_text="Search Room...", width=200)
+        self.search_entry.grid(row=0, column=0, padx=10, pady=5, sticky="ew")
+
+        self.new_room_button = ctk.CTkButton(search_frame, text="New Room", width=120, height=30,
+                                             command=self.add_new_room)
+        self.new_room_button.grid(row=0, column=1, padx=10, pady=5, sticky='e')
 
         # Table Frame (Soft Background)
         table_frame = ctk.CTkFrame(self, fg_color="#f4f4f4", corner_radius=10)  # Light gray background
@@ -41,3 +52,6 @@ class RoomFrame(ctk.CTkFrame):
         for col in range(len(headers)):
             table_frame.columnconfigure(col, weight=1)
 
+    def add_new_room(self):
+        print("New Room Button Pressed")
+        # Add functionality for adding a new room, like opening a new form, etc.
