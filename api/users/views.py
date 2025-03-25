@@ -1,10 +1,12 @@
+import base64
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from rooms.models import Door
 from .models import User
 from .serializers import UserSerializer
-import base64
 
 class UserRegisterView(APIView):
     def post(self, request):
@@ -29,6 +31,15 @@ class UserRegisterView(APIView):
             registered_doors = data.get('registered_doors', [])
             if registered_doors:
                 user.registered_doors.set(registered_doors)
+
+                for door_id in registered_doors:
+                    try:
+                        door_obj = Door.objects.get(id=door_id)
+                        door_obj.tenant_count += 1
+                        door_obj.save()
+                    except Door.DoesNotExists:
+                        print('Door does not exists')
+                        continue
 
             return Response(data={
                 'success': True,
@@ -125,9 +136,25 @@ class UserUpdateView(APIView):
             user.set_password(data.get('password', user.password))
             user.save()
 
-            registered_doors = data.get('registered_doors', [])
-            if registered_doors:
-                user.registered_doors.set(registered_doors)
+            # Get the current and updated registered doors
+            previous_doors = set(user.registered_doors.values_list('id', flat=True))
+            updated_doors = set(data.get('registered_doors', []))
+
+            # Update tenant count for removed doors
+            removed_doors = previous_doors - updated_doors
+            for door_id in removed_doors:
+                door = Door.objects.get(id=door_id)
+                door.tenant_count -= 1
+                door.save()
+
+            # Update tenant count for added doors
+            added_doors = updated_doors - previous_doors
+            for door_id in added_doors:
+                door = Door.objects.get(id=door_id)
+                door.tenant_count += 1
+                door.save()
+
+            user.registered_doors.set(updated_doors)
             return Response(
                 data={
                     'success': True,
