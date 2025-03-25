@@ -30,11 +30,17 @@ class RoomFrame(ctk.CTkFrame):
         for col, header in enumerate(self.headers):
             cell = ctk.CTkFrame(self.table_frame, fg_color=header_color, corner_radius=10)  # Rounded header
             cell.grid(row=0, column=col, padx=3, pady=3, sticky="nsew")
+
+            # Bind the entire header frame to be clickable
+            cell.bind("<Button-1>", lambda event, col=col: self.sort_table(col))
+
             label = ctk.CTkLabel(cell, text=header, font=("Arial", 16, "bold"), text_color="black")
-            label.grid(padx=10, pady=5)
+            label.pack(padx=10, pady=5, fill="both", expand=True)  # Center the text and make it fill the cell
+
+            # Also bind the label in case user clicks directly on text
             label.bind("<Button-1>", lambda event, col=col: self.sort_table(col))
 
-        # Sample Data (With a Cute Soft Style)
+        # Sample Data
         self.data = [
             ["Room 101", "4", "Yes", "Open"],
             ["Room 102", "3", "No", "Close"],
@@ -44,7 +50,7 @@ class RoomFrame(ctk.CTkFrame):
         self.row_colors = ["#ffffff", "#f8f9fa"]  # Alternating soft white and light gray
         self.display_table()
 
-        # Adjust column weights so they stretch nicely
+        # Adjust column weights
         for col in range(len(self.headers)):
             self.table_frame.columnconfigure(col, weight=1)
 
@@ -73,30 +79,46 @@ class RoomFrame(ctk.CTkFrame):
         # Display sorted data
         for row, entry in enumerate(self.data, start=1):
             bg_color = self.row_colors[row % 2]  # Alternate row colors
+            room_name = entry[0]  # Room name (first column)
+
             for col, value in enumerate(entry):
                 cell = ctk.CTkFrame(self.table_frame, fg_color=bg_color, corner_radius=10)  # Rounded cell
                 cell.grid(row=row, column=col, padx=3, pady=3, sticky="nsew")
+                cell.bind("<Button-1>", lambda event, name=room_name: self.open_room_dialog(name))  # Bind click event
+
                 label = ctk.CTkLabel(cell, text=value, font=("Arial", 14), text_color="black")
-                label.pack(padx=10, pady=5)
+                label.pack(padx=10, pady=5, fill="both", expand=True)  # Fill entire cell
+                label.bind("<Button-1>",
+                           lambda event, name=room_name: self.open_room_dialog(name))  # Also bind to label
+
+    def open_room_dialog(self, room_name):
+        """ Opens a dialog showing the clicked room's name """
+        dialog = ctk.CTkToplevel(self)
+        dialog.title(f"Room Details - {room_name}")
+
+        dialog.transient(self)
+        dialog.grab_set()
+
+        label = ctk.CTkLabel(dialog, text=f"Room: {room_name}", font=("Arial", 16))
+        label.pack(padx=20, pady=20)
+
+        close_button = ctk.CTkButton(dialog, text="Close", command=dialog.destroy)
+        close_button.pack(pady=10)
 
     def open_new_room_dialog(self):
-        # Create a new Toplevel window (Dialog)
+        """Opens a dialog to create a new room."""
         dialog = ctk.CTkToplevel(self)
         dialog.title("Add New Room")
 
-        # Set the dialog to stay on top of the main window
-        dialog.transient(self)  # Makes the dialog window stay on top of the main window
-        dialog.grab_set()  # Ensures no interaction with the main window until the dialog is closed
+        dialog.transient(self)
+        dialog.grab_set()
 
-        # Room Name entry with label on top
         room_name_label = ctk.CTkLabel(dialog, text="Room Name:")
         room_name_label.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="w")
         room_name_entry = ctk.CTkEntry(dialog, width=250)
         room_name_entry.grid(row=1, column=0, padx=10, pady=(0, 10))
-        room_name_entry.insert(0, "")  # Default value
 
-        # Buttons below (Submit and Cancel)
-        button_frame = ctk.CTkFrame(dialog, fg_color="transparent")  # Frame for buttons
+        button_frame = ctk.CTkFrame(dialog, fg_color="transparent")
         button_frame.grid(row=2, column=0, columnspan=2, pady=10)
 
         submit_button = ctk.CTkButton(button_frame, text="Submit", width=120, height=30,
@@ -107,11 +129,6 @@ class RoomFrame(ctk.CTkFrame):
         cancel_button.grid(row=0, column=1, padx=10)
 
     def submit_new_room(self, dialog, room_name_entry):
-        # Collect data from the room name entry
         room_name = room_name_entry.get()
-
-        # Print the collected data (for now)
         print(f"Room Name: {room_name}")
-
-        # Close the dialog
         dialog.destroy()
