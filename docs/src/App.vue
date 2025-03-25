@@ -1,5 +1,3 @@
 <template>
-  <div>
-    PiSync documentation goes here!
-  </div>
+  <router-view />
 </template>
