@@ -101,7 +101,7 @@ class UpdateDoorView(APIView):
         )
 
 class DeleteDoorView(APIView):
-    def delete(self, request, pk):
+    def put(self, request, pk):
         try:
             door = Door.objects.get(pk=pk, is_deleted=False)
         except Door.DoesNotExist:
