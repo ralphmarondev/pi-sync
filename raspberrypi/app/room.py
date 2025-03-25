@@ -46,8 +46,11 @@ class RoomFrame(ctk.CTkFrame):
             # Also bind the label in case user clicks directly on text
             label.bind("<Button-1>", lambda event, col=col: self.sort_table(col))
 
-        # Fetch data from API
-        self.data = self.fetch_data_from_api()
+        # Threading to fetch data from API
+        self.data = []
+        self.fetch_thread = threading.Thread(target=self.fetch_data_from_api)
+        self.fetch_thread.daemon = True
+        self.fetch_thread.start()
 
         self.row_colors = ["#ffffff", "#f8f9fa"]  # Alternating soft white and light gray
         self.display_table()
@@ -63,7 +66,7 @@ class RoomFrame(ctk.CTkFrame):
             if response.status_code == 200:
                 data = response.json()
                 # format according to table columns
-                return [
+                self.data = [
                     [
                         door['name'],
                         door['id'],
@@ -72,12 +75,12 @@ class RoomFrame(ctk.CTkFrame):
                     ]
                     for door in data
                 ]
+                # once the data is fetched, update the UI
+                self.after(0, self.display_table)
             else:
                 print(f'Error: {response.status_code}, {response.json()}')
-                return []
         except requests.exceptions.RequestException as e:
             print(f'Request failed: {e}')
-            return []
 
     def sort_table(self, column_index):
         # Toggle sorting order for the clicked column
@@ -172,6 +175,7 @@ class RoomFrame(ctk.CTkFrame):
                 if response.status_code == 201:  # created
                     print('Room created successfully!')
                     messagebox.showinfo('Success', 'Room created successfully!')
+                    self.fetch_data_from_api()
                 else:
                     print(f'Error: {response.status_code}, {response.json()}')
                     messagebox.showerror('Error', f'Failed to create room: {response.status_code}')
