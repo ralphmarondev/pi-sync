@@ -1,4 +1,8 @@
+import threading
+
 import customtkinter as ctk
+import requests
+from tkinter import messagebox
 
 class RoomFrame(ctk.CTkFrame):
     def __init__(self, master):
@@ -117,11 +121,11 @@ class RoomFrame(ctk.CTkFrame):
         dialog.grab_set()
 
         # Center the dialog
-        self.center_dialog(dialog, width=300, height=200)
+        self.center_dialog(dialog, width=280, height=200)
 
         room_name_label = ctk.CTkLabel(dialog, text="Room Name:")
         room_name_label.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="w")
-        room_name_entry = ctk.CTkEntry(dialog, width=250)
+        room_name_entry = ctk.CTkEntry(dialog, width=260)
         room_name_entry.grid(row=1, column=0, padx=10, pady=(0, 10))
 
         button_frame = ctk.CTkFrame(dialog, fg_color="transparent")
@@ -137,7 +141,30 @@ class RoomFrame(ctk.CTkFrame):
     def submit_new_room(self, dialog, room_name_entry):
         room_name = room_name_entry.get()
         print(f"Room Name: {room_name}")
-        dialog.destroy()
+
+        def post_room_data():
+            try:
+                data = {'name': room_name}
+                url = 'http://127.0.0.1:8000/api/door/new/'
+                response = requests.post(url, data=data)
+
+                if response.status_code == 201:  # created
+                    print('Room created successfully!')
+                    messagebox.showinfo('Success', 'Room created successfully!')
+                else:
+                    print(f'Error: {response.status_code}, {response.json()}')
+                    messagebox.showerror('Error', f'Failed to create room: {response.status_code}')
+            except requests.exceptions.RequestException as e:
+                print(f'Request failed: {e}')
+                messagebox.showerror('Network Error', f'Request failed: {e}')
+
+            except Exception as e:
+                print(f'An unexpected error occurred: {e}')
+                messagebox.showerror('Error', f'An unexpected error occurred: {e}')
+            finally:
+                dialog.destroy()
+
+        threading.Thread(target=post_room_data, daemon=True).start()
 
     def center_dialog(self, dialog, width=300, height=200):
         """Centers the given dialog on the main window."""
