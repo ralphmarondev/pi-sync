@@ -8,7 +8,7 @@ from history.models import History
 from rooms.serializers import DoorSerializer
 from .models import Door
 
-class DoorView(APIView):
+class NewDoorView(APIView):
     def post(self, request):
         data = request.data
         serializer = DoorSerializer(data=data)
@@ -32,30 +32,44 @@ class DoorView(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 
+class DoorDetailView(APIView):
     def get(self, request, pk=None):
-        if pk:
-            try:
-                door = Door.objects.get(pk=pk, is_deleted=False)
-                serializer = DoorSerializer(door)
-                return Response(
-                    data=serializer.data,
-                    status=status.HTTP_200_OK
-                )
-            except Door.DoesNotExist:
-                return Response(
-                    data={
-                        'success': False,
-                        'message': 'Door not found'
-                    },
-                    status=status.HTTP_404_NOT_FOUND
-                )
+        try:
+            door = Door.objects.get(pk=pk, is_deleted=False)
+            serializer = DoorSerializer(door)
+            return Response(
+                data=serializer.data,
+                status=status.HTTP_200_OK
+            )
+        except Door.DoesNotExist:
+            return Response(
+                data={
+                    'success': False,
+                    'message': 'Door not found'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+class DoorListView(APIView):
+    def get(self, request):
         doors = Door.objects.filter(is_deleted=False)
+
+        if not doors:
+            return Response(
+                data={
+                    'success': False,
+                    'message': 'No doors found'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
         serializer = DoorSerializer(doors, many=True)
         return Response(
             data=serializer.data,
             status=HTTP_200_OK
         )
 
+class UpdateDoorView(APIView):
     def put(self, request, pk):
         try:
             door = Door.objects.get(pk=pk, is_deleted=False)
@@ -86,6 +100,7 @@ class DoorView(APIView):
             }
         )
 
+class DeleteDoorView(APIView):
     def delete(self, request, pk):
         try:
             door = Door.objects.get(pk=pk, is_deleted=False)
