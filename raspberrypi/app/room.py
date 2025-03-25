@@ -69,7 +69,7 @@ class RoomFrame(ctk.CTkFrame):
                 self.data = [
                     [
                         door['name'],
-                        door['id'],
+                        door['tenant_count'],
                         'Yes' if door['is_active'] else 'No',
                         'Open' if door['is_open'] else 'Closed',
                     ]
