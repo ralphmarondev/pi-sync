@@ -99,6 +99,9 @@ class RoomFrame(ctk.CTkFrame):
         dialog.transient(self)
         dialog.grab_set()
 
+        # Center the dialog
+        self.center_dialog(dialog, width=300, height=150)
+
         label = ctk.CTkLabel(dialog, text=f"Room: {room_name}", font=("Arial", 16))
         label.pack(padx=20, pady=20)
 
@@ -112,6 +115,9 @@ class RoomFrame(ctk.CTkFrame):
 
         dialog.transient(self)
         dialog.grab_set()
+
+        # Center the dialog
+        self.center_dialog(dialog, width=300, height=200)
 
         room_name_label = ctk.CTkLabel(dialog, text="Room Name:")
         room_name_label.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="w")
@@ -132,3 +138,17 @@ class RoomFrame(ctk.CTkFrame):
         room_name = room_name_entry.get()
         print(f"Room Name: {room_name}")
         dialog.destroy()
+
+    def center_dialog(self, dialog, width=300, height=200):
+        """Centers the given dialog on the main window."""
+        self.update_idletasks()  # Ensure geometry updates before getting values
+
+        main_x = self.winfo_rootx()
+        main_y = self.winfo_rooty()
+        main_width = self.winfo_width()
+        main_height = self.winfo_height()
+
+        x_offset = main_x + (main_width - width) // 2
+        y_offset = main_y + (main_height - height) // 2
+
+        dialog.geometry(f"{width}x{height}+{x_offset}+{y_offset}")
