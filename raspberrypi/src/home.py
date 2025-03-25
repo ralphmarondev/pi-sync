@@ -72,5 +72,5 @@ class HomeScreen(ctk.CTk):
         self.main_content_frame.show_frame(RoomFrame)
 
 if __name__ == '__main__':
-    app = App()
+    app = HomeScreen()
     app.mainloop()
