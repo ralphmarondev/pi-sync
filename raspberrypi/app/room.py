@@ -6,6 +6,9 @@ import requests
 
 from constants import *
 
+# TODO:
+#   - add refresh button
+#   - implement search
 class RoomFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
