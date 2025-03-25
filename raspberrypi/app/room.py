@@ -122,7 +122,7 @@ class RoomFrame(ctk.CTkFrame):
                            lambda event, room_id=room_id: self.open_room_dialog(room_id))  # Also bind to label
 
     def open_room_dialog(self, room_id):
-        """ Opens a dialog showing the clicked room's name """
+        """ Opens a dialog showing the clicked room's name with state, is active status in a combobox, and action buttons """
         dialog = ctk.CTkToplevel(self)
         dialog.title(f"Room Details - {room_id}")
 
@@ -130,7 +130,7 @@ class RoomFrame(ctk.CTkFrame):
         dialog.grab_set()
 
         # Center the dialog
-        self.center_dialog(dialog, width=300, height=200)
+        self.center_dialog(dialog, width=300, height=250)
 
         # Fetch the room details based on the id
         room_details = self.fetch_room_details(room_id)
@@ -139,19 +139,72 @@ class RoomFrame(ctk.CTkFrame):
             messagebox.showerror('Error', 'Room details are missing the name.')
             return
 
-        # Display room details in the dialog
-        label = ctk.CTkLabel(dialog, text=f"Room: {room_details['name']}", font=("Arial", 16))
-        label.pack(padx=20, pady=20)
+        # Entry for the Room Name
+        room_name_var = ctk.StringVar(value=room_details['name'])
+        room_name_entry = ctk.CTkEntry(dialog, textvariable=room_name_var, font=("Arial", 14))
+        room_name_entry.pack(padx=20, pady=10)
 
-        label_tenant = ctk.CTkLabel(dialog, text=f"Tenants: {room_details['tenant_count']}", font=("Arial", 14))
-        label_tenant.pack(padx=20, pady=10)
+        # Combobox for the state (Open or Closed)
+        state_var = ctk.StringVar(value='Open' if room_details.get('is_open', False) else 'Closed')
+        state_combobox = ctk.CTkComboBox(dialog, values=["Open", "Closed"], variable=state_var, font=("Arial", 14))
+        state_combobox.pack(padx=20, pady=10)
 
-        label_state = ctk.CTkLabel(dialog, text=f"State: {'Open' if room_details['is_open'] else 'Closed'}",
-                                   font=("Arial", 14))
-        label_state.pack(padx=20, pady=10)
+        # Combobox for Is Active (Active or Inactive)
+        active_var = ctk.StringVar(value='Active' if room_details.get('is_active', False) else 'Inactive')
+        active_combobox = ctk.CTkComboBox(dialog, values=["Active", "Inactive"], variable=active_var,
+                                          font=("Arial", 14))
+        active_combobox.pack(padx=20, pady=10)
 
-        close_button = ctk.CTkButton(dialog, text="Close", command=dialog.destroy)
-        close_button.pack(pady=10)
+        # Buttons (Close, Update, Delete) in a row
+        button_frame = ctk.CTkFrame(dialog)
+        button_frame.pack(padx=20, pady=10)
+
+        # Close Button
+        close_button = ctk.CTkButton(button_frame, text="Close", command=dialog.destroy)
+        close_button.grid(row=0, column=0, padx=5)
+
+        # Update Button
+        update_button = ctk.CTkButton(button_frame, text="Update",
+                                      command=lambda: self.update_room(room_id, room_name_var.get(), state_var.get(),
+                                                                       active_var.get(), dialog))
+        update_button.grid(row=0, column=1, padx=5)
+
+        # Delete Button
+        delete_button = ctk.CTkButton(button_frame, text="Delete", command=lambda: self.delete_room(room_id, dialog))
+        delete_button.grid(row=0, column=2, padx=5)
+
+    def update_room(self, room_id, new_name, new_state, new_status, dialog):
+        """ Handle updating the room's name, state, and active status """
+        url = f'{BASE_URL}door/{room_id}/'  # Assuming this is the endpoint for updating room details
+        data = {
+            "name": new_name,
+            "is_open": new_state == 'Open',
+            "is_active": new_status == 'Active'
+        }
+
+        try:
+            response = requests.put(url, json=data)
+            if response.status_code == 200:
+                messagebox.showinfo("Success", "Room details updated successfully.")
+                dialog.destroy()
+            else:
+                messagebox.showerror("Error", f"Failed to update room: {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Network Error", f"Request failed: {e}")
+
+    def delete_room(self, room_id, dialog):
+        """ Handle deleting the room """
+        url = f'{BASE_URL}door/{room_id}/'  # Assuming this is the endpoint for deleting a room
+
+        try:
+            response = requests.delete(url)
+            if response.status_code == 200:
+                messagebox.showinfo("Success", "Room deleted successfully.")
+                dialog.destroy()
+            else:
+                messagebox.showerror("Error", f"Failed to delete room: {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Network Error", f"Request failed: {e}")
 
     def fetch_room_details(self, room_id):
         """ Fetch details for the specific room using its ID """
