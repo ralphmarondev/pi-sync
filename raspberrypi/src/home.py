@@ -47,7 +47,7 @@ class DashboardFrame(ctk.CTkFrame):
         label = ctk.CTkLabel(self, text="Dashboard", font=("Arial", 24))
         label.pack(pady=20)
 
-class App(ctk.CTk):
+class HomeScreen(ctk.CTk):
     def __init__(self):
         super().__init__()
 
