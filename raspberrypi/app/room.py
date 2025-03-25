@@ -122,56 +122,73 @@ class RoomFrame(ctk.CTkFrame):
                            lambda event, room_id=room_id: self.open_room_dialog(room_id))  # Also bind to label
 
     def open_room_dialog(self, room_id):
+        # Fetch the room details based on the id
+        room_details = self.fetch_room_details(room_id)
+
         """ Opens a dialog showing the clicked room's name with state, is active status in a combobox, and action buttons """
         dialog = ctk.CTkToplevel(self)
-        dialog.title(f"Room Details - {room_id}")
+        dialog.title(f"Room Details - {room_details.get('name', room_id)}")
 
         dialog.transient(self)
         dialog.grab_set()
 
         # Center the dialog
-        self.center_dialog(dialog, width=300, height=250)
-
-        # Fetch the room details based on the id
-        room_details = self.fetch_room_details(room_id)
+        self.center_dialog(dialog, width=450, height=250)
 
         if not room_details or 'name' not in room_details:
             messagebox.showerror('Error', 'Room details are missing the name.')
             return
 
-        # Entry for the Room Name
+        # Main Frame for Form (Right side)
+        form_frame = ctk.CTkFrame(dialog)
+        form_frame.pack(side="right", padx=(0, 10), pady=10, fill="both", expand=True)
+
+        # Label and Entry for the Room Name
+        name_label = ctk.CTkLabel(form_frame, text="Room Name", font=("Arial", 14))
+        name_label.grid(row=0, column=0, sticky="w", padx=10, pady=(2, 0))
+
         room_name_var = ctk.StringVar(value=room_details['name'])
-        room_name_entry = ctk.CTkEntry(dialog, textvariable=room_name_var, font=("Arial", 14))
-        room_name_entry.pack(padx=20, pady=10)
+        room_name_entry = ctk.CTkEntry(form_frame, textvariable=room_name_var, font=("Arial", 14), width=240)
+        room_name_entry.grid(row=1, column=0, padx=10, pady=(0, 5), sticky="ew")
 
-        # Combobox for the state (Open or Closed)
+        # Label and Combobox for the State (Open or Closed)
+        state_label = ctk.CTkLabel(form_frame, text="State", font=("Arial", 14))
+        state_label.grid(row=2, column=0, sticky="w", padx=10, pady=(2, 0))
+
         state_var = ctk.StringVar(value='Open' if room_details.get('is_open', False) else 'Closed')
-        state_combobox = ctk.CTkComboBox(dialog, values=["Open", "Closed"], variable=state_var, font=("Arial", 14))
-        state_combobox.pack(padx=20, pady=10)
+        state_combobox = ctk.CTkComboBox(form_frame, values=["Open", "Closed"], variable=state_var, font=("Arial", 14),
+                                         width=180)
+        state_combobox.grid(row=3, column=0, padx=10, pady=(0 ,5), sticky="ew")
 
-        # Combobox for Is Active (Active or Inactive)
+        # Label and Combobox for Is Active (Active or Inactive)
+        active_label = ctk.CTkLabel(form_frame, text="Is Active", font=("Arial", 14))
+        active_label.grid(row=4, column=0, sticky="w", padx=10, pady=(2, 0))
+
         active_var = ctk.StringVar(value='Active' if room_details.get('is_active', False) else 'Inactive')
-        active_combobox = ctk.CTkComboBox(dialog, values=["Active", "Inactive"], variable=active_var,
-                                          font=("Arial", 14))
-        active_combobox.pack(padx=20, pady=10)
+        active_combobox = ctk.CTkComboBox(form_frame, values=["Active", "Inactive"], variable=active_var,
+                                          font=("Arial", 14), width=180)
+        active_combobox.grid(row=5, column=0, padx=10, pady=(0, 5), sticky="ew")
 
-        # Buttons (Close, Update, Delete) in a row
+        # Frame for buttons (aligned vertically on the left side, like a nav bar)
         button_frame = ctk.CTkFrame(dialog)
-        button_frame.pack(padx=20, pady=10)
+        button_frame.pack(side="left", padx=(10, 10), pady=10, fill="y")
 
-        # Close Button
-        close_button = ctk.CTkButton(button_frame, text="Close", command=dialog.destroy)
-        close_button.grid(row=0, column=0, padx=5)
+        # Close Button (with color and increased height)
+        close_button = ctk.CTkButton(button_frame, text="Close", command=dialog.destroy, fg_color="gray",
+                                     hover_color="darkgray", font=("Arial", 14), height=40)
+        close_button.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="ew")
 
-        # Update Button
+        # Update Button (with color and increased height)
         update_button = ctk.CTkButton(button_frame, text="Update",
                                       command=lambda: self.update_room(room_id, room_name_var.get(), state_var.get(),
-                                                                       active_var.get(), dialog))
-        update_button.grid(row=0, column=1, padx=5)
+                                                                       active_var.get(), dialog), fg_color="green",
+                                      hover_color="darkgreen", font=("Arial", 14), height=40)
+        update_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
 
-        # Delete Button
-        delete_button = ctk.CTkButton(button_frame, text="Delete", command=lambda: self.delete_room(room_id, dialog))
-        delete_button.grid(row=0, column=2, padx=5)
+        # Delete Button (with color and increased height)
+        delete_button = ctk.CTkButton(button_frame, text="Delete", command=lambda: self.delete_room(room_id, dialog),
+                                      fg_color="red", hover_color="darkred", font=("Arial", 14), height=40)
+        delete_button.grid(row=2, column=0, padx=10, pady=(5, 10), sticky="ew")
 
     def update_room(self, room_id, new_name, new_state, new_status, dialog):
         """ Handle updating the room's name, state, and active status """
