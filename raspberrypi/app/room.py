@@ -72,6 +72,7 @@ class RoomFrame(ctk.CTkFrame):
                         door['tenant_count'],
                         'Yes' if door['is_active'] else 'No',
                         'Open' if door['is_open'] else 'Closed',
+                        door['id']
                     ]
                     for door in data
                 ]
@@ -108,8 +109,9 @@ class RoomFrame(ctk.CTkFrame):
         for row, entry in enumerate(self.data, start=1):
             bg_color = self.row_colors[row % 2]  # Alternate row colors
             room_name = entry[0]  # Room name (first column)
+            room_id = entry[4]  # store but not displaying
 
-            for col, value in enumerate(entry):
+            for col, value in enumerate(entry[:4]):
                 cell = ctk.CTkFrame(self.table_frame, fg_color=bg_color, corner_radius=10)  # Rounded cell
                 cell.grid(row=row, column=col, padx=3, pady=3, sticky="nsew")
                 cell.bind("<Button-1>", lambda event, name=room_name: self.open_room_dialog(name))  # Bind click event
@@ -117,24 +119,53 @@ class RoomFrame(ctk.CTkFrame):
                 label = ctk.CTkLabel(cell, text=value, font=("Arial", 14), text_color="black")
                 label.pack(padx=10, pady=5, fill="both", expand=True)  # Fill entire cell
                 label.bind("<Button-1>",
-                           lambda event, name=room_name: self.open_room_dialog(name))  # Also bind to label
+                           lambda event, room_id=room_id: self.open_room_dialog(room_id))  # Also bind to label
 
-    def open_room_dialog(self, room_name):
+    def open_room_dialog(self, room_id):
         """ Opens a dialog showing the clicked room's name """
         dialog = ctk.CTkToplevel(self)
-        dialog.title(f"Room Details - {room_name}")
+        dialog.title(f"Room Details - {room_id}")
 
         dialog.transient(self)
         dialog.grab_set()
 
         # Center the dialog
-        self.center_dialog(dialog, width=300, height=150)
+        self.center_dialog(dialog, width=300, height=200)
 
-        label = ctk.CTkLabel(dialog, text=f"Room: {room_name}", font=("Arial", 16))
+        # Fetch the room details based on the id
+        room_details = self.fetch_room_details(room_id)
+
+        if not room_details or 'name' not in room_details:
+            messagebox.showerror('Error', 'Room details are missing the name.')
+            return
+
+        # Display room details in the dialog
+        label = ctk.CTkLabel(dialog, text=f"Room: {room_details['name']}", font=("Arial", 16))
         label.pack(padx=20, pady=20)
+
+        label_tenant = ctk.CTkLabel(dialog, text=f"Tenants: {room_details['tenant_count']}", font=("Arial", 14))
+        label_tenant.pack(padx=20, pady=10)
+
+        label_state = ctk.CTkLabel(dialog, text=f"State: {'Open' if room_details['is_open'] else 'Closed'}",
+                                   font=("Arial", 14))
+        label_state.pack(padx=20, pady=10)
 
         close_button = ctk.CTkButton(dialog, text="Close", command=dialog.destroy)
         close_button.pack(pady=10)
+
+    def fetch_room_details(self, room_id):
+        """ Fetch details for the specific room using its ID """
+        url = f'{BASE_URL}door/{room_id}/'  # Assuming this is the endpoint to fetch details by ID
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                return response.json()  # Return room details as a dictionary
+            else:
+                messagebox.showerror('Error', f"Failed to fetch room details: {response.status_code}")
+                return {}
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror('Network Error', f'Request failed: {e}')
+            return {}
 
     def open_new_room_dialog(self):
         """Opens a dialog to create a new room."""
