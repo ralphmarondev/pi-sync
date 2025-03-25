@@ -46,12 +46,8 @@ class RoomFrame(ctk.CTkFrame):
             # Also bind the label in case user clicks directly on text
             label.bind("<Button-1>", lambda event, col=col: self.sort_table(col))
 
-        # Sample Data
-        self.data = [
-            ["Room 101", "4", "Yes", "Open"],
-            ["Room 102", "3", "No", "Close"],
-            ["Room 103", "1", "Yes", "Close"],
-        ]
+        # Fetch data from API
+        self.data = self.fetch_data_from_api()
 
         self.row_colors = ["#ffffff", "#f8f9fa"]  # Alternating soft white and light gray
         self.display_table()
@@ -59,6 +55,29 @@ class RoomFrame(ctk.CTkFrame):
         # Adjust column weights
         for col in range(len(self.headers)):
             self.table_frame.columnconfigure(col, weight=1)
+
+    def fetch_data_from_api(self):
+        url = f'{BASE_URL}doors/'
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                data = response.json()
+                # format according to table columns
+                return [
+                    [
+                        door['name'],
+                        door['id'],
+                        'Yes' if door['is_active'] else 'No',
+                        'Open' if door['is_open'] else 'Closed',
+                    ]
+                    for door in data
+                ]
+            else:
+                print(f'Error: {response.status_code}, {response.json()}')
+                return []
+        except requests.exceptions.RequestException as e:
+            print(f'Request failed: {e}')
+            return []
 
     def sort_table(self, column_index):
         # Toggle sorting order for the clicked column
