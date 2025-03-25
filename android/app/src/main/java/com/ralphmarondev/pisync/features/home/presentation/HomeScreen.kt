@@ -1,78 +1,75 @@
 package com.ralphmarondev.pisync.features.home.presentation
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ralphmarondev.pisync.features.home.presentation.components.DoorList
-import com.ralphmarondev.pisync.features.home.presentation.components.GreetingsCard
-import com.ralphmarondev.pisync.features.home.presentation.components.HomeTopBar
+import com.ralphmarondev.pisync.R
+import com.ralphmarondev.pisync.core.util.LocalThemeState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    darkTheme: Boolean,
-    toggleDarkTheme: () -> Unit
-) {
-    val viewModel: HomeViewModel = viewModel()
-    val user by viewModel.user.collectAsState()
+fun HomeScreen() {
+    val themeState = LocalThemeState.current
 
     Scaffold(
         topBar = {
-            HomeTopBar(
-                darkTheme = darkTheme,
-                toggleDarkTheme = toggleDarkTheme
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.app_name)
+                    )
+                },
+                actions = {
+                    IconButton(
+                        onClick = themeState::toggleTheme
+                    ) {
+                        val imageVector =
+                            if (themeState.darkTheme.value) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
+                        Icon(
+                            imageVector = imageVector,
+                            contentDescription = "Theme toggle"
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                )
             )
         }
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
+            contentAlignment = Alignment.Center
         ) {
-
-            user?.let { u ->
-                GreetingsCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    fullName = "${u.firstName} ${u.lastName}",
-                    role = if (u.isSuperuser) "Superuser" else "User"
-                )
-            } ?: run {
-                GreetingsCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    fullName = "Loading...",
-                    role = "Loading..."
-                )
-            }
-
             Text(
-                text = "Registered doors",
-                fontSize = 18.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.W500,
+                text = "Hello there, Ralph Maron Eda is here!",
+                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                fontSize = MaterialTheme.typography.titleLarge.fontSize,
                 color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                modifier = Modifier.padding(16.dp),
+                textAlign = TextAlign.Center
             )
-
-            DoorList(viewModel = viewModel)
         }
     }
 }

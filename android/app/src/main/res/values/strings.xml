@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">PiSync</string>
-
     <!--onboarding-->
     <string name="page1_title">Welcome to Smart Door!</string>
     <string name="page1_description">Access control made simple and secure.</string>
@@ -13,5 +12,4 @@
 
     <!--about-->
     <string name="project_overview">Thesis project designed to revolutionize access control in condominiums by integrating modern technologies with centralized management. The system features a Raspberry Pi 5 as the core, syncing mobile, web, and desktop platforms for seamless door management and access tracking.</string>
-
 </resources>
