@@ -1,8 +1,10 @@
 import threading
+from tkinter import messagebox
 
 import customtkinter as ctk
 import requests
-from tkinter import messagebox
+
+from constants import *
 
 class RoomFrame(ctk.CTkFrame):
     def __init__(self, master):
@@ -145,7 +147,7 @@ class RoomFrame(ctk.CTkFrame):
         def post_room_data():
             try:
                 data = {'name': room_name}
-                url = 'http://127.0.0.1:8000/api/door/new/'
+                url = f'{BASE_URL}door/new/'
                 response = requests.post(url, data=data)
 
                 if response.status_code == 201:  # created
