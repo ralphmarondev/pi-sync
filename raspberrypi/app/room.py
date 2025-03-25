@@ -192,7 +192,7 @@ class RoomFrame(ctk.CTkFrame):
 
     def update_room(self, room_id, new_name, new_state, new_status, dialog):
         """ Handle updating the room's name, state, and active status """
-        url = f'{BASE_URL}door/{room_id}/'  # Assuming this is the endpoint for updating room details
+        url = f'{BASE_URL}door/update/{room_id}/'  # Assuming this is the endpoint for updating room details
         data = {
             "name": new_name,
             "is_open": new_state == 'Open',
@@ -204,6 +204,7 @@ class RoomFrame(ctk.CTkFrame):
             if response.status_code == 200:
                 messagebox.showinfo("Success", "Room details updated successfully.")
                 dialog.destroy()
+                self.fetch_data_from_api()
             else:
                 messagebox.showerror("Error", f"Failed to update room: {response.status_code}")
         except requests.exceptions.RequestException as e:
@@ -211,13 +212,17 @@ class RoomFrame(ctk.CTkFrame):
 
     def delete_room(self, room_id, dialog):
         """ Handle deleting the room """
-        url = f'{BASE_URL}door/{room_id}/'  # Assuming this is the endpoint for deleting a room
+        url = f'{BASE_URL}door/delete/{room_id}/'  # Assuming this is the endpoint for deleting a room
+        data = {
+            "is_deleted": True
+        }
 
         try:
-            response = requests.delete(url)
+            response = requests.put(url, json=data)
             if response.status_code == 200:
                 messagebox.showinfo("Success", "Room deleted successfully.")
                 dialog.destroy()
+                self.fetch_data_from_api()
             else:
                 messagebox.showerror("Error", f"Failed to delete room: {response.status_code}")
         except requests.exceptions.RequestException as e:
