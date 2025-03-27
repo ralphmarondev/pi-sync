@@ -1,75 +1,96 @@
 package com.ralphmarondev.pisync.features.home.presentation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import com.ralphmarondev.pisync.R
-import com.ralphmarondev.pisync.core.util.LocalThemeState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
+import com.ralphmarondev.pisync.features.history.presentation.HistoryScreen
+import com.ralphmarondev.pisync.features.overview.presentation.OverviewScreen
+import com.ralphmarondev.pisync.features.settings.presentation.SettingScreen
+import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen() {
-    val themeState = LocalThemeState.current
+    val viewModel: HomeViewModel = koinViewModel()
+    val selectedIndex = viewModel.selectedIndex.collectAsState().value
+    val navItems = listOf(
+        NavItems(
+            label = "Home",
+            selectedIcon = Icons.Filled.Home,
+            defaultIcon = Icons.Outlined.Home,
+            onClick = { viewModel.onSelectedIndexValueChange(0) }
+        ),
+        NavItems(
+            label = "History",
+            selectedIcon = Icons.Filled.History,
+            defaultIcon = Icons.Outlined.History,
+            onClick = { viewModel.onSelectedIndexValueChange(1) }
+        ),
+        NavItems(
+            label = "Settings",
+            selectedIcon = Icons.Filled.Settings,
+            defaultIcon = Icons.Outlined.Settings,
+            onClick = { viewModel.onSelectedIndexValueChange(2) }
+        )
+    )
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.app_name)
+        bottomBar = {
+            NavigationBar {
+                navItems.forEachIndexed { index, navItems ->
+                    NavigationBarItem(
+                        selected = index == selectedIndex,
+                        icon = {
+                            val imageVector = if (index == selectedIndex) {
+                                navItems.selectedIcon
+                            } else {
+                                navItems.defaultIcon
+                            }
+                            Icon(
+                                imageVector = imageVector,
+                                contentDescription = navItems.label
+                            )
+                        },
+                        onClick = navItems.onClick,
+                        label = {
+                            Text(
+                                text = navItems.label,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                        }
                     )
-                },
-                actions = {
-                    IconButton(
-                        onClick = themeState::toggleTheme
-                    ) {
-                        val imageVector =
-                            if (themeState.darkTheme.value) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
-                        Icon(
-                            imageVector = imageVector,
-                            contentDescription = "Theme toggle"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
+                }
+            }
         }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Hello there, Ralph Maron Eda is here!",
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(16.dp),
-                textAlign = TextAlign.Center
-            )
+    ) {
+        when (selectedIndex) {
+            0 -> OverviewScreen()
+            1 -> HistoryScreen()
+            2 -> SettingScreen()
         }
     }
 }
+
+private data class NavItems(
+    val label: String,
+    val selectedIcon: ImageVector,
+    val defaultIcon: ImageVector,
+    val onClick: () -> Unit
+)
