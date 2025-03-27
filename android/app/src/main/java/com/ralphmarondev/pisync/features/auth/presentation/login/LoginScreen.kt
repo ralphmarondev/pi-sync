@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.auth.presentation.login
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,6 +68,12 @@ fun LoginScreen(
 
     val focusManager = LocalFocusManager.current
     val themeState = LocalThemeState.current
+
+    LaunchedEffect(response) {
+        if (response.success) {
+            onLoginSuccessful()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -193,7 +201,20 @@ fun LoginScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
+                    AnimatedVisibility(!response.success) {
+                        Text(
+                            text = response.message,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W400,
+                            color = MaterialTheme.colorScheme.error,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
 
                     Button(
                         onClick = {
