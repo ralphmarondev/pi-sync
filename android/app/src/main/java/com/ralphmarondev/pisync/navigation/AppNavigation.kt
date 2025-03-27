@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.pisync.core.util.LocalThemeState
+import com.ralphmarondev.pisync.features.auth.presentation.login.LoginScreen
 import com.ralphmarondev.pisync.features.home.presentation.HomeScreen
 import com.ralphmarondev.pisync.ui.theme.PiSyncTheme
 
@@ -22,8 +23,18 @@ fun AppNavigation(
     ) {
         NavHost(
             navController = navController,
-            startDestination = Routes.Home
+            startDestination = Routes.Login
         ) {
+            composable<Routes.Login> {
+                LoginScreen(
+                    onLoginSuccessful = {
+                        navController.navigate(Routes.Home) {
+                            popUpTo<Routes.Login> { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
+            }
             composable<Routes.Home> {
                 HomeScreen()
             }
