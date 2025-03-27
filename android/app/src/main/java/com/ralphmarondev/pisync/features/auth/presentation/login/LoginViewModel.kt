@@ -1,42 +1,39 @@
 package com.ralphmarondev.pisync.features.auth.presentation.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.pisync.features.auth.domain.model.Result
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-
+    private val preferences: AppPreferences
 ) : ViewModel() {
 
     private val _username = MutableStateFlow("")
-    val username: StateFlow<String> get() = _username
+    val username = _username.asStateFlow()
 
     private val _password = MutableStateFlow("")
-    val password: StateFlow<String> get() = _password
+    val password = _password.asStateFlow()
 
-    private val _rememberMe = MutableStateFlow(true)
-    val rememberMe: StateFlow<Boolean> get() = _rememberMe
+    private val _rememberMe = MutableStateFlow(preferences.isRememberMeChecked())
+    val rememberMe = _rememberMe.asStateFlow()
 
     private val _showForgotPasswordDialog = MutableStateFlow(false)
-    val showForgotPasswordDialog: StateFlow<Boolean> get() = _showForgotPasswordDialog
+    val showForgotPasswordDialog = _showForgotPasswordDialog.asStateFlow()
 
     private val _showSetupIpDialog = MutableStateFlow(false)
-    val showSetupIpDialog: StateFlow<Boolean> get() = _showSetupIpDialog
+    val showSetupIpDialog = _showSetupIpDialog.asStateFlow()
 
     private val _response = MutableStateFlow(Result())
-    val response: StateFlow<Result> get() = _response
+    val response = _response.asStateFlow()
 
     private val _passwordHint = MutableStateFlow("")
     val passwordHint = _passwordHint.asStateFlow()
 
-    private fun getPasswordHint() {
-        viewModelScope.launch {
-        }
-    }
 
     fun onUsernameChange(value: String) {
         _username.value = value
@@ -47,11 +44,11 @@ class LoginViewModel(
     }
 
     fun toggleRememberMe() {
-
+        _rememberMe.value = !_rememberMe.value
+        preferences.setRememberMe()
     }
 
     fun toggleForgotPasswordDialog() {
-        getPasswordHint()
         _showForgotPasswordDialog.value = !_showForgotPasswordDialog.value
     }
 
@@ -61,13 +58,41 @@ class LoginViewModel(
 
     fun login() {
         viewModelScope.launch {
+            val username = _username.value.trim()
+            val password = _password.value.trim()
 
+            if (username.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Username cannot be empty"
+                )
+                return@launch
+            }
+            if (password.isEmpty()) {
+                _response.value = Result(
+                    success = false,
+                    message = "Password cannot be empty"
+                )
+                return@launch
+            }
+
+            if (username == "ralphmaron" && password == "iscute") {
+                _response.value = Result(
+                    success = true,
+                    message = "Login successful"
+                )
+            } else {
+                _response.value = Result(
+                    success = false,
+                    message = "Invalid credentials. Please try again."
+                )
+            }
         }
     }
 
     fun saveServerIpAddress(ipAddress: String) {
         viewModelScope.launch {
-
+            Log.d("App", "New ip address: $ipAddress")
         }
     }
 }
