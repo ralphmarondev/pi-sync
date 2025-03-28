@@ -1,11 +1,16 @@
 package com.ralphmarondev.pisync.features.history.presentation
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DarkMode
-import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -15,16 +20,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.ralphmarondev.pisync.core.util.LocalThemeState
+import com.ralphmarondev.pisync.features.history.presentation.components.HistoryCard
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen() {
-    val themeState = LocalThemeState.current
+    val viewModel: HistoryViewModel = koinViewModel()
+    val history = viewModel.history.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -36,13 +44,11 @@ fun HistoryScreen() {
                 },
                 actions = {
                     IconButton(
-                        onClick = themeState::toggleTheme
+                        onClick = {}
                     ) {
-                        val imageVector =
-                            if (themeState.darkTheme.value) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
                         Icon(
-                            imageVector = imageVector,
-                            contentDescription = "Theme toggle"
+                            imageVector = Icons.Outlined.Refresh,
+                            contentDescription = "Refresh history"
                         )
                     }
                 },
@@ -54,20 +60,34 @@ fun HistoryScreen() {
             )
         }
     ) { innerPadding ->
-        Box(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentAlignment = Alignment.Center
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            Text(
-                text = "Hello there, Ralph Maron Eda is here!",
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(16.dp),
-                textAlign = TextAlign.Center
-            )
+            item { Spacer(modifier = Modifier.height(0.dp)) }
+            item {
+                AnimatedVisibility(history.isEmpty()) {
+                    Text(
+                        text = "History is empty!",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+            items(history.size) { index ->
+                HistoryCard(
+                    history = history[index],
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+            item { Spacer(modifier = Modifier.height(100.dp)) }
         }
     }
 }
