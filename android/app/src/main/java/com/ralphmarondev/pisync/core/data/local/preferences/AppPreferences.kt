@@ -2,6 +2,7 @@ package com.ralphmarondev.pisync.core.data.local.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 class AppPreferences(context: Context) {
     companion object {
@@ -9,12 +10,10 @@ class AppPreferences(context: Context) {
         private const val FIRST_LAUNCH = "first_launch"
         private const val DARK_THEME = "dark_theme"
         private const val REMEMBER_ME = "remember_me"
-        private const val CURRENT_USER_USERNAME = "current_user_username"
-        private const val CURRENT_USER_PASSWORD = "current_user_password"
+        private const val SAVED_USERNAME = "saved_username"
+        private const val SAVED_PASSWORD = "saved_password"
         private const val IP_ADDRESS = "ip_address"
-
-        // This is used to get the information about the currently logged in user :>
-        private const val ACTIVE_USER_USERNAME = "active_user_username"
+        private const val CURRENT_USERNAME = "current_username"
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
@@ -22,7 +21,7 @@ class AppPreferences(context: Context) {
     )
 
     fun saveIpAddress(value: String) {
-        sharedPreferences.edit().putString(IP_ADDRESS, value).apply()
+        sharedPreferences.edit { putString(IP_ADDRESS, value) }
     }
 
     fun getIpAddress(): String? {
@@ -34,7 +33,7 @@ class AppPreferences(context: Context) {
     }
 
     fun setFirstLaunch() {
-        sharedPreferences.edit().putBoolean(FIRST_LAUNCH, false).apply()
+        sharedPreferences.edit { putBoolean(FIRST_LAUNCH, false) }
     }
 
     fun isDarkTheme(): Boolean {
@@ -42,7 +41,7 @@ class AppPreferences(context: Context) {
     }
 
     fun setDarkTheme() {
-        sharedPreferences.edit().putBoolean(DARK_THEME, !isDarkTheme()).apply()
+        sharedPreferences.edit { putBoolean(DARK_THEME, !isDarkTheme()) }
     }
 
     fun isRememberMeChecked(): Boolean {
@@ -50,30 +49,30 @@ class AppPreferences(context: Context) {
     }
 
     fun setRememberMe() {
-        sharedPreferences.edit().putBoolean(REMEMBER_ME, !isRememberMeChecked()).apply()
+        sharedPreferences.edit { putBoolean(REMEMBER_ME, !isRememberMeChecked()) }
     }
 
     fun setUsernameToRemember(value: String) {
-        sharedPreferences.edit().putString(CURRENT_USER_USERNAME, value).apply()
+        sharedPreferences.edit { putString(SAVED_USERNAME, value) }
     }
 
     fun getRememberedUsername(): String? {
-        return sharedPreferences.getString(CURRENT_USER_USERNAME, null)
+        return sharedPreferences.getString(SAVED_USERNAME, null)
     }
 
     fun setPasswordToRemember(value: String) {
-        sharedPreferences.edit().putString(CURRENT_USER_PASSWORD, value).apply()
+        sharedPreferences.edit { putString(SAVED_PASSWORD, value) }
     }
 
     fun getRememberedPassword(): String? {
-        return sharedPreferences.getString(CURRENT_USER_PASSWORD, null)
+        return sharedPreferences.getString(SAVED_PASSWORD, null)
     }
 
-    fun setActiveUserUsername(value: String) {
-        sharedPreferences.edit().putString(ACTIVE_USER_USERNAME, value).apply()
+    fun setCurrentUser(value: String) {
+        sharedPreferences.edit { putString(CURRENT_USERNAME, value) }
     }
 
-    fun getActiveUserUsername(): String? {
-        return sharedPreferences.getString(ACTIVE_USER_USERNAME, null)
+    fun getCurrentUser(): String? {
+        return sharedPreferences.getString(CURRENT_USERNAME, null)
     }
 }

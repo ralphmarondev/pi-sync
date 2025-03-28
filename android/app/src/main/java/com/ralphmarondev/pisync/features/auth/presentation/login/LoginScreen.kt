@@ -207,7 +207,7 @@ fun LoginScreen(
                             text = response.message,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.W400,
-                            color = MaterialTheme.colorScheme.error,
+                            color = if (response.success) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier

@@ -13,10 +13,10 @@ class LoginViewModel(
     private val preferences: AppPreferences
 ) : ViewModel() {
 
-    private val _username = MutableStateFlow("")
+    private val _username = MutableStateFlow(preferences.getRememberedUsername() ?: "")
     val username = _username.asStateFlow()
 
-    private val _password = MutableStateFlow("")
+    private val _password = MutableStateFlow(preferences.getRememberedPassword() ?: "")
     val password = _password.asStateFlow()
 
     private val _rememberMe = MutableStateFlow(preferences.isRememberMeChecked())
@@ -81,6 +81,11 @@ class LoginViewModel(
                     success = true,
                     message = "Login successful"
                 )
+                if (_rememberMe.value) {
+                    preferences.setUsernameToRemember(username)
+                    preferences.setPasswordToRemember(password)
+                }
+                preferences.setCurrentUser(username)
             } else {
                 _response.value = Result(
                     success = false,
