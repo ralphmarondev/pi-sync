@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import com.ralphmarondev.pisync.features.history.presentation.HistoryScreen
 import com.ralphmarondev.pisync.features.overview.presentation.OverviewScreen
-import com.ralphmarondev.pisync.features.settings.presentation.SettingScreen
+import com.ralphmarondev.pisync.features.settings.presentation.overview.SettingScreen
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -83,7 +83,9 @@ fun HomeScreen() {
         when (selectedIndex) {
             0 -> OverviewScreen()
             1 -> HistoryScreen()
-            2 -> SettingScreen()
+            2 -> SettingScreen(
+                logout = {}
+            )
         }
     }
 }
