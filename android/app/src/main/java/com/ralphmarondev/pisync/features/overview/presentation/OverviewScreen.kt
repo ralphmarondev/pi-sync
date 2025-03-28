@@ -1,8 +1,14 @@
 package com.ralphmarondev.pisync.features.overview.presentation
 
-import androidx.compose.foundation.layout.Box
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
@@ -15,18 +21,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ralphmarondev.pisync.R
 import com.ralphmarondev.pisync.core.util.LocalThemeState
+import com.ralphmarondev.pisync.features.overview.presentation.components.DoorCard
+import com.ralphmarondev.pisync.features.overview.presentation.components.GreetingsCard
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OverviewScreen() {
     val themeState = LocalThemeState.current
+    val viewModel: OverviewViewModel = koinViewModel()
+    val doors = viewModel.doors.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -56,20 +66,50 @@ fun OverviewScreen() {
             )
         }
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-            contentAlignment = Alignment.Center
+                .padding(innerPadding)
         ) {
-            Text(
-                text = "Hello there, Ralph Maron Eda is here!",
-                fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(16.dp),
-                textAlign = TextAlign.Center
+            GreetingsCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                fullName = "Ralph Maron Eda",
+                email = "edaralphmaron@gmail.com"
             )
+
+            Text(
+                text = "Doors",
+                fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(doors.size) { index ->
+                    DoorCard(
+                        checked = doors[index].status,
+                        toggleChecked = {
+                            Log.d(
+                                "App",
+                                "Setting status of ${doors[index].name} to ${!doors[index].status}"
+                            )
+                        },
+                        label = doors[index].name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
+            }
         }
     }
 }
