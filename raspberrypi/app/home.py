@@ -2,6 +2,7 @@ import customtkinter as ctk
 
 from room import RoomFrame
 
+
 class NavigationFrame(ctk.CTkFrame):
     def __init__(self, master, main_content):
         super().__init__(master, width=200)
@@ -21,6 +22,7 @@ class NavigationFrame(ctk.CTkFrame):
     def show_room(self):
         self.main_content.show_frame(RoomFrame)
 
+
 class MainContentFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
@@ -35,17 +37,22 @@ class MainContentFrame(ctk.CTkFrame):
         if self.current_frame:
             self.current_frame.grid_forget()  # hide current frame
 
-        if frame_class not in self.frames:
+        # Always recreate RoomFrame to refresh its data
+        if frame_class == RoomFrame:
+            self.frames[frame_class] = frame_class(self)
+        elif frame_class not in self.frames:
             self.frames[frame_class] = frame_class(self)  # create if not exists
 
         self.current_frame = self.frames[frame_class]
         self.current_frame.grid(row=0, column=0, sticky='nsew')
+
 
 class DashboardFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
         label = ctk.CTkLabel(self, text="Dashboard", font=("Arial", 24))
         label.pack(pady=20)
+
 
 class HomeScreen(ctk.CTk):
     def __init__(self):
@@ -70,6 +77,7 @@ class HomeScreen(ctk.CTk):
 
         # show dashboard by default
         self.main_content_frame.show_frame(RoomFrame)
+
 
 if __name__ == '__main__':
     app = HomeScreen()

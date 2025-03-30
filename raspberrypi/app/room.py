@@ -6,6 +6,7 @@ import requests
 
 from constants import *
 
+
 # TODO:
 #   - add refresh button
 #   - implement search
@@ -161,7 +162,7 @@ class RoomFrame(ctk.CTkFrame):
         state_var = ctk.StringVar(value='Open' if room_details.get('is_open', False) else 'Closed')
         state_combobox = ctk.CTkComboBox(form_frame, values=["Open", "Closed"], variable=state_var, font=("Arial", 14),
                                          width=180)
-        state_combobox.grid(row=3, column=0, padx=10, pady=(0 ,5), sticky="ew")
+        state_combobox.grid(row=3, column=0, padx=10, pady=(0, 5), sticky="ew")
 
         # Label and Combobox for Is Active (Active or Inactive)
         active_label = ctk.CTkLabel(form_frame, text="Is Active", font=("Arial", 14))
