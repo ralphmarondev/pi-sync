@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from room import RoomFrame
+from tenants import TenantsFrame
 
 
 class NavigationFrame(ctk.CTkFrame):
@@ -16,11 +17,17 @@ class NavigationFrame(ctk.CTkFrame):
         self.room_button = ctk.CTkButton(self, text='R O O M', width=180, height=50, command=self.show_room)
         self.room_button.grid(row=1, column=0, padx=10, pady=(10, 0), sticky='w')
 
+        self.tenant_button = ctk.CTkButton(self, text='T E N A N T', width=180, height=50, command=self.show_tenant)
+        self.tenant_button.grid(row=2, column=0, padx=10, pady=(10, 0), sticky='w')
+
     def show_dashboard(self):
         self.main_content.show_frame(DashboardFrame)
 
     def show_room(self):
         self.main_content.show_frame(RoomFrame)
+
+    def show_tenant(self):
+        self.main_content.show_frame(TenantsFrame)
 
 
 class MainContentFrame(ctk.CTkFrame):
@@ -38,8 +45,8 @@ class MainContentFrame(ctk.CTkFrame):
             self.current_frame.grid_forget()  # hide current frame
 
         # Always recreate RoomFrame to refresh its data
-        if frame_class == RoomFrame:
-            self.frames[frame_class] = frame_class(self)
+        if frame_class in (RoomFrame, TenantsFrame):
+            self.frames[frame_class] = frame_class(self)  # recreate to refresh data everytime
         elif frame_class not in self.frames:
             self.frames[frame_class] = frame_class(self)  # create if not exists
 
