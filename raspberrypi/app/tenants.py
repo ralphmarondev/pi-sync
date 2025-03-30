@@ -23,9 +23,9 @@ class TenantsFrame(ctk.CTkFrame):
         self.search_entry = ctk.CTkEntry(search_frame, placeholder_text="Search Tenants...", width=200)
         self.search_entry.grid(row=0, column=0, padx=10, pady=5, sticky="ew")
 
-        self.new_room_button = ctk.CTkButton(search_frame, text="New Tenant", width=120, height=30,
-                                             command=self.open_new_tenant_dialog)
-        self.new_room_button.grid(row=0, column=1, padx=10, pady=5, sticky='e')
+        self.new_tenant_button = ctk.CTkButton(search_frame, text="New Tenant", width=120, height=30,
+                                               command=self.open_new_tenant_dialog)
+        self.new_tenant_button.grid(row=0, column=1, padx=10, pady=5, sticky='e')
 
         # Table Frame (Soft Background)
         self.table_frame = ctk.CTkFrame(self, fg_color="#f4f4f4", corner_radius=10)  # Light gray background
@@ -113,26 +113,26 @@ class TenantsFrame(ctk.CTkFrame):
         # Display sorted data
         for row, entry in enumerate(self.data, start=1):
             bg_color = self.row_colors[row % 2]  # Alternate row colors
-            room_name = entry[0]  # Room name (first column)
-            room_id = entry[3]  # store but not displaying
+            tenant_name = entry[0]
+            tenant_id = entry[3]
 
             for col, value in enumerate(entry[:3]):
                 cell = ctk.CTkFrame(self.table_frame, fg_color=bg_color, corner_radius=10)  # Rounded cell
                 cell.grid(row=row, column=col, padx=3, pady=3, sticky="nsew")
-                cell.bind("<Button-1>", lambda event, name=room_name: self.open_tenant_dialog(name))  # Bind click event
+                cell.bind("<Button-1>",
+                          lambda event, name=tenant_name: self.open_tenant_dialog(name))  # Bind click event
 
                 label = ctk.CTkLabel(cell, text=value, font=("Arial", 14), text_color="black")
                 label.pack(padx=10, pady=5, fill="both", expand=True)  # Fill entire cell
                 label.bind("<Button-1>",
-                           lambda event, room_id=room_id: self.open_tenant_dialog(room_id))  # Also bind to label
+                           lambda event, tenant_id=tenant_id: self.open_tenant_dialog(tenant_id))  # Also bind to label
 
-    def open_tenant_dialog(self, room_id):
-        # Fetch the room details based on the id
-        room_details = self.fetch_tenant_details(room_id)
+    def open_tenant_dialog(self, tenant_id):
+        tenant_details = self.fetch_tenant_details(tenant_id)
+        print(tenant_details)
 
-        """ Opens a dialog showing the clicked room's name with state, is active status in a combobox, and action buttons """
         dialog = ctk.CTkToplevel(self)
-        dialog.title(f"Room Details - {room_details.get('name', room_id)}")
+        dialog.title(f"Tenant Details - {tenant_details.get('first_name', tenant_id)}")
 
         dialog.transient(self)
         dialog.grab_set()
@@ -140,39 +140,29 @@ class TenantsFrame(ctk.CTkFrame):
         # Center the dialog
         self.center_dialog(dialog, width=450, height=250)
 
-        if not room_details or 'name' not in room_details:
-            messagebox.showerror('Error', 'Room details are missing the name.')
+        if not tenant_details or 'username' not in tenant_details:
+            messagebox.showerror('Error', 'Tenant details are missing the name.')
             return
 
         # Main Frame for Form (Right side)
         form_frame = ctk.CTkFrame(dialog)
         form_frame.pack(side="right", padx=(0, 10), pady=10, fill="both", expand=True)
 
-        # Label and Entry for the Room Name
-        name_label = ctk.CTkLabel(form_frame, text="Room Name", font=("Arial", 14))
+        # Label and Entry for the Tenant Name
+        name_label = ctk.CTkLabel(form_frame, text="Tenant Name", font=("Arial", 14))
         name_label.grid(row=0, column=0, sticky="w", padx=10, pady=(2, 0))
 
-        room_name_var = ctk.StringVar(value=room_details['name'])
-        room_name_entry = ctk.CTkEntry(form_frame, textvariable=room_name_var, font=("Arial", 14), width=240)
-        room_name_entry.grid(row=1, column=0, padx=10, pady=(0, 5), sticky="ew")
+        tenant_name_var = ctk.StringVar(value=tenant_details['first_name'])
+        tenant_name_entry = ctk.CTkEntry(form_frame, textvariable=tenant_name_var, font=("Arial", 14), width=240)
+        tenant_name_entry.grid(row=1, column=0, padx=10, pady=(0, 5), sticky="ew")
 
-        # Label and Combobox for the State (Open or Closed)
-        state_label = ctk.CTkLabel(form_frame, text="State", font=("Arial", 14))
-        state_label.grid(row=2, column=0, sticky="w", padx=10, pady=(2, 0))
+        username_label = ctk.CTkLabel(form_frame, text="Tenant Username", font=("Arial", 14))
+        username_label.grid(row=0, column=0, sticky="w", padx=10, pady=(2, 0))
 
-        state_var = ctk.StringVar(value='Open' if room_details.get('is_open', False) else 'Closed')
-        state_combobox = ctk.CTkComboBox(form_frame, values=["Open", "Closed"], variable=state_var, font=("Arial", 14),
-                                         width=180)
-        state_combobox.grid(row=3, column=0, padx=10, pady=(0, 5), sticky="ew")
-
-        # Label and Combobox for Is Active (Active or Inactive)
-        active_label = ctk.CTkLabel(form_frame, text="Is Active", font=("Arial", 14))
-        active_label.grid(row=4, column=0, sticky="w", padx=10, pady=(2, 0))
-
-        active_var = ctk.StringVar(value='Active' if room_details.get('is_active', False) else 'Inactive')
-        active_combobox = ctk.CTkComboBox(form_frame, values=["Active", "Inactive"], variable=active_var,
-                                          font=("Arial", 14), width=180)
-        active_combobox.grid(row=5, column=0, padx=10, pady=(0, 5), sticky="ew")
+        tenant_username_var = ctk.StringVar(value=tenant_details['username'])
+        tenant_username_entry = ctk.CTkEntry(form_frame, textvariable=tenant_username_var, font=("Arial", 14),
+                                             width=240)
+        tenant_username_entry.grid(row=1, column=0, padx=10, pady=(0, 5), sticky="ew")
 
         # Frame for buttons (aligned vertically on the left side, like a nav bar)
         button_frame = ctk.CTkFrame(dialog)
@@ -185,13 +175,15 @@ class TenantsFrame(ctk.CTkFrame):
 
         # Update Button (with color and increased height)
         update_button = ctk.CTkButton(button_frame, text="Update",
-                                      command=lambda: self.update_tenant(room_id, room_name_var.get(), state_var.get(),
+                                      command=lambda: self.update_tenant(tenant_id, tenant_name_var.get(),
+                                                                         state_var.get(),
                                                                          active_var.get(), dialog), fg_color="green",
                                       hover_color="darkgreen", font=("Arial", 14), height=40)
         update_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
 
         # Delete Button (with color and increased height)
-        delete_button = ctk.CTkButton(button_frame, text="Delete", command=lambda: self.delete_tenant(room_id, dialog),
+        delete_button = ctk.CTkButton(button_frame, text="Delete",
+                                      command=lambda: self.delete_tenant(tenant_id, dialog),
                                       fg_color="red", hover_color="darkred", font=("Arial", 14), height=40)
         delete_button.grid(row=2, column=0, padx=10, pady=(5, 10), sticky="ew")
 
@@ -233,15 +225,15 @@ class TenantsFrame(ctk.CTkFrame):
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Network Error", f"Request failed: {e}")
 
-    def fetch_tenant_details(self, room_id):
+    def fetch_tenant_details(self, tenant_id):
         """ Fetch details for the specific room using its ID """
-        url = f'{BASE_URL}door/{room_id}/'  # Assuming this is the endpoint to fetch details by ID
+        url = f'{BASE_URL}user/{tenant_id}/'  # Assuming this is the endpoint to fetch details by ID
         try:
             response = requests.get(url)
             if response.status_code == 200:
                 return response.json()  # Return room details as a dictionary
             else:
-                messagebox.showerror('Error', f"Failed to fetch room details: {response.status_code}")
+                messagebox.showerror('Error', f"Failed to fetch tenant details: {response.status_code}")
                 return {}
         except requests.exceptions.RequestException as e:
             messagebox.showerror('Network Error', f'Request failed: {e}')
@@ -258,16 +250,16 @@ class TenantsFrame(ctk.CTkFrame):
         # Center the dialog
         self.center_dialog(dialog, width=280, height=200)
 
-        room_name_label = ctk.CTkLabel(dialog, text="Room Name:")
-        room_name_label.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="w")
-        room_name_entry = ctk.CTkEntry(dialog, width=260)
-        room_name_entry.grid(row=1, column=0, padx=10, pady=(0, 10))
+        tenant_name_label = ctk.CTkLabel(dialog, text="Tenant Name:")
+        tenant_name_label.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="w")
+        tenant_name_entry = ctk.CTkEntry(dialog, width=260)
+        tenant_name_entry.grid(row=1, column=0, padx=10, pady=(0, 10))
 
         button_frame = ctk.CTkFrame(dialog, fg_color="transparent")
         button_frame.grid(row=2, column=0, columnspan=2, pady=10)
 
         submit_button = ctk.CTkButton(button_frame, text="Submit", width=120, height=30,
-                                      command=lambda: self.submit_new_tenant(dialog, room_name_entry))
+                                      command=lambda: self.submit_new_tenant(dialog, tenant_name_entry))
         submit_button.grid(row=0, column=0, padx=10)
 
         cancel_button = ctk.CTkButton(button_frame, text="Cancel", width=120, height=30, command=dialog.destroy)
