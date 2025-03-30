@@ -63,23 +63,26 @@ class TenantsFrame(ctk.CTkFrame):
             self.table_frame.columnconfigure(col, weight=1)
 
     def fetch_data_from_api(self):
-        url = f'{BASE_URL}doors/'
+        url = f'{BASE_URL}users/'
         try:
             response = requests.get(url)
             if response.status_code == 200:
                 data = response.json()
-                # format according to table columns
-                self.data = [
-                    [
-                        door['name'],
-                        door['tenant_count'],
-                        'Yes' if door['is_active'] else 'No',
-                        door['id']
+                print(data)
+
+                if 'users' in data and isinstance(data['users'], list):
+                    self.data = [
+                        [
+                            user['first_name'] + ' ' + user['last_name'],
+                            user['email'] if user['email'] else 'No email',  # fall back if not provided
+                            user['registered_doors'],
+                            user['id']
+                        ]
+                        for user in data['users']
                     ]
-                    for door in data
-                ]
-                # once the data is fetched, update the UI
-                self.after(0, self.display_table)
+                    print(self.data)
+                    # once the data is fetched, update the UI
+                    self.after(0, self.display_table)
             else:
                 print(f'Error: {response.status_code}, {response.json()}')
         except requests.exceptions.RequestException as e:
@@ -111,7 +114,7 @@ class TenantsFrame(ctk.CTkFrame):
         for row, entry in enumerate(self.data, start=1):
             bg_color = self.row_colors[row % 2]  # Alternate row colors
             room_name = entry[0]  # Room name (first column)
-            room_id = entry[4]  # store but not displaying
+            room_id = entry[3]  # store but not displaying
 
             for col, value in enumerate(entry[:3]):
                 cell = ctk.CTkFrame(self.table_frame, fg_color=bg_color, corner_radius=10)  # Rounded cell
