@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 import cv2
 
-# Load the TFLite model
+# Load the TFLite ..
 interpreter = tf.lite.Interpreter(model_path="marylitte.tflite")
 interpreter.allocate_tensors()
 

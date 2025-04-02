@@ -1,9 +1,9 @@
 - Cacao segregator
 
 Classifications based on color:
-- Crollio       [white]
+- Criollo       [white]
 - Forastero     [dark-purple]
-- Trinotario    [combination of Crollio and Forastero]
+- Trinotario    [combination of Criollo and Forastero]
 
 Process:
 - Cut cacao into half.
@@ -11,8 +11,8 @@ Process:
 - Capture images of cacao beans.
 - Classify beans based on color.
 
-- If color is white and color is dark-purple: open Trinotario window.
-- Else If color white: open Crollio bean window
+- If color is white and color is dark-purple: open Trinitario window.
+- Else If color white: open Criollo bean window
 - Else if color dark-purple: open Forastero been window
 - Else don't open window [other window for unknown been or re-check]
 
