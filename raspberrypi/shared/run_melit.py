@@ -15,7 +15,7 @@ print("Input Details:", input_details)
 print("Output Details:", output_details)
 
 def preprocess_image(image_path):
-    """Preprocess image: read, resize, and extract features."""
+    """Preprocess image: read, extract features."""
     image = cv2.imread(image_path)
     
     if image is None:
@@ -28,35 +28,38 @@ def preprocess_image(image_path):
     # Convert the image to RGB (because OpenCV loads in BGR)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     
-    # Resize image to match the model's expected input shape
-    input_shape = input_details[0]['shape']
-    print(f"Model Input Shape: {input_shape}")  # Debugging: check model input shape
-    
-    try:
-        image = cv2.resize(image, (input_shape[2], input_shape[1]))  # (height, width)
-    except Exception as e:
-        print(f"Error resizing image: {e}")
-        return None
-    
-    # Debugging: Check the shape after resizing
+    # Resize image for consistency
+    max_size = 224  # Example size for consistency in feature extraction
+    scale = max_size / max(image.shape[:2])
+    new_size = tuple((np.array(image.shape[:2]) * scale).astype(int))
+    image = cv2.resize(image, (new_size[1], new_size[0]))
+
+    # Debugging: Check the resized image shape
     print(f"Resized Image Shape: {image.shape}")
-    
-    # Normalize image pixel values to [0, 1]
+
+    # Normalize the image (scale to [0, 1])
     image = np.array(image, dtype=np.float32) / 255.0
     
-    # Extract image features: For example, mean RGB values
+    # Extract 10 features (example: mean RGB and other statistics)
     mean_rgb = np.mean(image, axis=(0, 1))  # Mean RGB values across height and width
+    std_rgb = np.std(image, axis=(0, 1))    # Standard deviation for RGB
     
-    # Debugging: Check extracted features
-    print(f"Extracted Mean RGB Features: {mean_rgb}")
+    # Example of other statistics: (you can change this as needed)
+    max_rgb = np.max(image, axis=(0, 1))
     
-    # Make sure the features are the expected shape (10 features)
-    if len(mean_rgb) == 3:  # RGB has 3 channels, you may need to add more features here
-        features = np.concatenate([mean_rgb, np.zeros(7)])  # Pad to make it 10 features
-    else:
-        features = mean_rgb
+    # Combine all features into a single vector of length 10
+    # We will now just use mean RGB, std RGB, and max RGB (9 features)
+    features = np.concatenate([mean_rgb, std_rgb, max_rgb])
     
+    # Add an additional feature (optional, e.g., max value across the entire image)
+    # Here we add the maximum pixel value as the 10th feature
+    max_pixel = np.max(image)
+    
+    features = np.concatenate([features, [max_pixel]])  # Ensure the vector has exactly 10 features
+    
+    # Ensure the features vector has exactly 10 elements (padded or adjusted as needed)
     features = np.expand_dims(features, axis=0)  # Add batch dimension
+    
     return features
 
 def classify_cacao(image_path):

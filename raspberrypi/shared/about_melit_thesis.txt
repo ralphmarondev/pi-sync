@@ -9,6 +9,7 @@ Process:
 - Cut cacao into half.
 - Insert into 5 cutted beans inside segregator machine.
 - Capture images of cacao beans.
+- Resize the image to match the expected size of the model.
 - Classify beans based on color.
 
 - If color is white and color is dark-purple: open Trinotario window.
