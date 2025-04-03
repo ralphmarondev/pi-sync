@@ -1,6 +1,7 @@
 package com.ralphmarondev.pisync.features.home.presentation
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
@@ -19,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import com.ralphmarondev.pisync.features.history.presentation.HistoryScreen
+import com.ralphmarondev.pisync.features.home.presentation.components.ConfirmExitDialog
 import com.ralphmarondev.pisync.features.overview.presentation.OverviewScreen
 import com.ralphmarondev.pisync.features.settings.presentation.overview.SettingScreen
 import org.koin.androidx.compose.koinViewModel
@@ -30,6 +32,8 @@ fun HomeScreen(
 ) {
     val viewModel: HomeViewModel = koinViewModel()
     val selectedIndex = viewModel.selectedIndex.collectAsState().value
+    val showConfirmDialog = viewModel.showConfirmExitDialog.collectAsState().value
+
     val navItems = listOf(
         NavItems(
             label = "Home",
@@ -50,6 +54,10 @@ fun HomeScreen(
             onClick = { viewModel.onSelectedIndexValueChange(2) }
         )
     )
+
+    BackHandler(enabled = true) {
+        viewModel.onShowConfirmExitDialogValueChange()
+    }
 
     Scaffold(
         bottomBar = {
@@ -89,6 +97,13 @@ fun HomeScreen(
                 logout = onLogout
             )
         }
+    }
+
+    if (showConfirmDialog) {
+        ConfirmExitDialog(
+            onDismiss = viewModel::onShowConfirmExitDialogValueChange,
+            onConfirm = onLogout
+        )
     }
 }
 
