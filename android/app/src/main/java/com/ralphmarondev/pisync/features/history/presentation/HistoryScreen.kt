@@ -33,6 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 fun HistoryScreen() {
     val viewModel: HistoryViewModel = koinViewModel()
     val history = viewModel.history.collectAsState().value
+    val isLoading = viewModel.isLoading.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -70,7 +71,16 @@ fun HistoryScreen() {
         ) {
             item { Spacer(modifier = Modifier.height(0.dp)) }
             item {
-                AnimatedVisibility(history.isEmpty()) {
+                AnimatedVisibility(isLoading) {
+                    Text(
+                        text = "Loading history...",
+                        fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                        color = MaterialTheme.colorScheme.secondary,
+                        textAlign = TextAlign.Center
+                    )
+                }
+                AnimatedVisibility(history.isEmpty() && !isLoading) {
                     Text(
                         text = "History is empty!",
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,

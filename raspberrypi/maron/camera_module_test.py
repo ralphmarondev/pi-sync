@@ -11,6 +11,6 @@ picam2.start()
 time.sleep(2)  # Allow time for auto-adjustments
 
 # Capture image
-picam2.capture_file("test.jpg")
+picam2.capture_file("test2.jpg")
 
-print("Image saved as test.jpg")
+print("Image saved as test2.jpg")
