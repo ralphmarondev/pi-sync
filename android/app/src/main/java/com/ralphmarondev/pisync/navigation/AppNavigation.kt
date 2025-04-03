@@ -85,7 +85,14 @@ fun AppNavigation(
                 )
             }
             composable<Routes.Home> {
-                HomeScreen()
+                HomeScreen(
+                    onLogout = {
+                        navController.navigate(Routes.Login) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
         }
     }
