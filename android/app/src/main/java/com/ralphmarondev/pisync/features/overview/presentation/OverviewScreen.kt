@@ -1,6 +1,7 @@
 package com.ralphmarondev.pisync.features.overview.presentation
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +38,7 @@ fun OverviewScreen() {
     val themeState = LocalThemeState.current
     val viewModel: OverviewViewModel = koinViewModel()
     val doors = viewModel.doors.collectAsState().value
+    val isLoading = viewModel.isLoading.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -87,6 +89,21 @@ fun OverviewScreen() {
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
 
+            AnimatedVisibility(visible = isLoading) {
+                Text(
+                    text = "Loading doors...",
+                    fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                )
+            }
+
+            AnimatedVisibility(visible = doors.isEmpty() && !isLoading) {
+                Text(
+                    text = "No doors found",
+                    fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                )
+            }
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier
