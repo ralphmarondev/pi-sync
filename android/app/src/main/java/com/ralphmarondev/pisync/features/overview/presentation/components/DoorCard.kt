@@ -1,10 +1,11 @@
 package com.ralphmarondev.pisync.features.overview.presentation.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -23,13 +24,15 @@ fun DoorCard(
     label: String,
     modifier: Modifier = Modifier
 ) {
+    val borderColor = if (checked) {
+        MaterialTheme.colorScheme.secondary
+    } else {
+        MaterialTheme.colorScheme.onSecondary
+    }
     ElevatedCard(
         onClick = toggleChecked,
-        modifier = modifier,
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = if (checked) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSecondary,
-            contentColor = if (checked) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.secondary
-        )
+        modifier = modifier
+            .border(1.dp, borderColor, RoundedCornerShape(8.dp))
     ) {
         Column(
             modifier = Modifier
