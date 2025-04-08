@@ -2,6 +2,7 @@ package com.ralphmarondev.pisync.features.overview.data.repositories
 
 import android.util.Log
 import com.ralphmarondev.pisync.features.overview.data.mapper.toDomain
+import com.ralphmarondev.pisync.features.overview.data.models.DoorActionRequest
 import com.ralphmarondev.pisync.features.overview.data.network.DoorApiService
 import com.ralphmarondev.pisync.features.overview.domain.model.Door
 import com.ralphmarondev.pisync.features.overview.domain.repositories.OverviewRepository
@@ -20,7 +21,13 @@ class OverviewRepositoryImpl(
     }
 
     override suspend fun closeDoorById(id: Int, username: String) {
-        val response = api.closeDoorById(id)
+        val response = api.closeDoorById(
+            id = id,
+            request = DoorActionRequest(
+                username = username,
+                description = "Closing via mobile app"
+            )
+        )
 
         if (response.success) {
             Log.d("App", "Door: $id closed successfully!")
@@ -30,7 +37,13 @@ class OverviewRepositoryImpl(
     }
 
     override suspend fun openDoorById(id: Int, username: String) {
-        val response = api.openDoorById(id)
+        val response = api.openDoorById(
+            id = id,
+            request = DoorActionRequest(
+                username = username,
+                description = "Opening via mobile app"
+            )
+        )
 
         if (response.success) {
             Log.d("App", "Door: $id opened successfully!")
