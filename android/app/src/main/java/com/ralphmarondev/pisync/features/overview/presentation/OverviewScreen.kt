@@ -38,7 +38,6 @@ fun OverviewScreen() {
     val viewModel: OverviewViewModel = koinViewModel()
     val doors = viewModel.doors.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
-    val doorStatus = viewModel.doorStatus.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -114,8 +113,10 @@ fun OverviewScreen() {
             ) {
                 items(doors.size) { index ->
                     DoorCard(
-                        checked = doorStatus,
-                        toggleChecked = viewModel::setDoorStatus,
+                        checked = doors[index].status,
+                        toggleChecked = {
+                            viewModel.setDoorStatus(doors[index].id)
+                        },
                         label = doors[index].name,
                         modifier = Modifier
                             .fillMaxWidth()
