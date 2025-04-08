@@ -1,4 +1,4 @@
-package com.ralphmarondev.pisync.features.auth.domain.model
+package com.ralphmarondev.pisync.core.domain.model
 
 data class Result(
     val success: Boolean = false,

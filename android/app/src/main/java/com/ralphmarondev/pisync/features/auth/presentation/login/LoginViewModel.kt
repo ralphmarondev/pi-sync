@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
-import com.ralphmarondev.pisync.features.auth.domain.model.Result
+import com.ralphmarondev.pisync.core.domain.model.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
