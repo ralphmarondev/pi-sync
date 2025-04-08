@@ -1,6 +1,5 @@
 package com.ralphmarondev.pisync.features.overview.presentation
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +38,7 @@ fun OverviewScreen() {
     val viewModel: OverviewViewModel = koinViewModel()
     val doors = viewModel.doors.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
+    val doorStatus = viewModel.doorStatus.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -92,16 +92,16 @@ fun OverviewScreen() {
             AnimatedVisibility(visible = isLoading) {
                 Text(
                     text = "Loading doors...",
-                    fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
-                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
                 )
             }
 
             AnimatedVisibility(visible = doors.isEmpty() && !isLoading) {
                 Text(
                     text = "No doors found",
-                    fontWeight = MaterialTheme.typography.bodyMedium.fontWeight,
-                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
                 )
             }
             LazyVerticalGrid(
@@ -114,13 +114,8 @@ fun OverviewScreen() {
             ) {
                 items(doors.size) { index ->
                     DoorCard(
-                        checked = doors[index].status,
-                        toggleChecked = {
-                            Log.d(
-                                "App",
-                                "Setting status of ${doors[index].name} to ${!doors[index].status}"
-                            )
-                        },
+                        checked = doorStatus,
+                        toggleChecked = viewModel::setDoorStatus,
                         label = doors[index].name,
                         modifier = Modifier
                             .fillMaxWidth()
