@@ -45,7 +45,7 @@ fun HistoryScreen() {
                 },
                 actions = {
                     IconButton(
-                        onClick = {}
+                        onClick = viewModel::refresh
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Refresh,
@@ -71,7 +71,7 @@ fun HistoryScreen() {
         ) {
             item { Spacer(modifier = Modifier.height(0.dp)) }
             item {
-                AnimatedVisibility(isLoading) {
+                AnimatedVisibility(visible = isLoading) {
                     Text(
                         text = "Loading history...",
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
@@ -80,7 +80,7 @@ fun HistoryScreen() {
                         textAlign = TextAlign.Center
                     )
                 }
-                AnimatedVisibility(history.isEmpty() && !isLoading) {
+                AnimatedVisibility(visible = history.isEmpty() && !isLoading) {
                     Text(
                         text = "History is empty!",
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,

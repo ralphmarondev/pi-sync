@@ -1,5 +1,6 @@
 package com.ralphmarondev.pisync.features.history.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.features.history.domain.model.History
@@ -28,6 +29,12 @@ class HistoryViewModel : ViewModel() {
                 room = 0
             )
             _isLoading.value = false
+        }
+    }
+
+    fun refresh() {
+        viewModelScope.launch {
+            Log.d("App", "Refreshing history list...")
         }
     }
 }
