@@ -1,4 +1,41 @@
 package com.ralphmarondev.pisync.features.overview.data.repositories
 
-class OverviewRepositoryImpl {
+import android.util.Log
+import com.ralphmarondev.pisync.features.overview.data.mapper.toDomain
+import com.ralphmarondev.pisync.features.overview.data.network.DoorApiService
+import com.ralphmarondev.pisync.features.overview.domain.model.Door
+import com.ralphmarondev.pisync.features.overview.domain.repositories.OverviewRepository
+
+class OverviewRepositoryImpl(
+    private val api: DoorApiService
+) : OverviewRepository {
+    override suspend fun getDoorsByUsername(username: String): List<Door> {
+        val response = api.getDoorListByUsername(username)
+
+        return if (response.success) {
+            response.doors.toDomain()
+        } else {
+            emptyList()
+        }
+    }
+
+    override suspend fun closeDoorById(id: Int, username: String) {
+        val response = api.closeDoorById(id)
+
+        if (response.success) {
+            Log.d("App", "Door: $id closed successfully!")
+        } else {
+            Log.e("App", "Closing door with id: $id failed.")
+        }
+    }
+
+    override suspend fun openDoorById(id: Int, username: String) {
+        val response = api.openDoorById(id)
+
+        if (response.success) {
+            Log.d("App", "Door: $id opened successfully!")
+        } else {
+            Log.e("App", "Opening door with id: $id failed.")
+        }
+    }
 }
