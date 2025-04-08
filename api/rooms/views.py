@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from history.models import History
 from rooms.serializers import DoorSerializer
 from .models import Door
+from users.models import User
 
 class NewDoorView(APIView):
     def post(self, request):
@@ -184,4 +185,29 @@ class DoorStatusView(APIView):
                 'is_open': door.is_open
             },
             status=HTTP_200_OK
+        )
+
+class RegisteredDoorsByUsernameView(APIView):
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username, is_deleted=False)
+        except User.DoesNotExist:
+            return Response(
+                data={
+                    'success': False,
+                    'message': 'User not found'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        doors = user.registered_doors.filter(is_deleted=False)  # assuming Door has is_deleted
+        serializer = DoorSerializer(doors, many=True)
+
+        return Response(
+            data={
+                'success': True,
+                'message': f'Registered doors for {username} retrieved successfully',
+                'doors': serializer.data
+            },
+            status=status.HTTP_200_OK
         )
