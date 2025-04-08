@@ -38,6 +38,9 @@ fun OverviewScreen() {
     val viewModel: OverviewViewModel = koinViewModel()
     val doors = viewModel.doors.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
+    val fullName = viewModel.fullName.collectAsState().value
+    val email = viewModel.email.collectAsState().value
+    val image = viewModel.image.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -76,8 +79,9 @@ fun OverviewScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                fullName = "Ralph Maron Eda",
-                email = "edaralphmaron@gmail.com"
+                fullName = fullName,
+                email = email,
+                profilePictureUrl = image
             )
 
             Text(

@@ -7,6 +7,7 @@ import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.pisync.features.overview.domain.model.Door
 import com.ralphmarondev.pisync.features.overview.domain.usecases.CloseDoorByIdUseCase
 import com.ralphmarondev.pisync.features.overview.domain.usecases.GetDoorsByUsernameUseCase
+import com.ralphmarondev.pisync.features.overview.domain.usecases.GetUserDetailByUsernameUseCase
 import com.ralphmarondev.pisync.features.overview.domain.usecases.OpenDoorByIdUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +19,18 @@ class OverviewViewModel(
     private val preferences: AppPreferences,
     private val getDoorsByUsernameUseCase: GetDoorsByUsernameUseCase,
     private val closeDoorByIdUseCase: CloseDoorByIdUseCase,
-    private val openDoorByIdUseCase: OpenDoorByIdUseCase
+    private val openDoorByIdUseCase: OpenDoorByIdUseCase,
+    private val getUserDetailByUsernameUseCase: GetUserDetailByUsernameUseCase
 ) : ViewModel() {
+
+    private val _fullName = MutableStateFlow("")
+    val fullName = _fullName.asStateFlow()
+
+    private val _email = MutableStateFlow("")
+    val email = _email.asStateFlow()
+
+    private val _image = MutableStateFlow<String?>(null)
+    val image = _image.asStateFlow()
 
     private val _doors = MutableStateFlow<List<Door>>(emptyList())
     val doors = _doors.asStateFlow()
@@ -33,11 +44,20 @@ class OverviewViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             _username.value = preferences.getCurrentUser()
+            Log.d("App", "OverviewViewModel, current username: ${_username.value}")
 
             if (_username.value == null) {
                 _isLoading.value = false
                 return@launch
             }
+
+            val userDetail = getUserDetailByUsernameUseCase(
+                username = _username.value ?: "No username provided"
+            )
+            _fullName.value = "${userDetail.firstName} ${userDetail.lastName}"
+            _email.value = userDetail.email.ifEmpty { _username.value ?: "No username proved" }
+            _image.value = userDetail.image
+
             fetchUpdatesContinuously()
         }
     }
