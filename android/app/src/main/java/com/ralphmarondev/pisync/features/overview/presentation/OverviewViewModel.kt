@@ -7,8 +7,10 @@ import com.ralphmarondev.pisync.features.overview.domain.model.Door
 import com.ralphmarondev.pisync.features.overview.domain.usecases.CloseDoorByIdUseCase
 import com.ralphmarondev.pisync.features.overview.domain.usecases.GetDoorsByUsernameUseCase
 import com.ralphmarondev.pisync.features.overview.domain.usecases.OpenDoorByIdUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class OverviewViewModel(
@@ -22,15 +24,26 @@ class OverviewViewModel(
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
 
+    private val username = "ralphmaron"
 
     init {
+        fetchUpdatesContinuously()
+    }
+
+    private fun fetchUpdatesContinuously() {
         viewModelScope.launch {
             _isLoading.value = true
-            val username = "ralphmaron"
-
-            _doors.value = getDoorsByUsernameUseCase(username)
-            Log.d("App", "Door status: ${_doors.value[0].status}")
-            _isLoading.value = false
+            while (isActive) {
+                try {
+                    val updatedDoors = getDoorsByUsernameUseCase(username)
+                    _doors.value = updatedDoors
+                    Log.d("App", "Update door status: ${updatedDoors.map { it.status }}")
+                } catch (e: Exception) {
+                    Log.e("App", "Failed to fetch doors: ${e.message}")
+                }
+                _isLoading.value = false
+                delay(3000)
+            }
         }
     }
 
