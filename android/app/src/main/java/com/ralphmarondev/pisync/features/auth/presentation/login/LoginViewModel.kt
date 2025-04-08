@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.pisync.core.domain.model.Result
+import com.ralphmarondev.pisync.features.auth.domain.usecases.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val preferences: AppPreferences
+    private val preferences: AppPreferences,
+    private val loginUseCase: LoginUseCase
 ) : ViewModel() {
 
     private val _username = MutableStateFlow(preferences.getRememberedUsername() ?: "")
@@ -76,17 +78,24 @@ class LoginViewModel(
                 return@launch
             }
 
-            if (username == "ralphmaron" && password == "iscute") {
-                _response.value = Result(
-                    success = true,
-                    message = "Login successful"
-                )
-                if (_rememberMe.value) {
-                    preferences.setUsernameToRemember(username)
-                    preferences.setPasswordToRemember(password)
+            try {
+                if (loginUseCase(username, password)) {
+                    _response.value = Result(
+                        success = true,
+                        message = "Login successful"
+                    )
+                    if (_rememberMe.value) {
+                        preferences.setUsernameToRemember(username)
+                        preferences.setPasswordToRemember(password)
+                    }
+                    preferences.setCurrentUser(username)
+                } else {
+                    _response.value = Result(
+                        success = false,
+                        message = "Invalid credentials. Please try again."
+                    )
                 }
-                preferences.setCurrentUser(username)
-            } else {
+            } catch (e: Exception) {
                 _response.value = Result(
                     success = false,
                     message = "Invalid credentials. Please try again."
