@@ -27,8 +27,15 @@ class HistoryViewModel(
     private fun fetchHistory() {
         viewModelScope.launch {
             _isLoading.value = true
-            _history.value = getHistoryByRoomIdUseCase(roomId)
-            _isLoading.value = false
+
+            try {
+                val historyList = getHistoryByRoomIdUseCase(roomId)
+                _history.value = historyList
+            } catch (e: Exception) {
+                Log.e("App", "Error fetching history: ${e.message}")
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 
