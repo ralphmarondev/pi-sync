@@ -1,7 +1,6 @@
 package com.ralphmarondev.pisync.core.di
 
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
-import com.ralphmarondev.pisync.core.data.network.ApiService
 import com.ralphmarondev.pisync.core.util.ThemeState
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -22,6 +21,4 @@ val coreModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
-    single { get<Retrofit>().create(ApiService::class.java) }
 }
