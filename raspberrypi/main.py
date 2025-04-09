@@ -12,7 +12,7 @@ OPEN_URL = f'http://{IP_ADDRESS}:8000/api/door/open/{DOOR_ID}/'
 CLOSE_URL = f'http://{IP_ADDRESS}:8000/api/door/close/{DOOR_ID}/'
 STATUS_URL = f'http://{IP_ADDRESS}:8000/api/doors/username/{USERNAME}/'
 
-DOOR_PIN = 17
+DOOR_PIN = 18
 
 # Setup GPIO
 GPIO.setmode(GPIO.BCM)
