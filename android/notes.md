@@ -9,8 +9,9 @@ Progress we've made and to be done. More updates to come, stay tuned!
 - Getting door list by username [from login]
 - Closing | Opening door with api using mobile app
 - Syncing with other way of closing | opening of door
+- Getting password hint with username inputted.
+- Getting history list by room id
 
 ## Actions todo
 
-- Getting password hint with username inputted.
-- Getting history by room id
+- Getting the user image from the api and display it on mobile app
