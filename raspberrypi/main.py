@@ -12,13 +12,11 @@ OPEN_URL = f'http://{IP_ADDRESS}:8000/api/door/open/{DOOR_ID}/'
 CLOSE_URL = f'http://{IP_ADDRESS}:8000/api/door/close/{DOOR_ID}/'
 STATUS_URL = f'http://{IP_ADDRESS}:8000/api/doors/username/{USERNAME}/'
 
-RELAY_PIN = 18  # GPIO pin for the relay
-LED_PIN = 17    # GPIO pin for the LED
+RELAY_PIN = 18  # GPIO pin for the relay (also controls the LED)
 
 # Setup GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(RELAY_PIN, GPIO.OUT)
-GPIO.setup(LED_PIN, GPIO.OUT)
 
 def get_door_status():
     """Fetch the current door status (open/closed) from the API."""
@@ -28,7 +26,7 @@ def get_door_status():
             data = response.json()
             doors = data.get('doors', [])
             if doors:
-                status = doors[0].get('is_open')  # ✅ Corrected from 'status' to 'is_open'
+                status = doors[0].get('is_open')  # Corrected from 'status' to 'is_open'
                 print(f"Fetched door status: {'OPEN' if status else 'CLOSED'}")
                 return status
             else:
@@ -62,9 +60,8 @@ def control_door():
         status = get_door_status()
         if status is not None:
             if status != last_status:
-                # Control Relay and LED
-                GPIO.output(RELAY_PIN, GPIO.HIGH if not status else GPIO.LOW)  # Relay for door control
-                GPIO.output(LED_PIN, GPIO.HIGH if not status else GPIO.LOW)  # LED for door status feedback
+                # Control Relay and LED using the same pin
+                GPIO.output(RELAY_PIN, GPIO.HIGH if not status else GPIO.LOW)  # Relay and LED control
                 send_door_action(open=status)
                 print(f"Door is now {'OPEN' if not status else 'CLOSED'}")
                 last_status = status
