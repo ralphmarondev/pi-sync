@@ -60,9 +60,9 @@ def control_door():
         status = get_door_status()
         if status is not None:
             if status != last_status:
-                GPIO.output(DOOR_PIN, GPIO.HIGH if status else GPIO.LOW)
+                GPIO.output(DOOR_PIN, GPIO.HIGH if not status else GPIO.LOW)
                 send_door_action(open=status)
-                print(f"Door is now {'OPEN' if status else 'CLOSED'}")
+                print(f"Door is now {'OPEN' if not status else 'CLOSED'}")
                 last_status = status
             else:
                 print("No change in door status.")
