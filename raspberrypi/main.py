@@ -19,24 +19,26 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(DOOR_PIN, GPIO.OUT)
 
 def get_door_status():
+    """Fetch the current door status (open/closed) from the API."""
     try:
         response = requests.get(STATUS_URL, timeout=5)
         if response.status_code == 200:
             data = response.json()
             doors = data.get('doors', [])
             if doors:
-                status = doors[0].get('status')
+                status = doors[0].get('is_open')  # ✅ Corrected from 'status' to 'is_open'
                 print(f"Fetched door status: {'OPEN' if status else 'CLOSED'}")
                 return status
             else:
                 print("No doors found in response.")
         else:
-            print(f"Error: Received unexpected status code {response.status_code}")
+            print(f"Error: Received status code {response.status_code}")
     except requests.RequestException as e:
-        print(f'Error fetching door status: {e}')
+        print(f"Error fetching door status: {e}")
     return None
 
 def send_door_action(open: bool):
+    """Send open/close action to the API."""
     url = OPEN_URL if open else CLOSE_URL
     payload = {
         "username": USERNAME,
@@ -45,22 +47,22 @@ def send_door_action(open: bool):
     try:
         response = requests.post(url, json=payload, timeout=5)
         if response.status_code == 200:
-            print(f'Door {"opened" if open else "closed"} successfully via API.')
+            print(f"Door {'opened' if open else 'closed'} successfully via API.")
         else:
-            print(f'Failed to send door {"open" if open else "close"} request: {response.status_code}')
+            print(f"Failed to send door {'open' if open else 'close'} request: {response.status_code}")
     except requests.RequestException as e:
-        print(f'Error sending door action: {e}')
+        print(f"Error sending door action: {e}")
 
 def control_door():
+    """Continuously monitor and control the door based on status updates."""
     last_status = None
     while True:
         status = get_door_status()
-        print(f'Getting status: {status}')
         if status is not None:
             if status != last_status:
                 GPIO.output(DOOR_PIN, GPIO.HIGH if status else GPIO.LOW)
                 send_door_action(open=status)
-                print(f'Door is now {"OPEN" if status else "CLOSED"}')
+                print(f"Door is now {'OPEN' if status else 'CLOSED'}")
                 last_status = status
             else:
                 print("No change in door status.")
@@ -70,9 +72,9 @@ def control_door():
 
 if __name__ == '__main__':
     try:
-        print('Raspberry pi started...')
+        print("Raspberry Pi door controller started...")
         control_door()
     except KeyboardInterrupt:
-        print('Exiting...')
+        print("Exiting program...")
     finally:
         GPIO.cleanup()
