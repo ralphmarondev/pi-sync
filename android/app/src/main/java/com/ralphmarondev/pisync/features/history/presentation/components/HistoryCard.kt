@@ -42,7 +42,7 @@ fun HistoryCard(
                 color = MaterialTheme.colorScheme.secondary
             )
             Text(
-                text = "whatever",// formatTimeStamp(history.timestamp),
+                text = formatTimeStamp(history.timestamp),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W300,
                 color = MaterialTheme.colorScheme.tertiary
