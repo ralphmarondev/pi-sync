@@ -6,7 +6,9 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.OUT)
 
 while True:
+    print('Opening solenoid...')
     GPIO.output(18, 1)
     sleep(2)
+    print('Closing solenoid...')
     GPIO.output(18, 0)
     sleep(2)
