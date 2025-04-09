@@ -6,5 +6,5 @@ data class History(
     val username: String,
     val description: String,
     val timestamp: String,
-    val room: Int
+    val roomId: Int
 )
