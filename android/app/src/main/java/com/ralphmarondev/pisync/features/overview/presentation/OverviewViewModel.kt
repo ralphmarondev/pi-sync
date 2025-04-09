@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.pisync.core.domain.model.Room
+import com.ralphmarondev.pisync.core.domain.usecases.DeleteAllRoomsUseCase
 import com.ralphmarondev.pisync.core.domain.usecases.SaveRoomUseCase
 import com.ralphmarondev.pisync.features.overview.domain.model.Door
 import com.ralphmarondev.pisync.features.overview.domain.usecases.CloseDoorByIdUseCase
@@ -23,7 +24,8 @@ class OverviewViewModel(
     private val closeDoorByIdUseCase: CloseDoorByIdUseCase,
     private val openDoorByIdUseCase: OpenDoorByIdUseCase,
     private val getUserDetailByUsernameUseCase: GetUserDetailByUsernameUseCase,
-    private val saveRoomUseCase: SaveRoomUseCase
+    private val saveRoomUseCase: SaveRoomUseCase,
+    private val deleteAllRoomsUseCase: DeleteAllRoomsUseCase
 ) : ViewModel() {
 
     private val _fullName = MutableStateFlow("")
@@ -54,22 +56,27 @@ class OverviewViewModel(
                 return@launch
             }
 
-            val userDetail = getUserDetailByUsernameUseCase(
-                username = _username.value ?: "No username provided"
-            )
-            _fullName.value = "${userDetail.firstName} ${userDetail.lastName}"
-            _email.value = userDetail.email.ifEmpty { _username.value ?: "No username proved" }
-            _image.value = userDetail.image
-
-            val registeredDoors = getDoorsByUsernameUseCase(
-                username = _username.value ?: "No username provided"
-            )
-            registeredDoors.forEach { door ->
-                saveRoomUseCase(
-                    Room(roomId = door.id)
+            try {
+                val userDetail = getUserDetailByUsernameUseCase(
+                    username = _username.value ?: "No username provided"
                 )
+                _fullName.value = "${userDetail.firstName} ${userDetail.lastName}"
+                _email.value = userDetail.email.ifEmpty { _username.value ?: "No username proved" }
+                _image.value = userDetail.image
+
+                val registeredDoors = getDoorsByUsernameUseCase(
+                    username = _username.value ?: "No username provided"
+                )
+                deleteAllRoomsUseCase()
+                registeredDoors.forEach { door ->
+                    saveRoomUseCase(
+                        Room(roomId = door.id)
+                    )
+                }
+                fetchUpdatesContinuously()
+            } catch (e: Exception) {
+                Log.e("App", "Error OverviewViewModel initialization...")
             }
-            fetchUpdatesContinuously()
         }
     }
 
