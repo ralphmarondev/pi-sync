@@ -262,7 +262,6 @@ fun LoginScreen(
             onSave = { ipAddress ->
                 viewModel.saveServerIpAddress(ipAddress)
                 viewModel.toggleSetupIpDialog()
-
             }
         )
     }

@@ -11,4 +11,10 @@ class AuthRepositoryImpl(
         val response = api.login(request = LoginRequest(username = username, password = password))
         return response.success
     }
+
+    override suspend fun getPasswordHint(username: String): String {
+        val response = api.forgotPassword(username = username)
+
+        return response.password_hint ?: "No hint available."
+    }
 }

@@ -1,4 +1,11 @@
 package com.ralphmarondev.pisync.features.auth.domain.usecases
 
-class ForgotPasswordUseCase {
+import com.ralphmarondev.pisync.features.auth.domain.repositories.AuthRepository
+
+class ForgotPasswordUseCase(
+    private val repository: AuthRepository
+) {
+    suspend operator fun invoke(username: String): String {
+        return repository.getPasswordHint(username = username)
+    }
 }

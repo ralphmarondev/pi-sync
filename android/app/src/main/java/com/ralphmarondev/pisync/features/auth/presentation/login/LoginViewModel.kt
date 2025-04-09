@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.pisync.core.domain.model.Result
+import com.ralphmarondev.pisync.features.auth.domain.usecases.ForgotPasswordUseCase
 import com.ralphmarondev.pisync.features.auth.domain.usecases.LoginUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val preferences: AppPreferences,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val forgotPasswordUseCase: ForgotPasswordUseCase
 ) : ViewModel() {
 
     private val _username = MutableStateFlow(preferences.getRememberedUsername() ?: "")
@@ -51,7 +53,22 @@ class LoginViewModel(
     }
 
     fun toggleForgotPasswordDialog() {
-        _showForgotPasswordDialog.value = !_showForgotPasswordDialog.value
+        viewModelScope.launch {
+            _showForgotPasswordDialog.value = !_showForgotPasswordDialog.value
+            try {
+                val username = _username.value.trim()
+
+                if (username.isEmpty()) {
+                    _passwordHint.value = "Can't retrieve password hint. No username provided."
+                    return@launch
+                }
+                val result = forgotPasswordUseCase(username)
+                _passwordHint.value = result
+            } catch (e: Exception) {
+                Log.e("App", "Error getting password hint: ${e.message}")
+                _passwordHint.value = "No hint available."
+            }
+        }
     }
 
     fun toggleSetupIpDialog() {
