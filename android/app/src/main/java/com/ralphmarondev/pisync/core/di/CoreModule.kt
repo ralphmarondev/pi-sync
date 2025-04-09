@@ -8,7 +8,8 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val BASE_URL = "http://10.0.2.2:8000/api/"
+const val IP_ADDRESS = "192.168.100.96"
+const val BASE_URL = "http://$IP_ADDRESS:8000/api/"
 
 val coreModule = module {
     singleOf(::AppPreferences)
