@@ -3,12 +3,13 @@ import requests
 import RPi.GPIO as GPIO
 
 # Configuration
-API_URL = 'http://192.168.1.108:8000/api/door/open/1/'
+IP_ADDRESS = '192.168.100.96'
+API_URL = f'http://{IP_ADDRESS}:8000/api/door/open/1/'
 DOOR_PIN = 18
 
 # Set up the GPIO pins
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(18, GPIO.OUT)
+GPIO.setup(DOOR_PIN, GPIO.OUT)
 
 def get_door_status():
     try:
