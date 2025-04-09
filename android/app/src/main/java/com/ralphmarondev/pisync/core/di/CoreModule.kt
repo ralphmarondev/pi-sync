@@ -1,7 +1,16 @@
 package com.ralphmarondev.pisync.core.di
 
+import android.content.Context
+import androidx.room.Room
+import com.ralphmarondev.pisync.core.data.local.database.AppDatabase
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
+import com.ralphmarondev.pisync.core.data.repositories.RoomRepositoryImpl
+import com.ralphmarondev.pisync.core.domain.repositories.RoomRepository
+import com.ralphmarondev.pisync.core.domain.usecases.DeleteAllRoomsUseCase
+import com.ralphmarondev.pisync.core.domain.usecases.GetAllRoomsUseCase
+import com.ralphmarondev.pisync.core.domain.usecases.SaveRoomUseCase
 import com.ralphmarondev.pisync.core.util.ThemeState
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -21,4 +30,18 @@ val coreModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    single {
+        Room.databaseBuilder(
+            get<Context>(),
+            AppDatabase::class.java,
+            AppDatabase.NAME
+        ).build()
+    }
+    single { get<AppDatabase>().roomDao() }
+    single<RoomRepository> { RoomRepositoryImpl(get()) }
+
+    factoryOf(::GetAllRoomsUseCase)
+    factoryOf(::SaveRoomUseCase)
+    factoryOf(::DeleteAllRoomsUseCase)
 }

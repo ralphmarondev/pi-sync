@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
+import com.ralphmarondev.pisync.core.domain.model.Room
+import com.ralphmarondev.pisync.core.domain.usecases.SaveRoomUseCase
 import com.ralphmarondev.pisync.features.overview.domain.model.Door
 import com.ralphmarondev.pisync.features.overview.domain.usecases.CloseDoorByIdUseCase
 import com.ralphmarondev.pisync.features.overview.domain.usecases.GetDoorsByUsernameUseCase
@@ -20,7 +22,8 @@ class OverviewViewModel(
     private val getDoorsByUsernameUseCase: GetDoorsByUsernameUseCase,
     private val closeDoorByIdUseCase: CloseDoorByIdUseCase,
     private val openDoorByIdUseCase: OpenDoorByIdUseCase,
-    private val getUserDetailByUsernameUseCase: GetUserDetailByUsernameUseCase
+    private val getUserDetailByUsernameUseCase: GetUserDetailByUsernameUseCase,
+    private val saveRoomUseCase: SaveRoomUseCase
 ) : ViewModel() {
 
     private val _fullName = MutableStateFlow("")
@@ -58,6 +61,14 @@ class OverviewViewModel(
             _email.value = userDetail.email.ifEmpty { _username.value ?: "No username proved" }
             _image.value = userDetail.image
 
+            val registeredDoors = getDoorsByUsernameUseCase(
+                username = _username.value ?: "No username provided"
+            )
+            registeredDoors.forEach { door ->
+                saveRoomUseCase(
+                    Room(roomId = door.id)
+                )
+            }
             fetchUpdatesContinuously()
         }
     }
