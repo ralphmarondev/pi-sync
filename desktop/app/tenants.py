@@ -73,7 +73,7 @@ class TenantsFrame(ctk.CTkFrame):
                 if 'users' in data and isinstance(data['users'], list):
                     self.data = [
                         [
-                            user['first_name'] + ' ' + user['last_name'],
+                            f"{user['first_name']} {user['last_name']}",
                             user['email'] if user['email'] else 'No email',  # fall back if not provided
                             user['registered_doors'],
                             user['id']
@@ -187,13 +187,14 @@ class TenantsFrame(ctk.CTkFrame):
                                       fg_color="red", hover_color="darkred", font=("Arial", 14), height=40)
         delete_button.grid(row=2, column=0, padx=10, pady=(5, 10), sticky="ew")
 
-    def update_tenant(self, tenant_id, new_name, new_state, new_status, dialog):
-        """ Handle updating the room's name, state, and active status """
-        url = f'{BASE_URL}user/update/{tenant_id}/'  # Assuming this is the endpoint for updating room details
+    def update_tenant(self, tenant_id, first_name, last_name, username, password, dialog):
+        """ Handle updating the tenant's name, state, and active status """
+        url = f'{BASE_URL}user/update/{tenant_id}/'
         data = {
-            "name": new_name,
-            "is_open": new_state == 'Open',
-            "is_active": new_status == 'Active'
+            'first_name': first_name,
+            'last_name': last_name,
+            'username': username,
+            'password': password
         }
 
         try:
