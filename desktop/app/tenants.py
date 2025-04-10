@@ -187,9 +187,9 @@ class TenantsFrame(ctk.CTkFrame):
                                       fg_color="red", hover_color="darkred", font=("Arial", 14), height=40)
         delete_button.grid(row=2, column=0, padx=10, pady=(5, 10), sticky="ew")
 
-    def update_tenant(self, room_id, new_name, new_state, new_status, dialog):
+    def update_tenant(self, tenant_id, new_name, new_state, new_status, dialog):
         """ Handle updating the room's name, state, and active status """
-        url = f'{BASE_URL}door/update/{room_id}/'  # Assuming this is the endpoint for updating room details
+        url = f'{BASE_URL}user/update/{tenant_id}/'  # Assuming this is the endpoint for updating room details
         data = {
             "name": new_name,
             "is_open": new_state == 'Open',
@@ -209,7 +209,7 @@ class TenantsFrame(ctk.CTkFrame):
 
     def delete_tenant(self, room_id, dialog):
         """ Handle deleting the room """
-        url = f'{BASE_URL}door/delete/{room_id}/'  # Assuming this is the endpoint for deleting a room
+        url = f'{BASE_URL}user/delete/{room_id}/'  # Assuming this is the endpoint for deleting a room
         data = {
             "is_deleted": True
         }
@@ -266,22 +266,29 @@ class TenantsFrame(ctk.CTkFrame):
         cancel_button.grid(row=0, column=1, padx=10)
 
     def submit_new_tenant(self, dialog, room_name_entry):
-        room_name = room_name_entry.get()
-        print(f"Tenant Name: {room_name}")
+        tenant_name = room_name_entry.get()
+        print(f"Tenant Name: {tenant_name}")
 
         def post_room_data():
             try:
-                data = {'name': room_name}
-                url = f'{BASE_URL}door/new/'
+                data = {
+                    'first_name': tenant_name,
+                    'last_name': f'Last name_{tenant_name[:3]}',
+                    'username': f'username_{tenant_name[:3]}',
+                    'password': f'password_{tenant_name[:3]}',
+                    'password_hint': f'hint_{tenant_name[:3]}',
+                    'is_superuser': True
+                }
+                url = f'{BASE_URL}register/'
                 response = requests.post(url, data=data)
 
                 if response.status_code == 201:  # created
-                    print('Room created successfully!')
-                    messagebox.showinfo('Success', 'Room created successfully!')
+                    print('Tenant created successfully!')
+                    messagebox.showinfo('Success', 'Tenant created successfully!')
                     self.fetch_data_from_api()
                 else:
                     print(f'Error: {response.status_code}, {response.json()}')
-                    messagebox.showerror('Error', f'Failed to create room: {response.status_code}')
+                    messagebox.showerror('Error', f'Failed to register tenant: {response.status_code}')
             except requests.exceptions.RequestException as e:
                 print(f'Request failed: {e}')
                 messagebox.showerror('Network Error', f'Request failed: {e}')
