@@ -1,16 +1,11 @@
 import RPi.GPIO as GPIO 
-from time import sleep 
+import time
 
-DOOR_PIN = 23
-
-GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(DOOR_PIN, GPIO.OUT)
+GPIO.setup(18, GPIO.OUT)
 
 while True:
-    print('Opening solenoid...')
-    GPIO.output(DOOR_PIN, 1)
-    sleep(10)
-    print('Closing solenoid...')
-    GPIO.output(DOOR_PIN, 0)
-    sleep(10)
+    GPIO.output(18, GPIO.HIGH)
+    time.sleep(3)
+    GPIO.output(18, GPIO.LOW)
+    time.sleep(3)
