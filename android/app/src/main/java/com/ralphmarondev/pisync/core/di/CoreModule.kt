@@ -17,7 +17,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 //const val IP_ADDRESS = "192.168.100.96" // on jam
-const val IP_ADDRESS = "192.168.68.132" // on boarding
+//const val IP_ADDRESS = "192.168.68.132" // on boarding
+const val IP_ADDRESS = "192.168.100.25" // jack
 const val BASE_URL = "http://$IP_ADDRESS:8000/api/"
 
 val coreModule = module {
