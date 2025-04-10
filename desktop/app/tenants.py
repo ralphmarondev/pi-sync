@@ -128,6 +128,7 @@ class TenantsFrame(ctk.CTkFrame):
                            lambda event, tenant_id=tenant_id: self.open_tenant_dialog(tenant_id))  # Also bind to label
 
     def open_tenant_dialog(self, tenant_id):
+        print(f'Opening tenant dialog with id: {tenant_id}')
         tenant_details = self.fetch_tenant_details(tenant_id)
         print(tenant_details)
 
@@ -208,9 +209,9 @@ class TenantsFrame(ctk.CTkFrame):
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Network Error", f"Request failed: {e}")
 
-    def delete_tenant(self, room_id, dialog):
-        """ Handle deleting the room """
-        url = f'{BASE_URL}user/delete/{room_id}/'  # Assuming this is the endpoint for deleting a room
+    def delete_tenant(self, tenant_id, dialog):
+        """ Handle deleting the tenant """
+        url = f'{BASE_URL}user/delete/{tenant_id}/'
         data = {
             "is_deleted": True
         }
@@ -218,21 +219,21 @@ class TenantsFrame(ctk.CTkFrame):
         try:
             response = requests.put(url, json=data)
             if response.status_code == 200:
-                messagebox.showinfo("Success", "Room deleted successfully.")
+                messagebox.showinfo("Success", "Tenant deleted successfully.")
                 dialog.destroy()
                 self.fetch_data_from_api()
             else:
-                messagebox.showerror("Error", f"Failed to delete room: {response.status_code}")
+                messagebox.showerror("Error", f"Failed to delete tenant from database: {response.status_code}")
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Network Error", f"Request failed: {e}")
 
     def fetch_tenant_details(self, tenant_id):
-        """ Fetch details for the specific room using its ID """
-        url = f'{BASE_URL}user/{tenant_id}/'  # Assuming this is the endpoint to fetch details by ID
+        """ Fetch details for the specific tenant using its ID """
+        url = f'{BASE_URL}user/{tenant_id}/'
         try:
             response = requests.get(url)
             if response.status_code == 200:
-                return response.json()  # Return room details as a dictionary
+                return response.json()  # Return tenant details as a dictionary
             else:
                 messagebox.showerror('Error', f"Failed to fetch tenant details: {response.status_code}")
                 return {}
@@ -241,7 +242,7 @@ class TenantsFrame(ctk.CTkFrame):
             return {}
 
     def open_new_tenant_dialog(self):
-        """Opens a dialog to create a new room."""
+        """Opens a dialog to create a new tenant."""
         dialog = ctk.CTkToplevel(self)
         dialog.title("Add New Tenant")
 
