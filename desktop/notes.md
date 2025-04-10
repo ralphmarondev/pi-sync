@@ -1,9 +1,14 @@
-# room | door
-- create
-- read
-- update
-- delete
+# 2025-04-11
 
-# tenant | user
-- read
+## Todo
 
+- implement crud on tenant
+- implement auth
+
+## Accomplished so far
+
+- create [room]
+- read [room]
+- update [room]
+- delete [room]
+- read [tenant]
