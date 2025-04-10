@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO 
 from time import sleep 
 
-DOOR_PIN = 18
+DOOR_PIN = 23
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
