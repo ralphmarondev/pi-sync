@@ -114,6 +114,7 @@ class TenantsFrame(ctk.CTkFrame):
             bg_color = self.row_colors[row % 2]  # Alternate row colors
             tenant_name = entry[0]
             tenant_id = entry[3]
+            print(f'row: {row} - entry: {entry}')
 
             for col, value in enumerate(entry[:3]):
                 cell = ctk.CTkFrame(self.table_frame, fg_color=bg_color, corner_radius=10)  # Rounded cell
@@ -141,14 +142,15 @@ class TenantsFrame(ctk.CTkFrame):
         self.center_dialog(dialog, width=450, height=250)
 
         if not tenant_details or 'username' not in tenant_details:
-            messagebox.showerror('Error', 'Tenant details are missing the name.')
-            return
+            # messagebox.showerror('Error', 'Tenant details are missing the name.')
+            print(f'Tenant details are missing the name.')
+            # return
 
         # Main Frame for Form (Right side)
         form_frame = ctk.CTkFrame(dialog)
         form_frame.pack(side="right", padx=(0, 10), pady=10, fill="both", expand=True)
 
-        # Label and Entry for the Tenant Name
+        # Tenant Name
         name_label = ctk.CTkLabel(form_frame, text="Tenant Name", font=("Arial", 14))
         name_label.grid(row=0, column=0, sticky="w", padx=10, pady=(2, 0))
 
@@ -156,36 +158,37 @@ class TenantsFrame(ctk.CTkFrame):
         tenant_name_entry = ctk.CTkEntry(form_frame, textvariable=tenant_name_var, font=("Arial", 14), width=240)
         tenant_name_entry.grid(row=1, column=0, padx=10, pady=(0, 5), sticky="ew")
 
+        # Tenant Username (now properly placed)
         username_label = ctk.CTkLabel(form_frame, text="Tenant Username", font=("Arial", 14))
-        username_label.grid(row=0, column=0, sticky="w", padx=10, pady=(2, 0))
+        username_label.grid(row=2, column=0, sticky="w", padx=10, pady=(10, 0))
 
         tenant_username_var = ctk.StringVar(value=tenant_details['username'])
         tenant_username_entry = ctk.CTkEntry(form_frame, textvariable=tenant_username_var, font=("Arial", 14),
                                              width=240)
-        tenant_username_entry.grid(row=1, column=0, padx=10, pady=(0, 5), sticky="ew")
+        tenant_username_entry.grid(row=3, column=0, padx=10, pady=(0, 5), sticky="ew")
 
-        # Frame for buttons (aligned vertically on the left side, like a nav bar)
-        button_frame = ctk.CTkFrame(dialog)
-        button_frame.pack(side="left", padx=(10, 10), pady=10, fill="y")
-
-        # Close Button (with color and increased height)
-        close_button = ctk.CTkButton(button_frame, text="Close", command=dialog.destroy, fg_color="gray",
-                                     hover_color="darkgray", font=("Arial", 14), height=40)
-        close_button.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="ew")
-
-        # Update Button (with color and increased height)
-        update_button = ctk.CTkButton(button_frame, text="Update",
-                                      command=lambda: self.update_tenant(tenant_id, tenant_name_var.get(),
-                                                                         state_var.get(),
-                                                                         active_var.get(), dialog), fg_color="green",
-                                      hover_color="darkgreen", font=("Arial", 14), height=40)
-        update_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
-
-        # Delete Button (with color and increased height)
-        delete_button = ctk.CTkButton(button_frame, text="Delete",
-                                      command=lambda: self.delete_tenant(tenant_id, dialog),
-                                      fg_color="red", hover_color="darkred", font=("Arial", 14), height=40)
-        delete_button.grid(row=2, column=0, padx=10, pady=(5, 10), sticky="ew")
+        # # Frame for buttons (aligned vertically on the left side, like a nav bar)
+        # button_frame = ctk.CTkFrame(dialog)
+        # button_frame.pack(side="left", padx=(10, 10), pady=10, fill="y")
+        #
+        # # Close Button (with color and increased height)
+        # close_button = ctk.CTkButton(button_frame, text="Close", command=dialog.destroy, fg_color="gray",
+        #                              hover_color="darkgray", font=("Arial", 14), height=40)
+        # close_button.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="ew")
+        #
+        # # Update Button (with color and increased height)
+        # update_button = ctk.CTkButton(button_frame, text="Update",
+        #                               command=lambda: self.update_tenant(tenant_id, tenant_name_var.get(),
+        #                                                                  state_var.get(),
+        #                                                                  active_var.get(), dialog), fg_color="green",
+        #                               hover_color="darkgreen", font=("Arial", 14), height=40)
+        # update_button.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
+        #
+        # # Delete Button (with color and increased height)
+        # delete_button = ctk.CTkButton(button_frame, text="Delete",
+        #                               command=lambda: self.delete_tenant(tenant_id, dialog),
+        #                               fg_color="red", hover_color="darkred", font=("Arial", 14), height=40)
+        # delete_button.grid(row=2, column=0, padx=10, pady=(5, 10), sticky="ew")
 
     def update_tenant(self, tenant_id, first_name, last_name, username, password, dialog):
         """ Handle updating the tenant's name, state, and active status """
