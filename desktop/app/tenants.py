@@ -1,8 +1,7 @@
-import threading
-from tkinter import messagebox
-
 import customtkinter as ctk
 import requests
+import threading
+from tkinter import messagebox
 
 from constants import *
 
@@ -242,6 +241,8 @@ class TenantsFrame(ctk.CTkFrame):
             return {}
 
     def open_new_tenant_dialog(self):
+        PADY_LABEL = (5, 0)
+        PADY_ENTRY = (0, 5)
         """Opens a dialog to create a new tenant."""
         dialog = ctk.CTkToplevel(self)
         dialog.title("Add New Tenant")
@@ -250,21 +251,54 @@ class TenantsFrame(ctk.CTkFrame):
         dialog.grab_set()
 
         # Center the dialog
-        self.center_dialog(dialog, width=280, height=200)
+        self.center_dialog(dialog, width=560, height=400)
 
-        tenant_name_label = ctk.CTkLabel(dialog, text="Tenant Name:")
-        tenant_name_label.grid(row=0, column=0, padx=10, pady=(10, 5), sticky="w")
-        tenant_name_entry = ctk.CTkEntry(dialog, width=260)
-        tenant_name_entry.grid(row=1, column=0, padx=10, pady=(0, 10))
+        # first row
+        first_name_label = ctk.CTkLabel(dialog, text="First Name:")
+        first_name_label.grid(row=0, column=0, padx=10, pady=PADY_LABEL, sticky="w")
+        first_name_entry = ctk.CTkEntry(dialog, width=260)
+        first_name_entry.grid(row=1, column=0, padx=10, pady=PADY_ENTRY)
 
+        last_name_label = ctk.CTkLabel(dialog, text="Last Name:")
+        last_name_label.grid(row=0, column=1, padx=10, pady=PADY_LABEL, sticky="w")
+        last_name_entry = ctk.CTkEntry(dialog, width=260)
+        last_name_entry.grid(row=1, column=1, padx=10, pady=PADY_ENTRY)
+
+        # second row
+        username_label = ctk.CTkLabel(dialog, text="Username:")
+        username_label.grid(row=2, column=0, padx=10, pady=PADY_LABEL, sticky="w")
+        username_entry = ctk.CTkEntry(dialog, width=260)
+        username_entry.grid(row=3, column=0, padx=10, pady=PADY_ENTRY)
+
+        password_label = ctk.CTkLabel(dialog, text="Password:")
+        password_label.grid(row=2, column=1, padx=10, pady=PADY_LABEL, sticky="w")
+        password_entry = ctk.CTkEntry(dialog, width=260)
+        password_entry.grid(row=3, column=1, padx=10, pady=PADY_ENTRY)
+
+        # Third row
+        hint_password_label = ctk.CTkLabel(dialog, text="Password hint:")
+        hint_password_label.grid(row=4, column=0, padx=10, pady=PADY_LABEL, sticky="w")
+        hint_password_entry = ctk.CTkEntry(dialog, width=260)
+        hint_password_entry.grid(row=5, column=0, padx=10, pady=PADY_ENTRY)
+
+        options = ["Male", "Female"]
+
+        # Create combo box
+        gender_label = ctk.CTkLabel(dialog, text="Gender:")
+        gender_label.grid(row=4, column=1, padx=10, pady=PADY_LABEL, sticky="w")
+        gender_combobox = ctk.CTkComboBox(dialog, values=options, width=260)
+        gender_combobox.grid(row=5, column=1, pady=PADY_ENTRY)
+        gender_combobox.set("Select Gender")  # Optional placeholder
+
+        # Fourth row [buttons]
         button_frame = ctk.CTkFrame(dialog, fg_color="transparent")
-        button_frame.grid(row=2, column=0, columnspan=2, pady=10)
+        button_frame.grid(row=8, column=0, columnspan=2, pady=10)
 
-        submit_button = ctk.CTkButton(button_frame, text="Submit", width=120, height=30,
-                                      command=lambda: self.submit_new_tenant(dialog, tenant_name_entry))
+        submit_button = ctk.CTkButton(button_frame, text="Register", width=260, height=30,
+                                      command=lambda: self.submit_new_tenant(dialog, first_name_entry))
         submit_button.grid(row=0, column=0, padx=10)
 
-        cancel_button = ctk.CTkButton(button_frame, text="Cancel", width=120, height=30, command=dialog.destroy)
+        cancel_button = ctk.CTkButton(button_frame, text="Cancel", width=260, height=30, command=dialog.destroy)
         cancel_button.grid(row=0, column=1, padx=10)
 
     def submit_new_tenant(self, dialog, room_name_entry):
