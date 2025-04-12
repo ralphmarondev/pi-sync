@@ -288,6 +288,7 @@ class TenantsFrame(ctk.CTkFrame):
         gender_label.grid(row=4, column=1, padx=10, pady=PADY_LABEL, sticky="w")
         gender_combobox = ctk.CTkComboBox(dialog, values=options, width=260)
         gender_combobox.grid(row=5, column=1, pady=PADY_ENTRY)
+        # gender_combobox.set(options[0])  # default value 'Male'
         gender_combobox.set("Select Gender")  # Optional placeholder
 
         # Fourth row [buttons]
