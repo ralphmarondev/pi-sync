@@ -295,26 +295,61 @@ class TenantsFrame(ctk.CTkFrame):
         button_frame = ctk.CTkFrame(dialog, fg_color="transparent")
         button_frame.grid(row=8, column=0, columnspan=2, pady=10)
 
-        submit_button = ctk.CTkButton(button_frame, text="Register", width=260, height=35,
-                                      command=lambda: self.submit_new_tenant(dialog, first_name_entry))
+        submit_button = ctk.CTkButton(
+            button_frame,
+            text="Register",
+            width=260,
+            height=35,
+            command=lambda: self.submit_new_tenant(
+                dialog,
+                first_name_entry,
+                last_name_entry,
+                username_entry,
+                password_entry,
+                hint_password_entry,
+                gender_combobox
+            )
+        )
         submit_button.grid(row=0, column=0, padx=10, pady=10)
 
         cancel_button = ctk.CTkButton(button_frame, text="Cancel", width=260, height=35, command=dialog.destroy)
         cancel_button.grid(row=0, column=1, padx=10, pady=10)
 
-    def submit_new_tenant(self, dialog, room_name_entry):
-        tenant_name = room_name_entry.get()
-        print(f"Tenant Name: {tenant_name}")
+    def submit_new_tenant(
+            self,
+            dialog,
+            first_name_entry,
+            last_name_entry,
+            username_entry,
+            password_entry,
+            hint_password_entry,
+            gender_combobox
+    ):
+        first_name = first_name_entry.get()
+        last_name = last_name_entry.get()
+        username = username_entry.get()
+        password = password_entry.get()
+        password_hint = hint_password_entry.get()
+        gender = gender_combobox.get()
+
+        print(f"Adding new tenants...")
+        print(f'First name: {first_name}')
+        print(f'Last name: {last_name}')
+        print(f'Username: {username}')
+        print(f'Password: {password}')
+        print(f'Password hint: {password_hint}')
+        print(f'Gender: {gender}')
 
         def post_room_data():
             try:
                 data = {
-                    'first_name': tenant_name,
-                    'last_name': f'Last name_{tenant_name[:3]}',
-                    'username': f'username_{tenant_name[:3]}',
-                    'password': f'password_{tenant_name[:3]}',
-                    'password_hint': f'hint_{tenant_name[:3]}',
-                    'is_superuser': True
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'username': username,
+                    'password': password,
+                    'hint_password': password_hint,
+                    'gender': gender,
+                    'is_superuser': False
                 }
                 url = f'{BASE_URL}register/'
                 response = requests.post(url, data=data)
