@@ -1,5 +1,9 @@
 .venv
 .idea
-__pycache__/
 
+# Ignore all __pycache__ folders recursively
+**/__pycache__/
 
+# Ignore all migration files except __init__.py
+**/migrations/*.py
+!**/migrations/__init__.py
