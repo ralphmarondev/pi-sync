@@ -87,19 +87,28 @@ class AuthScreen:
                 'username': username,
                 'password': password
             }
-            response = requests.post(url, json=payload)
-            response.raise_for_status()
-            result = response.json()
+            headers = {
+                'Content-Type': 'application/json'  # Ensuring proper content type
+            }
 
-            if result.get('success'):
-                messagebox.showinfo("Login successful", result.get('message', 'Welcome back'))
-                self.root.destroy()
-                HomeScreen().mainloop()
+            response = requests.post(url, json=payload, headers=headers)
+            response.raise_for_status()  # Raise an exception for HTTP errors
+
+            if response.status_code == 200:
+                result = response.json()
+                if result.get('success'):
+                    messagebox.showinfo("Login successful", result.get('message', 'Welcome back'))
+                    self.root.destroy()
+                    HomeScreen().mainloop()
+                else:
+                    messagebox.showerror('Login failed', result.get('message', 'Invalid credentials.'))
             else:
-                messagebox.showerror('Login failed', result.get('message', 'Invalid credentials.'))
+                print(f"Error response: {response.text}")  # Inspect error content
+                messagebox.showerror('Login failed', 'There was an issue with your request.')
+
         except requests.RequestException as e:
             print(f'Login error: {e}')
-            messagebox.showerror('Error', 'Failed to connect to the server.')
+            messagebox.showerror('Error', 'Invalid credentials.')
 
 
 if __name__ == '__main__':
