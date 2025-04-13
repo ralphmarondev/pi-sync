@@ -67,7 +67,6 @@ class TenantsFrame(ctk.CTkFrame):
             response = requests.get(url)
             if response.status_code == 200:
                 data = response.json()
-                print(data)
 
                 if 'users' in data and isinstance(data['users'], list):
                     self.data = [
