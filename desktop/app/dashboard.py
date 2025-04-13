@@ -48,7 +48,8 @@ class DashboardFrame(ctk.CTkFrame):
 
             door_name = door["name"]
             door_status = "Open" if door["is_open"] else "Closed"
-            label = ctk.CTkLabel(inner_frame, text=f"{door_name}\n{door_status}", font=("Arial", 14))
+            label = ctk.CTkLabel(inner_frame, text=f"{door_name}\n{door_status}", font=("Arial", 14),
+                                 width=self.frame_width, height=self.frame_width)
             label.pack(expand=True)
 
             # Make entire area clickable
