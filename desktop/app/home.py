@@ -2,6 +2,7 @@ import customtkinter as ctk
 
 from room import RoomFrame
 from tenants import TenantsFrame
+from dashboard import DashboardFrame
 
 
 class NavigationFrame(ctk.CTkFrame):
@@ -52,13 +53,6 @@ class MainContentFrame(ctk.CTkFrame):
 
         self.current_frame = self.frames[frame_class]
         self.current_frame.grid(row=0, column=0, sticky='nsew')
-
-
-class DashboardFrame(ctk.CTkFrame):
-    def __init__(self, master):
-        super().__init__(master)
-        label = ctk.CTkLabel(self, text="Dashboard", font=("Arial", 24))
-        label.pack(pady=20)
 
 
 class HomeScreen(ctk.CTk):
