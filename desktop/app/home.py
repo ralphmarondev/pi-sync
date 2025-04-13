@@ -82,7 +82,7 @@ class HomeScreen(ctk.CTk):
         )
 
         # show dashboard by default
-        self.main_content_frame.show_frame(RoomFrame)
+        self.main_content_frame.show_frame(DashboardFrame)
 
 
 if __name__ == '__main__':
