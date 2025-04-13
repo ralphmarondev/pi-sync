@@ -21,11 +21,7 @@ class DashboardFrame(ctk.CTkFrame):
         # Only 2 doors
         self.door_data = [
             {"id": 1, "name": "A14", "is_active": True, "is_open": False, "tenant_count": 1},
-            {"id": 2, "name": "A16", "is_active": False, "is_open": True, "tenant_count": 0},
-            {"id": 1, "name": "A14", "is_active": True, "is_open": False, "tenant_count": 1},
-            {"id": 2, "name": "A16", "is_active": False, "is_open": True, "tenant_count": 0},
-            {"id": 1, "name": "A14", "is_active": True, "is_open": False, "tenant_count": 1},
-            {"id": 2, "name": "A16", "is_active": False, "is_open": True, "tenant_count": 0},
+            {"id": 2, "name": "A16", "is_active": False, "is_open": True, "tenant_count": 0}
         ]
 
         self.create_door_grid()
