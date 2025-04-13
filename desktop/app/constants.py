@@ -1,1 +1,2 @@
-BASE_URL = 'http://127.0.0.1:8000/api/'
+IP_ADDRESS = '127.0.0.1'
+BASE_URL = f'http://{IP_ADDRESS}:8000/api/'
