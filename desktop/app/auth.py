@@ -81,5 +81,9 @@ class AuthScreen:
 
 if __name__ == '__main__':
     root = ctk.CTk()
+
+    ctk.set_appearance_mode('light')
+    ctk.set_default_color_theme('purple_theme.json')
+
     auth_screen = AuthScreen(root)
     root.mainloop()

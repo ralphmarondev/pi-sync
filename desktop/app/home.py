@@ -1,8 +1,8 @@
 import customtkinter as ctk
 
+from dashboard import DashboardFrame
 from room import RoomFrame
 from tenants import TenantsFrame
-from dashboard import DashboardFrame
 
 
 class NavigationFrame(ctk.CTkFrame):
@@ -10,6 +10,11 @@ class NavigationFrame(ctk.CTkFrame):
         super().__init__(master, width=200)
         self.grid_propagate(False)
         self.main_content = main_content  # reference to the main content frame
+
+        # theme remove this later
+        ctk.set_appearance_mode('light')
+        # ctk.set_default_color_theme('purple_theme.json')
+        ctk.set_default_color_theme('green')
 
         self.dashboard_button = ctk.CTkButton(self, text='D A S H B O A R D', width=180, height=50,
                                               command=self.show_dashboard)
