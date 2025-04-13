@@ -7,50 +7,51 @@ class DashboardFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
 
-        # Configure the grid with no weight for the rows and columns
-        self.grid_rowconfigure(0, weight=1)  # Adjust the first row for the title
-        self.grid_columnconfigure(0, weight=1)  # Adjust the first column for the title
+        # Optional: Add a title
+        title = ctk.CTkLabel(self, text="Dashboard", font=("Arial", 20, "bold"))
+        title.grid(row=0, column=0, pady=10)
 
-        # Fetching door data from the API
+        # Create a container for the door grid
+        self.grid_container = ctk.CTkFrame(self)
+        self.grid_container.grid(row=1, column=0, padx=20, pady=20)
+
+        # Door data
         self.door_data = self.get_door_data()
 
-        # Create a grid of clickable frames based on the data
+        # Create the grid
         self.create_door_grid()
 
     def get_door_data(self):
-        # Simulating API call for door data (replace with your actual API request)
-        response = [
+        # Simulated API response
+        return [
             {"id": 1, "name": "A14", "is_active": True, "is_open": False, "tenant_count": 1},
             {"id": 2, "name": "A16", "is_active": False, "is_open": False, "tenant_count": 0},
             {"id": 3, "name": "B14", "is_active": True, "is_open": True, "tenant_count": 2},
             {"id": 4, "name": "B16", "is_active": True, "is_open": False, "tenant_count": 3},
-            # Add more doors here if needed
+            # Add more as needed
         ]
-        return response
 
     def create_door_grid(self):
-        # Create a frame for each door dynamically
-        for i, door in enumerate(self.door_data):
-            door_frame = ctk.CTkFrame(self, width=150, height=150)  # Set fixed size for each door frame
-            door_frame.grid(row=(i // 4), column=i % 4, padx=10, pady=10, sticky="nsew")  # Adjust grid size
+        columns = 4  # Customize number of columns per row
 
+        for index, door in enumerate(self.door_data):
+            row = index // columns
+            col = index % columns
+
+            # Create the door frame with fixed size
+            door_frame = ctk.CTkFrame(self.grid_container, width=150, height=150, corner_radius=10)
+            door_frame.grid(row=row, column=col, padx=10, pady=10)
+            door_frame.grid_propagate(False)  # Prevent content from resizing the frame
+
+            # Label inside door frame
             door_name = door["name"]
             door_status = "Open" if door["is_open"] else "Closed"
-            door_label = ctk.CTkLabel(door_frame, text=f"{door_name}\n{door_status}", font=("Arial", 14))
-            door_label.pack(pady=10)
+            label = ctk.CTkLabel(door_frame, text=f"{door_name}\n{door_status}", font=("Arial", 14))
+            label.pack(expand=True)
 
-            # Use functools.partial to bind the correct door_id
+            # Make it clickable
             door_frame.bind("<Button-1>", partial(self.on_door_click, door["id"]))
+            label.bind("<Button-1>", partial(self.on_door_click, door["id"]))  # Ensure label also reacts
 
     def on_door_click(self, door_id, event=None):
         print(f"Door {door_id} clicked.")
-        # You can add functionality to handle click events, such as opening or closing the door
-        # or displaying more information.
-
-
-# Example usage in your app (HomeScreen)
-if __name__ == "__main__":
-    app = ctk.CTk()  # Main application window
-    home_screen = HomeScreen(app)
-    home_screen.pack(fill="both", expand=True)  # Fill the window with the HomeScreen
-    app.mainloop()
