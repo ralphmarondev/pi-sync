@@ -1,7 +1,9 @@
 from tkinter import messagebox
 
 import customtkinter as ctk
+import requests
 
+from constants import *
 from home import HomeScreen
 
 
@@ -10,6 +12,11 @@ class AuthScreen:
         self.root = root
         self.root.title("Login | PiSync")
         self.root.geometry("600x400")  # Set window size (this is optional)
+
+        # theme remove this later
+        ctk.set_appearance_mode('light')
+        # ctk.set_default_color_theme('purple_theme.json')
+        ctk.set_default_color_theme('green')
 
         # Create the outer frame that will hold the inner frames, adjust to maximum width
         self.outer_frame = ctk.CTkFrame(self.root, corner_radius=15, fg_color="transparent")
@@ -70,13 +77,29 @@ class AuthScreen:
         username = self.username_entry.get()
         password = self.password_entry.get()
 
-        # Add logic for authenticating the user here
-        if username == "ralphmaron" and password == "iscute":
-            messagebox.showinfo("Login Successful", "Welcome back!")
-            self.root.destroy()
-            HomeScreen().mainloop()
-        else:
-            messagebox.showerror("Login Failed", "Incorrect username or password.")
+        if not username or not password:
+            messagebox.showwarning("Missing info", "Please enter both username and password")
+            return
+
+        try:
+            url = f'{BASE_URL}login/'
+            payload = {
+                'username': username,
+                'password': password
+            }
+            response = requests.post(url, json=payload)
+            response.raise_for_status()
+            result = response.json()
+
+            if result.get('success'):
+                messagebox.showinfo("Login successful", result.get('message', 'Welcome back'))
+                self.root.destroy()
+                HomeScreen().mainloop()
+            else:
+                messagebox.showerror('Login failed', result.get('message', 'Invalid credentials.'))
+        except requests.RequestException as e:
+            print(f'Login error: {e}')
+            messagebox.showerror('Error', 'Failed to connect to the server.')
 
 
 if __name__ == '__main__':
