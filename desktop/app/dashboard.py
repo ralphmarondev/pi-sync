@@ -8,7 +8,8 @@ class DashboardFrame(ctk.CTkFrame):
         super().__init__(master)
         self.master = master
 
-        self.frame_width = 150
+        # Reduced frame width (half of the previous value)
+        self.frame_width = 75
         self.frame_padding = 20
         self.default_container_width = (self.frame_width + self.frame_padding) * 2 + 40
 
@@ -19,6 +20,10 @@ class DashboardFrame(ctk.CTkFrame):
 
         # Only 2 doors
         self.door_data = [
+            {"id": 1, "name": "A14", "is_active": True, "is_open": False, "tenant_count": 1},
+            {"id": 2, "name": "A16", "is_active": False, "is_open": True, "tenant_count": 0},
+            {"id": 1, "name": "A14", "is_active": True, "is_open": False, "tenant_count": 1},
+            {"id": 2, "name": "A16", "is_active": False, "is_open": True, "tenant_count": 0},
             {"id": 1, "name": "A14", "is_active": True, "is_open": False, "tenant_count": 1},
             {"id": 2, "name": "A16", "is_active": False, "is_open": True, "tenant_count": 0},
         ]
@@ -36,7 +41,8 @@ class DashboardFrame(ctk.CTkFrame):
                 corner_radius=10,
                 border_width=2,
                 border_color="gray",
-                fg_color="#f0f0f0"  # Light background
+                fg_color="transparent",  # Light background
+                bg_color='transparent'
             )
             outer_frame.grid(row=row, column=col, padx=10, pady=10, sticky="n")
             outer_frame.configure(width=self.frame_width, height=self.frame_width)
