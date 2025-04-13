@@ -90,12 +90,27 @@ class DashboardFrame(ctk.CTkFrame):
             return
 
         door_data = door_widget["data"]
-        door_data["is_open"] = not door_data["is_open"]  # Toggle state
+        current_state = door_data["is_open"]
+        action = "close" if current_state else "open"
+        url = f"{BASE_URL}door/{action}/{door_id}/"
 
-        new_status = "Open" if door_data["is_open"] else "Closed"
-        new_color = "green" if door_data["is_open"] else "red"
+        try:
+            response = requests.post(url)
+            response.raise_for_status()
+            result = response.json()
 
-        door_widget["label"].configure(text=f"{door_data['name']}\n{new_status}")
-        door_widget["frame"].configure(border_color=new_color)
+            if result.get("success"):
+                # Update state and UI
+                door_data["is_open"] = result["is_open"]
+                new_status = "Open" if result["is_open"] else "Closed"
+                new_color = "green" if result["is_open"] else "red"
 
-        print(f"Door {door_id} toggled to {new_status}")
+                door_widget["label"].configure(text=f"{door_data['name']}\n{new_status}")
+                door_widget["frame"].configure(border_color=new_color)
+
+                print(f"Door {door_id} successfully {action}ed.")
+            else:
+                print(f"Failed to {action} door {door_id}: {result.get('message')}")
+
+        except requests.RequestException as e:
+            print(f"Error trying to {action} door {door_id}: {e}")
