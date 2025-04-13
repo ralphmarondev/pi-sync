@@ -15,7 +15,7 @@ class DashboardFrame(ctk.CTkFrame):
         # Grid container with fixed width
         self.grid_container = ctk.CTkFrame(self, width=self.default_container_width)
         self.grid_container.grid(row=0, column=0, sticky="n", padx=10, pady=10)
-        self.grid_container.grid_propagate(False)  # Prevent resizing
+        self.grid_container.grid_propagate(False)
 
         # Only 2 doors
         self.door_data = [
@@ -31,18 +31,30 @@ class DashboardFrame(ctk.CTkFrame):
             row = index // 2
 
             # Door frame with border and margin
-            outer_frame = ctk.CTkFrame(self.grid_container, corner_radius=10, border_width=2, border_color="gray")
+            outer_frame = ctk.CTkFrame(
+                self.grid_container,
+                corner_radius=10,
+                border_width=2,
+                border_color="gray",
+                fg_color="#f0f0f0"  # Light background
+            )
             outer_frame.grid(row=row, column=col, padx=10, pady=10, sticky="n")
             outer_frame.configure(width=self.frame_width, height=self.frame_width)
             outer_frame.grid_propagate(False)
 
+            # Inner padding using an inner frame
+            inner_frame = ctk.CTkFrame(outer_frame, fg_color="transparent")
+            inner_frame.pack(expand=True, fill="both", padx=10, pady=10)
+
             door_name = door["name"]
             door_status = "Open" if door["is_open"] else "Closed"
-            label = ctk.CTkLabel(outer_frame, text=f"{door_name}\n{door_status}", font=("Arial", 14))
+            label = ctk.CTkLabel(inner_frame, text=f"{door_name}\n{door_status}", font=("Arial", 14))
             label.pack(expand=True)
 
+            # Make entire area clickable
             outer_frame.bind("<Button-1>", partial(self.on_door_click, door["id"]))
             label.bind("<Button-1>", partial(self.on_door_click, door["id"]))
+            inner_frame.bind("<Button-1>", partial(self.on_door_click, door["id"]))
 
     def on_door_click(self, door_id, event=None):
         print(f"Door {door_id} clicked.")
