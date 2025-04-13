@@ -23,6 +23,7 @@ class DashboardFrame(ctk.CTkFrame):
         self.door_widgets = {}
 
         self.fetch_and_create_door_grid()
+        self.update_door_states()
 
     def fetch_and_create_door_grid(self):
         url = f'{BASE_URL}doors/'
@@ -114,3 +115,32 @@ class DashboardFrame(ctk.CTkFrame):
 
         except requests.RequestException as e:
             print(f"Error trying to {action} door {door_id}: {e}")
+
+    def update_door_states(self):
+        url = f'{BASE_URL}doors/'
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            new_data = response.json()
+
+            for new_door in new_data:
+                door_id = new_door["id"]
+                if door_id in self.door_widgets:
+                    door_widget = self.door_widgets[door_id]
+                    current_data = door_widget["data"]
+
+                    # Update only if state changed
+                    if current_data["is_open"] != new_door["is_open"]:
+                        current_data["is_open"] = new_door["is_open"]
+                        new_status = "Open" if new_door["is_open"] else "Closed"
+                        new_color = "green" if new_door["is_open"] else "red"
+
+                        door_widget["label"].configure(text=f"{new_door['name']}\n{new_status}")
+                        door_widget["frame"].configure(border_color=new_color)
+                        print(f"Auto-updated door {new_door['name']} to {new_status}")
+
+        except requests.RequestException as e:
+            print(f"Auto-refresh failed: {e}")
+
+        # Keep the loop going every 3 seconds
+        self.after(3000, self.update_door_states)
