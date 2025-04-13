@@ -1,6 +1,9 @@
 from functools import partial
 
 import customtkinter as ctk
+import requests
+
+from constants import BASE_URL
 
 
 class DashboardFrame(ctk.CTkFrame):
@@ -16,26 +19,39 @@ class DashboardFrame(ctk.CTkFrame):
         self.grid_container.grid(row=0, column=0, sticky="n", padx=10, pady=10)
         self.grid_container.grid_propagate(False)
 
-        self.door_data = [
-            {"id": 1, "name": "A14", "is_active": True, "is_open": False, "tenant_count": 1},
-            {"id": 2, "name": "A16", "is_active": False, "is_open": True, "tenant_count": 0}
-        ]
-
-        # Store widgets for dynamic updates
+        self.door_data = []
         self.door_widgets = {}
 
-        self.create_door_grid()
+        self.fetch_and_create_door_grid()
+
+    def fetch_and_create_door_grid(self):
+        url = f'{BASE_URL}doors/'
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            self.door_data = response.json()
+            print(f"Fetched {len(self.door_data)} doors")  # ✅ DEBUG
+            self.create_door_grid()
+        except Exception as e:
+            print(f'Error fetching door data: {e}')
 
     def create_door_grid(self):
+        if not self.door_data:
+            print("No door data to display.")
+            return
+
         for index, door in enumerate(self.door_data):
             col = index % 2
             row = index // 2
+
+            border_color = "green" if door["is_open"] else "red"
+            print(f"Creating door '{door['name']}' with status {door['is_open']} ({border_color})")  # ✅ DEBUG
 
             outer_frame = ctk.CTkFrame(
                 self.grid_container,
                 corner_radius=10,
                 border_width=2,
-                border_color="green" if door["is_open"] else "red",
+                border_color=border_color,
                 fg_color="transparent",
                 bg_color='transparent'
             )
@@ -55,11 +71,10 @@ class DashboardFrame(ctk.CTkFrame):
             )
             label.pack(expand=True)
 
-            # Bind all clickable areas
+            # Bind click to toggle
             for widget in (outer_frame, inner_frame, label):
                 widget.bind("<Button-1>", partial(self.on_door_click, door["id"]))
 
-            # Store for future updates
             self.door_widgets[door["id"]] = {
                 "frame": outer_frame,
                 "label": label,
@@ -69,12 +84,18 @@ class DashboardFrame(ctk.CTkFrame):
     def on_door_click(self, door_id, event=None):
         print(f"Door {door_id} clicked.")
 
-        door_widget = self.door_widgets[door_id]
+        door_widget = self.door_widgets.get(door_id)
+        if not door_widget:
+            print(f"No widget found for door {door_id}")
+            return
+
         door_data = door_widget["data"]
         door_data["is_open"] = not door_data["is_open"]  # Toggle state
 
-        # Update label and border color
         new_status = "Open" if door_data["is_open"] else "Closed"
+        new_color = "green" if door_data["is_open"] else "red"
+
         door_widget["label"].configure(text=f"{door_data['name']}\n{new_status}")
-        new_border_color = "green" if door_data["is_open"] else "red"
-        door_widget["frame"].configure(border_color=new_border_color)
+        door_widget["frame"].configure(border_color=new_color)
+
+        print(f"Door {door_id} toggled to {new_status}")
