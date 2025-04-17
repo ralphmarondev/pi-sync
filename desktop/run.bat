@@ -1,2 +1,2 @@
 cd app
-python main.py
+python auth.py
