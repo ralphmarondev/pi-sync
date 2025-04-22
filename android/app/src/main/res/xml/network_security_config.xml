@@ -5,5 +5,6 @@
         <domain includeSubdomains="true">10.0.2.2</domain> <!-- For Emulator -->
         <domain includeSubdomains="true">192.168.100.96</domain> <!-- On Jam -->
         <domain includeSubdomains="true">192.168.68.132</domain> <!-- On boarding -->
+        <domain includeSubdomains="true">192.168.1.99</domain> <!-- On Triesha mae boarding -->
     </domain-config>
 </network-security-config>
