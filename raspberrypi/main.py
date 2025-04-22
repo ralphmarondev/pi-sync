@@ -3,7 +3,8 @@ import requests
 import RPi.GPIO as GPIO
 
 # Configuration
-IP_ADDRESS = '192.168.100.96'
+# IP_ADDRESS = '192.168.100.96'
+IP_ADDRESS = '192.168.1.99'
 DOOR_ID = 1
 USERNAME = 'ralphmaron'
 DESCRIPTION = 'Updated via Raspberry Pi.'
