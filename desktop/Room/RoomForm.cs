@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
+using System.Net.Http.Json;
 using System.Windows.Forms;
 using PiSync.Core.Model;
 
@@ -18,7 +17,7 @@ namespace PiSync.Room
         {
             InitializeComponent();
             SetupDataGridView();
-            _ = FetchRoomsAsync();
+            FetchRoomsAsync();
         }
 
         #region POPULATING_DATAGRIDVIEW
@@ -31,7 +30,7 @@ namespace PiSync.Room
             dataGridViewRooms.Columns["id"].Visible = false;
 
             dataGridViewRooms.Columns.Add("name", "Name");
-            dataGridViewRooms.Columns.Add("tenantCount", "Tenants");
+            dataGridViewRooms.Columns.Add("tenantCount", "Tenant Count");
             dataGridViewRooms.Columns.Add("status", "Status");
 
             DataGridViewButtonColumn actionColumn = new DataGridViewButtonColumn();
@@ -53,30 +52,29 @@ namespace PiSync.Room
             dataGridViewRooms.EnableHeadersVisualStyles = false;
 
             dataGridViewRooms.CellClick += dataGridViewRooms_CellContentClick;
+
+            // Set initial position and size with margin
+            SetDataGridViewPadding();
         }
 
-        private async Task FetchRoomsAsync()
+        private async void FetchRoomsAsync()
         {
             try
             {
-                var response = await httpClient.GetAsync("doors");
-                if (response.IsSuccessStatusCode)
+                var response = await httpClient.GetFromJsonAsync<List<RoomModel>>("doors/");
+                if (response != null)
                 {
-                    string jsonString = await response.Content.ReadAsStringAsync();
-                    rooms = JsonSerializer.Deserialize<List<RoomModel>>(jsonString);
+                    rooms = response;
                     PopulateRooms();
                 }
                 else
                 {
-                    string error = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Failed to fetch rooms: {error}");
                     ShowEmptyMessage();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Exception occurred while fetching rooms: {ex.Message}");
-                ShowEmptyMessage();
+                MessageBox.Show($"Failed to fetch rooms: {ex.Message}");
             }
         }
 
@@ -109,8 +107,21 @@ namespace PiSync.Room
             {
                 string id = dataGridViewRooms.Rows[e.RowIndex].Cells["id"].Value.ToString();
                 Console.WriteLine($"Room ID clicked: {id}");
-                // Show detail view here later
+                // You can show a detail modal here later
             }
+        }
+
+        private void SetDataGridViewPadding()
+        {
+            int padding = 20;
+            dataGridViewRooms.Location = new Point(padding, padding);
+            dataGridViewRooms.Size = new Size(this.ClientSize.Width - (2 * padding), this.ClientSize.Height - (2 * padding));
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            SetDataGridViewPadding();
         }
 
         #endregion
