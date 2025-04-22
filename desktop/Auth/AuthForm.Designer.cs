@@ -137,7 +137,7 @@
             tbUsername.Size = new Size(289, 34);
             tbUsername.TabIndex = 0;
             // 
-            // Form1
+            // AuthForm
             // 
             AutoScaleDimensions = new SizeF(14F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -147,7 +147,8 @@
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(5, 4, 5, 4);
-            Name = "Form1";
+            Name = "AuthForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();

@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            button1 = new Button();
+            btnTenants = new Button();
+            btnRooms = new Button();
+            btnDashboard = new Button();
             panel2 = new Panel();
             label3 = new Label();
-            button2 = new Button();
-            button3 = new Button();
+            panel3 = new Panel();
+            btnLogout = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
@@ -41,9 +43,10 @@
             // panel1
             // 
             panel1.BackColor = Color.GhostWhite;
-            panel1.Controls.Add(button3);
-            panel1.Controls.Add(button2);
-            panel1.Controls.Add(button1);
+            panel1.Controls.Add(btnLogout);
+            panel1.Controls.Add(btnTenants);
+            panel1.Controls.Add(btnRooms);
+            panel1.Controls.Add(btnDashboard);
             panel1.Controls.Add(panel2);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
@@ -51,20 +54,50 @@
             panel1.Size = new Size(241, 518);
             panel1.TabIndex = 1;
             // 
-            // button1
+            // btnTenants
             // 
-            button1.BackColor = Color.Lavender;
-            button1.Cursor = Cursors.Hand;
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Courier New", 14F);
-            button1.Location = new Point(12, 96);
-            button1.Margin = new Padding(0);
-            button1.Name = "button1";
-            button1.Size = new Size(212, 61);
-            button1.TabIndex = 1;
-            button1.Text = "DASHBOARD";
-            button1.UseVisualStyleBackColor = true;
+            btnTenants.BackColor = Color.Lavender;
+            btnTenants.Cursor = Cursors.Hand;
+            btnTenants.FlatAppearance.BorderSize = 0;
+            btnTenants.FlatStyle = FlatStyle.Flat;
+            btnTenants.Font = new Font("Courier New", 14F);
+            btnTenants.Location = new Point(12, 239);
+            btnTenants.Margin = new Padding(0);
+            btnTenants.Name = "btnTenants";
+            btnTenants.Size = new Size(212, 61);
+            btnTenants.TabIndex = 3;
+            btnTenants.Text = "TENANTS";
+            btnTenants.UseVisualStyleBackColor = true;
+            // 
+            // btnRooms
+            // 
+            btnRooms.BackColor = Color.Lavender;
+            btnRooms.Cursor = Cursors.Hand;
+            btnRooms.FlatAppearance.BorderSize = 0;
+            btnRooms.FlatStyle = FlatStyle.Flat;
+            btnRooms.Font = new Font("Courier New", 14F);
+            btnRooms.Location = new Point(12, 167);
+            btnRooms.Margin = new Padding(0);
+            btnRooms.Name = "btnRooms";
+            btnRooms.Size = new Size(212, 61);
+            btnRooms.TabIndex = 2;
+            btnRooms.Text = "ROOMS";
+            btnRooms.UseVisualStyleBackColor = true;
+            // 
+            // btnDashboard
+            // 
+            btnDashboard.BackColor = Color.Lavender;
+            btnDashboard.Cursor = Cursors.Hand;
+            btnDashboard.FlatAppearance.BorderSize = 0;
+            btnDashboard.FlatStyle = FlatStyle.Flat;
+            btnDashboard.Font = new Font("Courier New", 14F);
+            btnDashboard.Location = new Point(12, 96);
+            btnDashboard.Margin = new Padding(0);
+            btnDashboard.Name = "btnDashboard";
+            btnDashboard.Size = new Size(212, 61);
+            btnDashboard.TabIndex = 1;
+            btnDashboard.Text = "DASHBOARD";
+            btnDashboard.UseVisualStyleBackColor = true;
             // 
             // panel2
             // 
@@ -87,46 +120,43 @@
             label3.TabIndex = 1;
             label3.Text = "PISYNC";
             // 
-            // button2
+            // panel3
             // 
-            button2.BackColor = Color.Lavender;
-            button2.Cursor = Cursors.Hand;
-            button2.FlatAppearance.BorderSize = 0;
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Courier New", 14F);
-            button2.Location = new Point(12, 167);
-            button2.Margin = new Padding(0);
-            button2.Name = "button2";
-            button2.Size = new Size(212, 61);
-            button2.TabIndex = 2;
-            button2.Text = "ROOMS";
-            button2.UseVisualStyleBackColor = true;
+            panel3.BackColor = SystemColors.HighlightText;
+            panel3.Dock = DockStyle.Fill;
+            panel3.Location = new Point(241, 0);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(700, 518);
+            panel3.TabIndex = 2;
             // 
-            // button3
+            // btnLogout
             // 
-            button3.BackColor = Color.Lavender;
-            button3.Cursor = Cursors.Hand;
-            button3.FlatAppearance.BorderSize = 0;
-            button3.FlatStyle = FlatStyle.Flat;
-            button3.Font = new Font("Courier New", 14F);
-            button3.Location = new Point(12, 239);
-            button3.Margin = new Padding(0);
-            button3.Name = "button3";
-            button3.Size = new Size(212, 61);
-            button3.TabIndex = 3;
-            button3.Text = "TENANTS";
-            button3.UseVisualStyleBackColor = true;
+            btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnLogout.BackColor = Color.Lavender;
+            btnLogout.Cursor = Cursors.Hand;
+            btnLogout.FlatAppearance.BorderSize = 0;
+            btnLogout.FlatStyle = FlatStyle.Flat;
+            btnLogout.Font = new Font("Courier New", 14F);
+            btnLogout.Location = new Point(12, 440);
+            btnLogout.Margin = new Padding(0);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(212, 61);
+            btnLogout.TabIndex = 4;
+            btnLogout.Text = "LOGOUT";
+            btnLogout.UseVisualStyleBackColor = true;
             // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(14F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(941, 518);
+            Controls.Add(panel3);
             Controls.Add(panel1);
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(5, 4, 5, 4);
             Name = "HomeForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "HomeForm";
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
@@ -137,9 +167,11 @@
         #endregion
         private Panel panel1;
         private Panel panel2;
-        private Button button1;
+        private Button btnDashboard;
         private Label label3;
-        private Button button3;
-        private Button button2;
+        private Button btnTenants;
+        private Button btnRooms;
+        private Panel panel3;
+        private Button btnLogout;
     }
 }
