@@ -74,14 +74,15 @@
             // lblEmpty
             // 
             lblEmpty.AutoSize = true;
+            lblEmpty.BackColor = Color.GhostWhite;
             lblEmpty.Font = new Font("Courier New", 16F);
             lblEmpty.ForeColor = Color.MediumPurple;
-            lblEmpty.Location = new Point(391, 245);
+            lblEmpty.Location = new Point(344, 258);
             lblEmpty.Margin = new Padding(5, 0, 5, 0);
             lblEmpty.Name = "lblEmpty";
-            lblEmpty.Size = new Size(93, 30);
+            lblEmpty.Size = new Size(221, 30);
             lblEmpty.TabIndex = 3;
-            lblEmpty.Text = "ROOMS";
+            lblEmpty.Text = "NO ROOMS YET.";
             // 
             // RoomForm
             // 
