@@ -21,5 +21,6 @@ except KeyboardInterrupt:
     print("Exiting...")
 
 finally:
+    print('Finally block is executed.')
     GPIO.output(RELAY_PIN, GPIO.HIGH)  
     GPIO.cleanup()
