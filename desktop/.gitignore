@@ -1,0 +1,107 @@
+# Copyright (c) 2025 Ralph Maron Eda
+# This .gitignore file is intended for use with C# Windows Forms applications
+# using Visual Studio. It excludes build artifacts, user-specific files,
+# and other temporary content from version control.
+
+## Ignore Visual Studio temporary files, build results, and
+## user-specific files
+
+# Build results
+[Bb]in/
+[Oo]bj/
+*.exe
+*.dll
+*.pdb
+*.app
+*.cache
+*.dbmdl
+*.bak
+
+# Rider project files
+.idea/
+
+# Visual Studio specific
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userprefs
+
+# Mono auto-generated files
+mono_crash.*
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+**/packages/*
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Others
+*.log
+*.tlog
+*.cache
+*.csproj.user
+*.db
+*.db-shm
+*.db-wal
+
+# Publish folder
+publish/
+
+# DotCover
+*.dcvr
+*.dcvrx
+
+# Local history for JetBrains IDEs
+.localhistory/
+
+# ReSharper files
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Backup & archive files
+*.bak
+*.old
+*.orig
+*.tmp
+*.temp
+
+# Compiled source
+*.com
+*.class
+
+# Installer files
+*.msi
+*.msm
+*.msp
+
+# Web & front-end
+node_modules/
+bower_components/
+
+# Logs
+*.log
+
+# Test Results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Ignore any crash dumps
+*.dmp
