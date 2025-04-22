@@ -1,38 +1,26 @@
 import RPi.GPIO as GPIO
 import time
 
-# Constants
-RELAY_PIN = 17  # GPIO pin connected to relay IN
+# Set the GPIO pin number (same as Arduino pin 7 equivalent)
+RELAY_PIN = 7  # BCM numbering (not physical pin 7!)
 
-# GPIO setup
-GPIO.setmode(GPIO.BCM)
+# Setup
+GPIO.setmode(GPIO.BCM)  # Use BCM numbering
 GPIO.setup(RELAY_PIN, GPIO.OUT)
-GPIO.output(RELAY_PIN, GPIO.LOW)  
-
-# Track current state
-is_unlocked = False
-
-def toggle_solenoid():
-    global is_unlocked
-    if is_unlocked:
-        # Lock it
-        GPIO.output(RELAY_PIN, GPIO.LOW)
-        print("🔒 Solenoid is now LOCKED.")
-    else:
-        # Unlock it
-        GPIO.output(RELAY_PIN, GPIO.HIGH)
-        print("🔓 Solenoid is now UNLOCKED.")
-    is_unlocked = not is_unlocked
 
 try:
-    print("Press Ctrl+C to exit.")
     while True:
-        input("Press ENTER to toggle solenoid...")
-        toggle_solenoid()
+        print("Relay ON")
+        GPIO.output(RELAY_PIN, GPIO.LOW)  # Active LOW: ON
+        time.sleep(2)
+
+        print("Relay OFF")
+        GPIO.output(RELAY_PIN, GPIO.HIGH)  # OFF
+        time.sleep(2)
 
 except KeyboardInterrupt:
-    print("\nExiting...")
+    print("Exiting...")
 
 finally:
-    GPIO.output(RELAY_PIN, GPIO.HIGH)  # Ensure it's locked on exit
+    GPIO.output(RELAY_PIN, GPIO.HIGH)  # Make sure it's off
     GPIO.cleanup()
