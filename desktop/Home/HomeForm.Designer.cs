@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnLogout = new Button();
             btnTenants = new Button();
             btnRooms = new Button();
             btnDashboard = new Button();
             panel2 = new Panel();
             label3 = new Label();
-            panel3 = new Panel();
-            btnLogout = new Button();
+            mainPanel = new Panel();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
@@ -53,6 +53,22 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(241, 518);
             panel1.TabIndex = 1;
+            // 
+            // btnLogout
+            // 
+            btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnLogout.BackColor = Color.Lavender;
+            btnLogout.Cursor = Cursors.Hand;
+            btnLogout.FlatAppearance.BorderSize = 0;
+            btnLogout.FlatStyle = FlatStyle.Flat;
+            btnLogout.Font = new Font("Courier New", 14F);
+            btnLogout.Location = new Point(12, 440);
+            btnLogout.Margin = new Padding(0);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(212, 61);
+            btnLogout.TabIndex = 4;
+            btnLogout.Text = "LOGOUT";
+            btnLogout.UseVisualStyleBackColor = true;
             // 
             // btnTenants
             // 
@@ -120,37 +136,21 @@
             label3.TabIndex = 1;
             label3.Text = "PISYNC";
             // 
-            // panel3
+            // mainPanel
             // 
-            panel3.BackColor = SystemColors.HighlightText;
-            panel3.Dock = DockStyle.Fill;
-            panel3.Location = new Point(241, 0);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(700, 518);
-            panel3.TabIndex = 2;
-            // 
-            // btnLogout
-            // 
-            btnLogout.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnLogout.BackColor = Color.Lavender;
-            btnLogout.Cursor = Cursors.Hand;
-            btnLogout.FlatAppearance.BorderSize = 0;
-            btnLogout.FlatStyle = FlatStyle.Flat;
-            btnLogout.Font = new Font("Courier New", 14F);
-            btnLogout.Location = new Point(12, 440);
-            btnLogout.Margin = new Padding(0);
-            btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(212, 61);
-            btnLogout.TabIndex = 4;
-            btnLogout.Text = "LOGOUT";
-            btnLogout.UseVisualStyleBackColor = true;
+            mainPanel.BackColor = SystemColors.HighlightText;
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Location = new Point(241, 0);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new Size(700, 518);
+            mainPanel.TabIndex = 2;
             // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(14F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(941, 518);
-            Controls.Add(panel3);
+            Controls.Add(mainPanel);
             Controls.Add(panel1);
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
@@ -171,7 +171,7 @@
         private Label label3;
         private Button btnTenants;
         private Button btnRooms;
-        private Panel panel3;
+        private Panel mainPanel;
         private Button btnLogout;
     }
 }
