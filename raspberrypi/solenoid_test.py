@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-relay_pin = 12  
+relay_pin = 17  
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(relay_pin, GPIO.OUT)
