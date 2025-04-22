@@ -1,26 +1,16 @@
 import RPi.GPIO as GPIO
 import time
 
-RELAY_PIN = 7 
+relay_pin = 17  # Change this to your GPIO pin
 
-# Setup
-GPIO.setmode(GPIO.BCM)  # Use BCM numbering
-GPIO.setup(RELAY_PIN, GPIO.OUT)
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(relay_pin, GPIO.OUT)
 
-try:
-    while True:
-        print("Relay ON")
-        GPIO.output(RELAY_PIN, GPIO.LOW)  
-        time.sleep(2)
-
-        print("Relay OFF")
-        GPIO.output(RELAY_PIN, GPIO.HIGH) 
-        time.sleep(2)
-
-except KeyboardInterrupt:
-    print("Exiting...")
-
-finally:
-    print('Finally block is executed.')
-    GPIO.output(RELAY_PIN, GPIO.HIGH)  
-    GPIO.cleanup()
+while True:
+    GPIO.output(relay_pin, GPIO.HIGH)  # Should turn OFF the relay (green LED off)
+    print("Relay OFF")
+    time.sleep(2)
+    
+    GPIO.output(relay_pin, GPIO.LOW)   # Should turn ON the relay (green LED on)
+    print("Relay ON")
+    time.sleep(2)
