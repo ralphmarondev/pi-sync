@@ -46,5 +46,62 @@ namespace PiSync.Home
             OpenFormInPanel(new Room.RoomForm());
         }
         #endregion NAVIGATION
+
+        #region DRAG_AND_DROP
+        private bool dragging = false;
+        private Point dragCursorPoint;
+        private Point dragFormPoint;
+
+        private void OnMouseUp()
+        {
+            dragging = false;
+        }
+
+        private void OnMouseDown()
+        {
+            dragging = true;
+            dragCursorPoint = Cursor.Position;
+            dragFormPoint = this.Location;
+        }
+
+        private void OnMouseMove()
+        {
+            if (dragging)
+            {
+                Point diff = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
+                this.Location = Point.Add(dragFormPoint, new Size(diff));
+            }
+        }
+        #endregion DRAG_AND_DROP
+
+        private void panelLabel_MouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp();
+        }
+
+        private void panelLabel_MouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove();
+        }
+
+        private void panelLabel_MouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown();
+        }
+
+        private void logoLabel_MouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp();
+        }
+
+        private void logoLabel_MouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove();
+        }
+
+        private void logoLabel_MouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown();
+        }
     }
 }

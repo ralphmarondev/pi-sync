@@ -33,11 +33,11 @@
             btnTenants = new Button();
             btnRooms = new Button();
             btnDashboard = new Button();
-            panel2 = new Panel();
-            label3 = new Label();
+            panelLabel = new Panel();
+            logoLabel = new Label();
             mainPanel = new Panel();
             panel1.SuspendLayout();
-            panel2.SuspendLayout();
+            panelLabel.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -47,7 +47,7 @@
             panel1.Controls.Add(btnTenants);
             panel1.Controls.Add(btnRooms);
             panel1.Controls.Add(btnDashboard);
-            panel1.Controls.Add(panel2);
+            panel1.Controls.Add(panelLabel);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
@@ -116,26 +116,32 @@
             btnDashboard.UseVisualStyleBackColor = true;
             btnDashboard.Click += btnDashboard_Click;
             // 
-            // panel2
+            // panelLabel
             // 
-            panel2.BackColor = Color.MediumPurple;
-            panel2.Controls.Add(label3);
-            panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(241, 79);
-            panel2.TabIndex = 0;
+            panelLabel.BackColor = Color.MediumPurple;
+            panelLabel.Controls.Add(logoLabel);
+            panelLabel.Dock = DockStyle.Top;
+            panelLabel.Location = new Point(0, 0);
+            panelLabel.Name = "panelLabel";
+            panelLabel.Size = new Size(241, 79);
+            panelLabel.TabIndex = 0;
+            panelLabel.MouseDown += panelLabel_MouseDown;
+            panelLabel.MouseMove += panelLabel_MouseMove;
+            panelLabel.MouseUp += panelLabel_MouseUp;
             // 
-            // label3
+            // logoLabel
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Courier New", 16F);
-            label3.ForeColor = Color.Lavender;
-            label3.Location = new Point(59, 24);
-            label3.Name = "label3";
-            label3.Size = new Size(109, 30);
-            label3.TabIndex = 1;
-            label3.Text = "PISYNC";
+            logoLabel.AutoSize = true;
+            logoLabel.Font = new Font("Courier New", 16F);
+            logoLabel.ForeColor = Color.Lavender;
+            logoLabel.Location = new Point(59, 24);
+            logoLabel.Name = "logoLabel";
+            logoLabel.Size = new Size(109, 30);
+            logoLabel.TabIndex = 1;
+            logoLabel.Text = "PISYNC";
+            logoLabel.MouseDown += logoLabel_MouseDown;
+            logoLabel.MouseMove += logoLabel_MouseMove;
+            logoLabel.MouseUp += logoLabel_MouseUp;
             // 
             // mainPanel
             // 
@@ -160,16 +166,16 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "HomeForm";
             panel1.ResumeLayout(false);
-            panel2.ResumeLayout(false);
-            panel2.PerformLayout();
+            panelLabel.ResumeLayout(false);
+            panelLabel.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
         private Panel panel1;
-        private Panel panel2;
+        private Panel panelLabel;
         private Button btnDashboard;
-        private Label label3;
+        private Label logoLabel;
         private Button btnTenants;
         private Button btnRooms;
         private Panel mainPanel;
