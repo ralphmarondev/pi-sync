@@ -1,3 +1,3 @@
 git add .
-git commit -m "try"
+git commit -m "[raspberrypi] some updates"
 git push -u origin jack
