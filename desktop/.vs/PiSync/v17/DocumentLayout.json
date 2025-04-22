@@ -1,0 +1,86 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Documents\\VS2022Projects\\PiSync\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BE054D1C-6D5F-4046-9A7E-726B7F3B9CF3}|PiSync.csproj|d:\\documents\\vs2022projects\\pisync\\auth\\authform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{BE054D1C-6D5F-4046-9A7E-726B7F3B9CF3}|PiSync.csproj|solutionrelative:auth\\authform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE054D1C-6D5F-4046-9A7E-726B7F3B9CF3}|PiSync.csproj|d:\\documents\\vs2022projects\\pisync\\home\\homeform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{BE054D1C-6D5F-4046-9A7E-726B7F3B9CF3}|PiSync.csproj|solutionrelative:home\\homeform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE054D1C-6D5F-4046-9A7E-726B7F3B9CF3}|PiSync.csproj|d:\\documents\\vs2022projects\\pisync\\pisync.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{BE054D1C-6D5F-4046-9A7E-726B7F3B9CF3}|PiSync.csproj|solutionrelative:pisync.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BE054D1C-6D5F-4046-9A7E-726B7F3B9CF3}|PiSync.csproj|d:\\documents\\vs2022projects\\pisync\\auth\\authform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BE054D1C-6D5F-4046-9A7E-726B7F3B9CF3}|PiSync.csproj|solutionrelative:auth\\authform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HomeForm.cs [Design]",
+              "DocumentMoniker": "D:\\Documents\\VS2022Projects\\PiSync\\Home\\HomeForm.cs",
+              "RelativeDocumentMoniker": "Home\\HomeForm.cs",
+              "ToolTip": "D:\\Documents\\VS2022Projects\\PiSync\\Home\\HomeForm.cs [Design]",
+              "RelativeToolTip": "Home\\HomeForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-22T14:35:02.127Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PiSync",
+              "DocumentMoniker": "D:\\Documents\\VS2022Projects\\PiSync\\PiSync.csproj",
+              "RelativeDocumentMoniker": "PiSync.csproj",
+              "ToolTip": "D:\\Documents\\VS2022Projects\\PiSync\\PiSync.csproj",
+              "RelativeToolTip": "PiSync.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-22T14:34:25.685Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AuthForm.cs",
+              "DocumentMoniker": "D:\\Documents\\VS2022Projects\\PiSync\\Auth\\AuthForm.cs",
+              "RelativeDocumentMoniker": "Auth\\AuthForm.cs",
+              "ToolTip": "D:\\Documents\\VS2022Projects\\PiSync\\Auth\\AuthForm.cs",
+              "RelativeToolTip": "Auth\\AuthForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-22T14:30:17.037Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthForm.cs [Design]",
+              "DocumentMoniker": "D:\\Documents\\VS2022Projects\\PiSync\\Auth\\AuthForm.cs",
+              "RelativeDocumentMoniker": "Auth\\AuthForm.cs",
+              "ToolTip": "D:\\Documents\\VS2022Projects\\PiSync\\Auth\\AuthForm.cs [Design]",
+              "RelativeToolTip": "Auth\\AuthForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-22T14:22:25.131Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
