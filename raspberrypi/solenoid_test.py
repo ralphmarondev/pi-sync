@@ -1,16 +1,26 @@
-import RPi.GPIO as GPIO 
-from time import sleep 
+import RPi.GPIO as GPIO
+import time
 
-DOOR_PIN = 18
+# Set the GPIO pin number (same as Arduino pin 7 equivalent)
+RELAY_PIN = 7  # BCM numbering (not physical pin 7!)
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(DOOR_PIN, GPIO.OUT)
+# Setup
+GPIO.setmode(GPIO.BCM)  # Use BCM numbering
+GPIO.setup(RELAY_PIN, GPIO.OUT)
 
-while True:
-    print('Opening solenoid...')
-    GPIO.output(DOOR_PIN, 1)
-    sleep(2)
-    print('Closing solenoid...')
-    GPIO.output(DOOR_PIN, 0)
-    sleep(2)
+try:
+    while True:
+        print("Relay ON")
+        GPIO.output(RELAY_PIN, GPIO.LOW)  # Active LOW: ON
+        time.sleep(2)
+
+        print("Relay OFF")
+        GPIO.output(RELAY_PIN, GPIO.HIGH)  # OFF
+        time.sleep(2)
+
+except KeyboardInterrupt:
+    print("Exiting...")
+
+finally:
+    GPIO.output(RELAY_PIN, GPIO.HIGH)  # Make sure it's off
+    GPIO.cleanup()
