@@ -30,7 +30,10 @@
         {
             panel1 = new Panel();
             label3 = new Label();
+            dataGridViewRooms = new DataGridView();
+            lblEmpty = new Label();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRooms).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -56,11 +59,37 @@
             label3.TabIndex = 0;
             label3.Text = "ROOMS";
             // 
+            // dataGridViewRooms
+            // 
+            dataGridViewRooms.BackgroundColor = Color.GhostWhite;
+            dataGridViewRooms.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewRooms.Dock = DockStyle.Fill;
+            dataGridViewRooms.Location = new Point(0, 79);
+            dataGridViewRooms.Margin = new Padding(10);
+            dataGridViewRooms.Name = "dataGridViewRooms";
+            dataGridViewRooms.RowHeadersWidth = 51;
+            dataGridViewRooms.Size = new Size(875, 441);
+            dataGridViewRooms.TabIndex = 2;
+            // 
+            // lblEmpty
+            // 
+            lblEmpty.AutoSize = true;
+            lblEmpty.Font = new Font("Courier New", 16F);
+            lblEmpty.ForeColor = Color.MediumPurple;
+            lblEmpty.Location = new Point(391, 245);
+            lblEmpty.Margin = new Padding(5, 0, 5, 0);
+            lblEmpty.Name = "lblEmpty";
+            lblEmpty.Size = new Size(93, 30);
+            lblEmpty.TabIndex = 3;
+            lblEmpty.Text = "ROOMS";
+            // 
             // RoomForm
             // 
             AutoScaleDimensions = new SizeF(14F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(875, 520);
+            Controls.Add(lblEmpty);
+            Controls.Add(dataGridViewRooms);
             Controls.Add(panel1);
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
@@ -70,12 +99,16 @@
             Text = "RoomForm";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRooms).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Panel panel1;
         private Label label3;
+        private DataGridView dataGridViewRooms;
+        private Label lblEmpty;
     }
 }
