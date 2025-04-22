@@ -47,7 +47,7 @@ namespace PiSync
             return false;
         }
 
-         private async void btnLogin_Click(object sender, EventArgs e)
+        private async void btnLogin_Click(object sender, EventArgs e)
         {
             string username = tbUsername.Text.Trim();
             string password = tbPassword.Text.Trim();
@@ -80,7 +80,7 @@ namespace PiSync
             if (isAuthenticated)
             {
                 MessageBox.Show("Login successful.");
-                var home= new HomeForm();
+                var home = new HomeForm();
                 this.Hide();
                 home.Show();
             }
@@ -93,6 +93,64 @@ namespace PiSync
         private void btnForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             MessageBox.Show("No hint available.");
+        }
+
+
+        #region DRAG_AND_DROP
+        private bool dragging = false;
+        private Point dragCursorPoint;
+        private Point dragFormPoint;
+
+        private void OnMouseUp()
+        {
+            dragging = false;
+        }
+
+        private void OnMouseDown()
+        {
+            dragging = true;
+            dragCursorPoint = Cursor.Position;
+            dragFormPoint = this.Location;
+        }
+
+        private void OnMouseMove()
+        {
+            if (dragging)
+            {
+                Point diff = Point.Subtract(Cursor.Position, new Size(dragCursorPoint));
+                this.Location = Point.Add(dragFormPoint, new Size(diff));
+            }
+        }
+        #endregion DRAG_AND_DROP
+
+        private void panelAuth_MouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp();
+        }
+
+        private void panelAuth_MouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove();
+        }
+
+        private void panelAuth_MouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown();
+        }
+
+        private void lblTitle_MouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp();
+        }
+
+        private void lblTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove();
+        }
+
+        private void lblTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown();
         }
     }
 }

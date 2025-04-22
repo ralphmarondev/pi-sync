@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
-            label3 = new Label();
+            panelAuth = new Panel();
+            lblTitle = new Label();
             panel2 = new Panel();
             btnForgotPassword = new LinkLabel();
             btnLogin = new Button();
@@ -37,30 +37,36 @@
             tbPassword = new TextBox();
             label1 = new Label();
             tbUsername = new TextBox();
-            panel1.SuspendLayout();
+            panelAuth.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
-            // panel1
+            // panelAuth
             // 
-            panel1.BackColor = Color.MediumPurple;
-            panel1.Controls.Add(label3);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(936, 79);
-            panel1.TabIndex = 0;
+            panelAuth.BackColor = Color.MediumPurple;
+            panelAuth.Controls.Add(lblTitle);
+            panelAuth.Dock = DockStyle.Top;
+            panelAuth.Location = new Point(0, 0);
+            panelAuth.Name = "panelAuth";
+            panelAuth.Size = new Size(936, 79);
+            panelAuth.TabIndex = 0;
+            panelAuth.MouseDown += panelAuth_MouseDown;
+            panelAuth.MouseMove += panelAuth_MouseMove;
+            panelAuth.MouseUp += panelAuth_MouseUp;
             // 
-            // label3
+            // lblTitle
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Courier New", 16F);
-            label3.ForeColor = Color.Lavender;
-            label3.Location = new Point(39, 26);
-            label3.Name = "label3";
-            label3.Size = new Size(381, 30);
-            label3.TabIndex = 0;
-            label3.Text = "AUTHENTICATION | PISYNC";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Courier New", 16F);
+            lblTitle.ForeColor = Color.Lavender;
+            lblTitle.Location = new Point(39, 26);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(381, 30);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "AUTHENTICATION | PISYNC";
+            lblTitle.MouseDown += lblTitle_MouseDown;
+            lblTitle.MouseMove += lblTitle_MouseMove;
+            lblTitle.MouseUp += lblTitle_MouseUp;
             // 
             // panel2
             // 
@@ -143,15 +149,15 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(936, 551);
             Controls.Add(panel2);
-            Controls.Add(panel1);
+            Controls.Add(panelAuth);
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(5, 4, 5, 4);
             Name = "AuthForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            panelAuth.ResumeLayout(false);
+            panelAuth.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ResumeLayout(false);
@@ -159,7 +165,7 @@
 
         #endregion
 
-        private Panel panel1;
+        private Panel panelAuth;
         private Panel panel2;
         private LinkLabel btnForgotPassword;
         private Button btnLogin;
@@ -167,6 +173,6 @@
         private TextBox tbPassword;
         private Label label1;
         private TextBox tbUsername;
-        private Label label3;
+        private Label lblTitle;
     }
 }
