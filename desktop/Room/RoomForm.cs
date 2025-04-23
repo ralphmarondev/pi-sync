@@ -31,7 +31,7 @@ namespace PiSync.Room
             dataGridViewRooms.Columns["id"].Visible = false;
 
             dataGridViewRooms.Columns.Add("name", "Name");
-            dataGridViewRooms.Columns.Add("tenantCount", "Tenant Count");
+            dataGridViewRooms.Columns.Add("tenantCount", "Tenants");
             dataGridViewRooms.Columns.Add("status", "Status");
 
             DataGridViewButtonColumn actionColumn = new DataGridViewButtonColumn();
