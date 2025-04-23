@@ -54,6 +54,9 @@
             panelTopbar.Name = "panelTopbar";
             panelTopbar.Size = new Size(875, 79);
             panelTopbar.TabIndex = 1;
+            panelTopbar.MouseDown += panelTopbar_MouseDown;
+            panelTopbar.MouseMove += panelTopbar_MouseMove;
+            panelTopbar.MouseUp += panelTopbar_MouseUp;
             // 
             // label2
             // 
