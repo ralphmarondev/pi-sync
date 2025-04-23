@@ -123,6 +123,8 @@
             // 
             tbPassword.Location = new Point(45, 149);
             tbPassword.Name = "tbPassword";
+            tbPassword.PasswordChar = '●';
+            tbPassword.PlaceholderText = "Enter password";
             tbPassword.Size = new Size(289, 34);
             tbPassword.TabIndex = 2;
             // 
@@ -140,6 +142,7 @@
             // 
             tbUsername.Location = new Point(45, 62);
             tbUsername.Name = "tbUsername";
+            tbUsername.PlaceholderText = "Enter username";
             tbUsername.Size = new Size(289, 34);
             tbUsername.TabIndex = 0;
             // 
