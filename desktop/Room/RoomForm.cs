@@ -5,13 +5,14 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Windows.Forms;
 using PiSync.Core.Model;
+using PiSync.Core.Network;
 
 namespace PiSync.Room
 {
     public partial class RoomForm : Form
     {
         private List<RoomModel> rooms = new List<RoomModel>();
-        private readonly HttpClient httpClient = new HttpClient { BaseAddress = new Uri("http://192.168.68.129:8000/api/") };
+        private readonly HttpClient httpClient = new HttpClient { BaseAddress = new Uri(ApiService.BASE_URL) };
 
         public RoomForm()
         {

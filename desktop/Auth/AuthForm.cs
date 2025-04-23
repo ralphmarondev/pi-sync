@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using PiSync.Core.Network;
 using PiSync.Home;
 
 namespace PiSync
@@ -25,7 +26,7 @@ namespace PiSync
                 string json = JsonSerializer.Serialize(loginData);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await httpClient.PostAsync("http://192.168.68.129:8000/api/login/", content);
+                var response = await httpClient.PostAsync($"{ApiService.BASE_URL}login/", content);
 
                 if (response.IsSuccessStatusCode)
                 {
