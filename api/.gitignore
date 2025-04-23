@@ -1,4 +1,4 @@
-# Python Bytecode and Caches
+# Bytecode and caches
 **/__pycache__/
 *.py[cod]
 *$py.class
@@ -6,15 +6,15 @@
 # VSCode settings
 .vscode/
 
-# Virtual Environment
+# Virtual environments
 .venv/
 venv/
 
-# Django migration files (except __init__.py)
+# Django migration files (ignore all but __init__.py)
 **/migrations/*.py
 !**/migrations/__init__.py
 
-# SQLite databases
+# SQLite and DB
 *.sqlite3
 *.db
 
@@ -22,7 +22,7 @@ venv/
 .env
 *.env
 
-# IDE & OS files
+# IDE/OS files
 .idea/
 *.swp
 .DS_Store
