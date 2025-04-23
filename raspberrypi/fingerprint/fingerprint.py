@@ -1,48 +1,60 @@
-import serial
+from pyfingerprint.pyfingerprint import PyFingerprint
 import time
 
-# Open serial connection to R307 (update port accordingly)
-ser = serial.Serial("/dev/serial0", baudrate=57600, timeout=1)
+try:
+    f = PyFingerprint('/dev/serial0', 57600, 0xFFFFFFFF, 0x00000000)
 
-# Function to send data to fingerprint sensor
-def send_command(command):
-    ser.write(command)
-    time.sleep(0.1)
+    if f.verifyPassword() is False:
+        raise ValueError('The given fingerprint sensor password is wrong!')
 
-# Function to wait for fingerprint capture and process it
-def enroll_fingerprint():
-    # Command to start capturing the fingerprint
-    print("Place your finger on the sensor for enrollment...")
-    send_command(b'\xEF\x01\xFF\xFF\xFF\xFF\xFF\xFF')  # Example start capture command
+except Exception as e:
+    print('Failed to initialize the sensor!')
+    print('Exception message: ' + str(e))
+    exit()
+
+print('Currently used templates: ' + str(f.getTemplateCount()) + '/' + str(f.getStorageCapacity()))
+
+try:
+    print('Waiting for finger...')
+
+    # Wait for finger to be read
+    while f.readImage() == False:
+        pass
+
+    # Converts read image to characteristics and stores in charbuffer 1
+    f.convertImage(0x01)
+
+    # Check for existing fingerprint
+    result = f.searchTemplate()
+    positionNumber = result[0]
+
+    if positionNumber >= 0:
+        print('Fingerprint already exists at position #' + str(positionNumber))
+        exit()
+
+    print('Remove finger...')
     time.sleep(2)
 
-    response = ser.read(9)  # Read the response from the sensor
-    if response:
-        print("Capture successful! Now, save the fingerprint.")
-    else:
-        print("Failed to capture the fingerprint. Please try again.")
-        return False
-    
-    # Command to process and store the fingerprint (usually sent as part of the capture process)
-    print("Processing and saving fingerprint...")
-    send_command(b'\xEF\x01\xFF\xFF\xFF\xFF\xFF\xFF')  # Example save command
-    time.sleep(1)
-    
-    # Simulate saving the fingerprint into the sensor's memory
-    response = ser.read(9)
-    if response:
-        print("Fingerprint saved successfully.")
-        return True
-    else:
-        print("Failed to save the fingerprint. Please try again.")
-        return False
+    print('Place the same finger again...')
+    while f.readImage() == False:
+        pass
 
-# Main code to enroll the fingerprint
-print("Initializing fingerprint sensor...")
-ser.flushInput()
+    # Converts read image to characteristics and stores in charbuffer 2
+    f.convertImage(0x02)
 
-while True:
-    enroll_fingerprint()
-    print("Enrollment complete.")
-    time.sleep(5)  # Wait before allowing another enrollment
+    # Compare the two fingerprints
+    if f.compareCharacteristics() == 0:
+        raise Exception('Fingers do not match!')
 
+    # Create a template
+    f.createTemplate()
+
+    # Store template at the next available position
+    positionNumber = f.storeTemplate()
+    print('Fingerprint enrolled successfully!')
+    print('New fingerprint stored at position #' + str(positionNumber))
+
+except Exception as e:
+    print('Enrollment failed!')
+    print('Exception message: ' + str(e))
+    exit()
