@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AuthForm));
             panelAuth = new Panel();
+            btnClose = new PictureBox();
             lblTitle = new Label();
             panel2 = new Panel();
             btnForgotPassword = new LinkLabel();
@@ -37,13 +39,17 @@
             tbPassword = new TextBox();
             label1 = new Label();
             tbUsername = new TextBox();
+            pictureBox1 = new PictureBox();
             panelAuth.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)btnClose).BeginInit();
             panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panelAuth
             // 
             panelAuth.BackColor = Color.MediumPurple;
+            panelAuth.Controls.Add(btnClose);
             panelAuth.Controls.Add(lblTitle);
             panelAuth.Dock = DockStyle.Top;
             panelAuth.Location = new Point(0, 0);
@@ -53,6 +59,20 @@
             panelAuth.MouseDown += panelAuth_MouseDown;
             panelAuth.MouseMove += panelAuth_MouseMove;
             panelAuth.MouseUp += panelAuth_MouseUp;
+            // 
+            // btnClose
+            // 
+            btnClose.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnClose.BackColor = Color.MediumPurple;
+            btnClose.Cursor = Cursors.Hand;
+            btnClose.Image = (Image)resources.GetObject("btnClose.Image");
+            btnClose.Location = new Point(846, 17);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(40, 40);
+            btnClose.SizeMode = PictureBoxSizeMode.Zoom;
+            btnClose.TabIndex = 1;
+            btnClose.TabStop = false;
+            btnClose.Click += btnClose_Click;
             // 
             // lblTitle
             // 
@@ -146,11 +166,24 @@
             tbUsername.Size = new Size(289, 34);
             tbUsername.TabIndex = 0;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.connectivity;
+            pictureBox1.Location = new Point(86, 138);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(369, 351);
+            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox1.TabIndex = 2;
+            pictureBox1.TabStop = false;
+            // 
             // AuthForm
             // 
             AutoScaleDimensions = new SizeF(14F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.GhostWhite;
+            BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(936, 551);
+            Controls.Add(pictureBox1);
             Controls.Add(panel2);
             Controls.Add(panelAuth);
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -161,8 +194,10 @@
             Text = "Form1";
             panelAuth.ResumeLayout(false);
             panelAuth.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)btnClose).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -177,5 +212,7 @@
         private Label label1;
         private TextBox tbUsername;
         private Label lblTitle;
+        private PictureBox btnClose;
+        private PictureBox pictureBox1;
     }
 }
