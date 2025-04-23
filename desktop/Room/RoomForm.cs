@@ -26,7 +26,7 @@ namespace PiSync.Room
         private void SetupDataGridView()
         {
             dataGridViewRooms.Columns.Clear();
-
+            
             dataGridViewRooms.Columns.Add("id", "ID");
             dataGridViewRooms.Columns["id"].Visible = false;
 

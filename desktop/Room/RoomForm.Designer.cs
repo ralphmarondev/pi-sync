@@ -62,6 +62,7 @@
             // dataGridViewRooms
             // 
             dataGridViewRooms.BackgroundColor = Color.GhostWhite;
+            dataGridViewRooms.BorderStyle = BorderStyle.None;
             dataGridViewRooms.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewRooms.Dock = DockStyle.Fill;
             dataGridViewRooms.Location = new Point(0, 79);
