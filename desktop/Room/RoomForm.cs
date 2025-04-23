@@ -13,32 +13,33 @@ namespace PiSync.Room
     {
         private List<RoomModel> rooms = new List<RoomModel>();
         private readonly HttpClient httpClient = new HttpClient { BaseAddress = new Uri(ApiService.BASE_URL) };
+        private readonly System.Windows.Forms.Timer refreshTimer = new System.Windows.Forms.Timer();
 
         public RoomForm()
         {
             InitializeComponent();
             SetupDataGridView();
             FetchRoomsAsync();
+
+            // Timer for auto-refresh every 3 seconds
+            refreshTimer.Interval = 3000;
+            refreshTimer.Tick += (s, e) => FetchRoomsAsync();
+            refreshTimer.Start();
         }
 
-        #region POPULATING_DATAGRIDVIEW
+        #region DATAGRIDVIEW_SETUP_AND_FETCHING
 
         private void SetupDataGridView()
         {
             dataGridViewRooms.Columns.Clear();
-            
+
             dataGridViewRooms.Columns.Add("id", "ID");
             dataGridViewRooms.Columns["id"].Visible = false;
 
             dataGridViewRooms.Columns.Add("name", "Name");
-            dataGridViewRooms.Columns.Add("tenantCount", "Tenants");
-            dataGridViewRooms.Columns.Add("status", "Status");
-
-            DataGridViewButtonColumn actionColumn = new DataGridViewButtonColumn();
-            actionColumn.Name = "Action";
-            actionColumn.Text = "More";
-            actionColumn.UseColumnTextForButtonValue = true;
-            dataGridViewRooms.Columns.Add(actionColumn);
+            dataGridViewRooms.Columns.Add("tenantCount", "Tenant Count");
+            dataGridViewRooms.Columns.Add("status", "Status"); // isOpen: Open/Closed
+            dataGridViewRooms.Columns.Add("isActive", "Active Status"); // New column
 
             dataGridViewRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewRooms.ReadOnly = true;
@@ -52,9 +53,6 @@ namespace PiSync.Room
             dataGridViewRooms.ColumnHeadersDefaultCellStyle.ForeColor = Color.Purple;
             dataGridViewRooms.EnableHeadersVisualStyles = false;
 
-            dataGridViewRooms.CellClick += dataGridViewRooms_CellContentClick;
-
-            // Set initial position and size with margin
             SetDataGridViewPadding();
         }
 
@@ -90,7 +88,8 @@ namespace PiSync.Room
                     room.id,
                     room.name,
                     room.tenantCount,
-                    room.isOpen ? "Open" : "Closed"
+                    room.isOpen ? "Open" : "Closed",
+                    room.isActive ? "Active" : "Inactive"
                 );
             }
         }
@@ -100,16 +99,6 @@ namespace PiSync.Room
             lblEmpty.Visible = true;
             lblEmpty.BringToFront();
             dataGridViewRooms.Rows.Clear();
-        }
-
-        private void dataGridViewRooms_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewRooms.Columns["Action"].Index)
-            {
-                string id = dataGridViewRooms.Rows[e.RowIndex].Cells["id"].Value.ToString();
-                Console.WriteLine($"Room ID clicked: {id}");
-                // You can show a detail modal here later
-            }
         }
 
         private void SetDataGridViewPadding()
@@ -123,6 +112,12 @@ namespace PiSync.Room
         {
             base.OnResize(e);
             SetDataGridViewPadding();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            refreshTimer.Stop();
+            base.OnFormClosed(e);
         }
 
         #endregion
