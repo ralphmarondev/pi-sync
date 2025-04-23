@@ -7,6 +7,9 @@
     <Compile Update="Dashboard\DashboardForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Dashboard\DoorCardControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Home\HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>

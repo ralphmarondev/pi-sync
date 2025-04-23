@@ -30,6 +30,7 @@
         {
             panel1 = new Panel();
             lblTitle = new Label();
+            panelRooms = new Panel();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -55,11 +56,22 @@
             lblTitle.TabIndex = 1;
             lblTitle.Text = "DASHBOARD";
             // 
+            // panelRooms
+            // 
+            panelRooms.Dock = DockStyle.Fill;
+            panelRooms.Location = new Point(0, 79);
+            panelRooms.Margin = new Padding(10);
+            panelRooms.Name = "panelRooms";
+            panelRooms.Padding = new Padding(10);
+            panelRooms.Size = new Size(875, 441);
+            panelRooms.TabIndex = 1;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(14F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(875, 520);
+            Controls.Add(panelRooms);
             Controls.Add(panel1);
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
@@ -74,5 +86,6 @@
         #endregion
         private Label lblTitle;
         private Panel panel1;
+        private Panel panelRooms;
     }
 }
