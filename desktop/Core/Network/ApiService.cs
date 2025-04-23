@@ -8,7 +8,18 @@ namespace PiSync.Core.Network
 {
     public class ApiService
     {
-        private const string IP_ADDRESS = "192.168.1.99";
-        public const string BASE_URL = $"http://{IP_ADDRESS}:8000/api/";
+        public static readonly string configPath = "config.txt";
+        public static readonly string BASE_URL = $"http://{LoadIPAddress()}:8000/api/";
+
+        private static string LoadIPAddress()
+        {
+            if (!File.Exists(configPath))
+            {
+                // default ip if not found
+                File.WriteAllText(configPath, "192.168.1.99");
+            }
+
+            return File.ReadAllText(configPath).Trim();
+        }
     }
 }
