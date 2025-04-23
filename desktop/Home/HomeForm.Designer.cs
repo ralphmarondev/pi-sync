@@ -51,7 +51,7 @@
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(241, 608);
+            panel1.Size = new Size(241, 690);
             panel1.TabIndex = 1;
             // 
             // btnLogout
@@ -62,7 +62,7 @@
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Courier New", 14F);
-            btnLogout.Location = new Point(12, 530);
+            btnLogout.Location = new Point(12, 612);
             btnLogout.Margin = new Padding(0);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(212, 61);
@@ -149,14 +149,14 @@
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Location = new Point(241, 0);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(884, 608);
+            mainPanel.Size = new Size(884, 690);
             mainPanel.TabIndex = 2;
             // 
             // HomeForm
             // 
             AutoScaleDimensions = new SizeF(14F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1125, 608);
+            ClientSize = new Size(1125, 690);
             Controls.Add(mainPanel);
             Controls.Add(panel1);
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
