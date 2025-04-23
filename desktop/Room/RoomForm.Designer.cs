@@ -28,32 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
+            panelTopbar = new Panel();
             label2 = new Label();
             tbSearch = new TextBox();
-            label3 = new Label();
+            lblTitle = new Label();
             btnNewRoom = new Button();
             lblEmpty = new Label();
             dataGridViewRooms = new DataGridView();
             panel3 = new Panel();
-            panel1.SuspendLayout();
+            panelTopbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRooms).BeginInit();
             panel3.SuspendLayout();
             SuspendLayout();
             // 
-            // panel1
+            // panelTopbar
             // 
-            panel1.BackColor = Color.MediumPurple;
-            panel1.Controls.Add(label2);
-            panel1.Controls.Add(tbSearch);
-            panel1.Controls.Add(label3);
-            panel1.Controls.Add(btnNewRoom);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(5, 4, 5, 4);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(875, 79);
-            panel1.TabIndex = 1;
+            panelTopbar.BackColor = Color.MediumPurple;
+            panelTopbar.Controls.Add(label2);
+            panelTopbar.Controls.Add(tbSearch);
+            panelTopbar.Controls.Add(lblTitle);
+            panelTopbar.Controls.Add(btnNewRoom);
+            panelTopbar.Dock = DockStyle.Top;
+            panelTopbar.Location = new Point(0, 0);
+            panelTopbar.Margin = new Padding(5, 4, 5, 4);
+            panelTopbar.Name = "panelTopbar";
+            panelTopbar.Size = new Size(875, 79);
+            panelTopbar.TabIndex = 1;
             // 
             // label2
             // 
@@ -76,17 +76,17 @@
             tbSearch.Size = new Size(225, 34);
             tbSearch.TabIndex = 6;
             // 
-            // label3
+            // lblTitle
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Courier New", 16F);
-            label3.ForeColor = Color.Lavender;
-            label3.Location = new Point(59, 24);
-            label3.Margin = new Padding(5, 0, 5, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(93, 30);
-            label3.TabIndex = 0;
-            label3.Text = "ROOMS";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Courier New", 16F);
+            lblTitle.ForeColor = Color.Lavender;
+            lblTitle.Location = new Point(59, 24);
+            lblTitle.Margin = new Padding(5, 0, 5, 0);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(93, 30);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "ROOMS";
             // 
             // btnNewRoom
             // 
@@ -146,15 +146,15 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(875, 520);
             Controls.Add(panel3);
-            Controls.Add(panel1);
+            Controls.Add(panelTopbar);
             Font = new Font("Courier New", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(5, 4, 5, 4);
             Name = "RoomForm";
             StartPosition = FormStartPosition.Manual;
             Text = "RoomForm";
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            panelTopbar.ResumeLayout(false);
+            panelTopbar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRooms).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
@@ -163,8 +163,8 @@
 
         #endregion
 
-        private Panel panel1;
-        private Label label3;
+        private Panel panelTopbar;
+        private Label lblTitle;
         private Label lblEmpty;
         private DataGridView dataGridViewRooms;
         private Button btnNewRoom;
