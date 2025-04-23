@@ -69,6 +69,7 @@
             btnLogout.TabIndex = 4;
             btnLogout.Text = "LOGOUT";
             btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
             // 
             // btnTenants
             // 
@@ -99,6 +100,7 @@
             btnRooms.TabIndex = 2;
             btnRooms.Text = "ROOMS";
             btnRooms.UseVisualStyleBackColor = true;
+            btnRooms.Click += btnRooms_Click;
             // 
             // btnDashboard
             // 

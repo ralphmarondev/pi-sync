@@ -22,9 +22,20 @@ namespace PiSync.Home
 
         private void btnDashboard_Click(object sender, EventArgs e)
         {
-
+            OpenDashboardForm();
         }
 
+        private void btnRooms_Click(object sender, EventArgs e)
+        {
+            OpenRoomForm();
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            AuthForm authForm = new AuthForm();
+            Hide();
+            authForm.ShowDialog();
+        }
 
         #region NAVIGATION
         private void OpenFormInPanel(Form form)
@@ -39,6 +50,11 @@ namespace PiSync.Home
             form.BringToFront();
             form.ShowInTaskbar = false;
             form.Show();
+        }
+
+        public void OpenDashboardForm()
+        {
+            OpenFormInPanel(new Dashboard.DashboardForm());
         }
 
         public void OpenRoomForm()
