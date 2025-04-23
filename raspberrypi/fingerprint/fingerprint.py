@@ -1,6 +1,18 @@
-import serial
+from pyfingerprint.pyfingerprint import PyFingerprint
 
-ser = serial.Serial('/dev/serial0', 57600, timeout=1)
-ser.write(b'\xEF\x01\xFF\xFF\xFF\xFF\x01\x00\x03\x01\x00\x05')  # Handshake packet
-response = ser.read(12)
-print(response)
+try:
+    f = PyFingerprint('/dev/serial0', 57600, 0xFFFFFFFF, 0x00000000)
+
+    if f.verifyPassword() == False:
+        raise ValueError('The given fingerprint sensor password is wrong!')
+
+    print('Sensor initialized, waiting for finger...')
+
+    # Wait for finger to be placed
+    while f.readImage() == False:
+        print('No finger detected...')
+    
+    print('Finger detected!')
+
+except Exception as e:
+    print('Error: ' + str(e))
