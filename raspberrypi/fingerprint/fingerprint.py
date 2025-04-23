@@ -9,30 +9,40 @@ def send_command(command):
     ser.write(command)
     time.sleep(0.1)
 
-# Function to get the fingerprint ID
-def get_fingerprint_id():
-    # Command to capture the fingerprint
-    send_command(b'\xEF\x01\xFF\xFF\xFF\xFF\xFF\xFF')  # Example of command to start capture
-    time.sleep(2)  # Give time for sensor to process
-    response = ser.read(9)  # Read 9 bytes of response from sensor
-    
+# Function to wait for fingerprint capture and process it
+def enroll_fingerprint():
+    # Command to start capturing the fingerprint
+    print("Place your finger on the sensor for enrollment...")
+    send_command(b'\xEF\x01\xFF\xFF\xFF\xFF\xFF\xFF')  # Example start capture command
+    time.sleep(2)
+
+    response = ser.read(9)  # Read the response from the sensor
     if response:
-        print("Response:", response)
-        # Process the response here (compare with known fingerprints)
+        print("Capture successful! Now, save the fingerprint.")
+    else:
+        print("Failed to capture the fingerprint. Please try again.")
+        return False
+    
+    # Command to process and store the fingerprint (usually sent as part of the capture process)
+    print("Processing and saving fingerprint...")
+    send_command(b'\xEF\x01\xFF\xFF\xFF\xFF\xFF\xFF')  # Example save command
+    time.sleep(1)
+    
+    # Simulate saving the fingerprint into the sensor's memory
+    response = ser.read(9)
+    if response:
+        print("Fingerprint saved successfully.")
         return True
     else:
-        print("No fingerprint found")
+        print("Failed to save the fingerprint. Please try again.")
         return False
 
-# Initialize the fingerprint sensor
+# Main code to enroll the fingerprint
 print("Initializing fingerprint sensor...")
 ser.flushInput()
 
-# Test loop
 while True:
-    print("Place your finger on the sensor...")
-    if get_fingerprint_id():
-        print("Fingerprint matched!")
-    else:
-        print("No match found.")
-    time.sleep(5)  # Wait before next scan
+    enroll_fingerprint()
+    print("Enrollment complete.")
+    time.sleep(5)  # Wait before allowing another enrollment
+
