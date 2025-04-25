@@ -20,23 +20,40 @@ namespace PiSync.Dashboard
 
         private void DashboardForm_Load(object sender, EventArgs e)
         {
-            PopulateDoors();
+            PopulateDoorsAsync();
         }
 
-        private void PopulateDoors()
+        private async Task<List<RoomModel>> FetchRoomsAsync()
+        {
+            using var client = new HttpClient();
+            client.BaseAddress = new Uri(ApiService.BASE_URL);
+
+            try
+            {
+                var response = await client.GetFromJsonAsync<List<RoomModel>>("doors/");
+                return response ?? new List<RoomModel>();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error fetching rooms: {ex.Message}", "API Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new List<RoomModel>();
+            }
+        }
+
+
+        private async Task PopulateDoorsAsync()
         {
             panelRooms.Controls.Clear();
 
-            var doors = new List<(string Name, string Status)>
-            {
-                ("A14", "Open"),
-                ("A16", "Closed")
-            };
+            var rooms = await FetchRoomsAsync();
 
-            foreach (var door in doors)
+            foreach (var room in rooms)
             {
                 var doorCard = new DoorCardControl();
-                doorCard.SetDoorInfo(door.Name, door.Status); 
+
+                string statusText = room.isOpen ? "Open" : "Closed";
+
+                doorCard.SetDoorInfo(room.name, statusText);
 
                 doorCard.Margin = new Padding(10);
                 doorCard.Width = 150;
