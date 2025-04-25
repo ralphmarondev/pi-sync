@@ -28,10 +28,59 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            panel1 = new Panel();
+            lblDoorName = new Label();
+            lblDoorStatus = new Label();
+            panel1.SuspendLayout();
+            SuspendLayout();
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(lblDoorStatus);
+            panel1.Controls.Add(lblDoorName);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(135, 102);
+            panel1.TabIndex = 0;
+            // 
+            // lblDoorName
+            // 
+            lblDoorName.AutoSize = true;
+            lblDoorName.Font = new Font("Courier New", 12F);
+            lblDoorName.Location = new Point(12, 18);
+            lblDoorName.Name = "lblDoorName";
+            lblDoorName.Size = new Size(118, 22);
+            lblDoorName.TabIndex = 0;
+            lblDoorName.Text = "Door Name";
+            // 
+            // lblDoorStatus
+            // 
+            lblDoorStatus.AutoSize = true;
+            lblDoorStatus.Font = new Font("Courier New", 10F);
+            lblDoorStatus.Location = new Point(12, 56);
+            lblDoorStatus.Name = "lblDoorStatus";
+            lblDoorStatus.Size = new Size(49, 20);
+            lblDoorStatus.TabIndex = 1;
+            lblDoorStatus.Text = "OPEN";
+            // 
+            // DoorCardControl
+            // 
+            AutoScaleDimensions = new SizeF(9F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(panel1);
+            Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Name = "DoorCardControl";
+            Size = new Size(135, 102);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private Panel panel1;
+        private Label lblDoorStatus;
+        private Label lblDoorName;
     }
 }
