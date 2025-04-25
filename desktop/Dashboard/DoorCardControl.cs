@@ -12,5 +12,11 @@ namespace PiSync.Dashboard
         {
             InitializeComponent();
         }
+
+        public void SetDoorInfo(string name, string status)
+        {
+            lblDoorName.Text = name;
+            lblDoorStatus.Text = status;
+        }
     }
 }

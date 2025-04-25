@@ -81,6 +81,7 @@
             Margin = new Padding(5, 4, 5, 4);
             Name = "DashboardForm";
             Text = "DashboardForm";
+            Load += DashboardForm_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
