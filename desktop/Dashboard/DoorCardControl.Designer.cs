@@ -29,13 +29,14 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            lblDoorName = new Label();
             lblDoorStatus = new Label();
+            lblDoorName = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.BackColor = Color.Lavender;
             panel1.Controls.Add(lblDoorStatus);
             panel1.Controls.Add(lblDoorName);
             panel1.Dock = DockStyle.Fill;
@@ -44,25 +45,26 @@
             panel1.Size = new Size(135, 102);
             panel1.TabIndex = 0;
             // 
+            // lblDoorStatus
+            // 
+            lblDoorStatus.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblDoorStatus.AutoSize = true;
+            lblDoorStatus.Font = new Font("Courier New", 12F);
+            lblDoorStatus.Location = new Point(12, 65);
+            lblDoorStatus.Name = "lblDoorStatus";
+            lblDoorStatus.Size = new Size(58, 22);
+            lblDoorStatus.TabIndex = 1;
+            lblDoorStatus.Text = "OPEN";
+            // 
             // lblDoorName
             // 
             lblDoorName.AutoSize = true;
-            lblDoorName.Font = new Font("Courier New", 12F);
+            lblDoorName.Font = new Font("Courier New", 16F);
             lblDoorName.Location = new Point(12, 18);
             lblDoorName.Name = "lblDoorName";
-            lblDoorName.Size = new Size(118, 22);
+            lblDoorName.Size = new Size(61, 30);
             lblDoorName.TabIndex = 0;
-            lblDoorName.Text = "Door Name";
-            // 
-            // lblDoorStatus
-            // 
-            lblDoorStatus.AutoSize = true;
-            lblDoorStatus.Font = new Font("Courier New", 10F);
-            lblDoorStatus.Location = new Point(12, 56);
-            lblDoorStatus.Name = "lblDoorStatus";
-            lblDoorStatus.Size = new Size(49, 20);
-            lblDoorStatus.TabIndex = 1;
-            lblDoorStatus.Text = "OPEN";
+            lblDoorName.Text = "A16";
             // 
             // DoorCardControl
             // 
