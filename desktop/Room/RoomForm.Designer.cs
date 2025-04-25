@@ -66,9 +66,9 @@
             label2.ForeColor = Color.Lavender;
             label2.Location = new Point(490, 9);
             label2.Name = "label2";
-            label2.Size = new Size(79, 20);
+            label2.Size = new Size(129, 20);
             label2.TabIndex = 7;
-            label2.Text = "SEARCH:";
+            label2.Text = "SEARCH NAME:";
             // 
             // tbSearch
             // 
@@ -76,6 +76,7 @@
             tbSearch.BackColor = Color.Lavender;
             tbSearch.Location = new Point(490, 32);
             tbSearch.Name = "tbSearch";
+            tbSearch.PlaceholderText = "A14";
             tbSearch.Size = new Size(225, 34);
             tbSearch.TabIndex = 6;
             // 

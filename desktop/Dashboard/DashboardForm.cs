@@ -13,67 +13,38 @@ namespace PiSync.Dashboard
 {
     public partial class DashboardForm : Form
     {
-        private readonly HttpClient httpClient = new HttpClient { BaseAddress = new Uri(ApiService.BASE_URL) };
-        private readonly System.Windows.Forms.Timer refreshTimer = new System.Windows.Forms.Timer();
-
-        // Keep track of door controls by ID
-        private Dictionary<long, DoorCardControl> doorControls = new();
-
         public DashboardForm()
         {
             InitializeComponent();
-            InitDashboard();
-            StartRefresh();
         }
 
-        private void InitDashboard()
+        private void DashboardForm_Load(object sender, EventArgs e)
         {
-            this.BackColor = Color.White;
-
-            // Assuming you have a panel named "panelRooms" on your form
-            panelRooms.AutoScroll = true;
-            panelRooms.Padding = new Padding(20);
-            //panelRooms.FlowDirection = FlowDirection.LeftToRight;
-            //panelRooms.WrapContents = true;
+            PopulateDoors();
         }
 
-        private void StartRefresh()
+        private void PopulateDoors()
         {
-            refreshTimer.Interval = 3000;
-            refreshTimer.Tick += async (s, e) => await FetchAndUpdateDoors();
-            refreshTimer.Start();
-        }
+            panelRooms.Controls.Clear();
 
-        private async Task FetchAndUpdateDoors()
-        {
-            try
+            var doors = new List<(string Name, string Status)>
             {
-                var doors = await httpClient.GetFromJsonAsync<List<RoomModel>>("doors/");
-                if (doors == null) return;
+                ("A14", "Open"),
+                ("A16", "Closed")
+            };
 
-                foreach (var door in doors)
-                {
-                    if (doorControls.ContainsKey(door.id))
-                    {
-                        // Update existing card
-                        doorControls[door.id].SetData(door);
-                    }
-                    else
-                    {
-                        // Create new card
-                        var card = new DoorCardControl();
-                        card.SetData(door);
-                        panelRooms.Controls.Add(card); // Add card to existing panel
-                        doorControls[door.id] = card;
-                    }
-                }
-            }
-            catch (Exception ex)
+            foreach (var door in doors)
             {
-                Console.WriteLine("Failed to fetch doors: " + ex.Message);
+                var doorCard = new DoorCardControl();
+                doorCard.SetDoorInfo(door.Name, door.Status); 
+
+                doorCard.Margin = new Padding(10);
+                doorCard.Width = 150;
+                doorCard.Height = 150;
+
+                panelRooms.Controls.Add(doorCard);
             }
         }
-
 
         #region DRAG_AND_DROP
         private bool dragging = false;
@@ -121,5 +92,6 @@ namespace PiSync.Dashboard
         {
             OnMouseDown();
         }
+
     }
 }

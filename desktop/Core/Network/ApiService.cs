@@ -16,10 +16,11 @@ namespace PiSync.Core.Network
             if (!File.Exists(configPath))
             {
                 // default ip if not found
-                File.WriteAllText(configPath, "192.168.1.99");
+                File.WriteAllText(configPath, "192.168.1.98");
             }
 
-            return File.ReadAllText(configPath).Trim();
+            //return File.ReadAllText(configPath).Trim();
+            return "192.168.1.98";
         }
     }
 }
