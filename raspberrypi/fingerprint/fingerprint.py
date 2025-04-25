@@ -1,4 +1,4 @@
-from pyfingerprint.pyfingerprint import PyFingerprint # type: ignore
+from pyfingerprint.pyfingerprint import PyFingerprint
 import time
 
 try:
