@@ -25,34 +25,24 @@ namespace PiSync.Dashboard
 
         private void PopulateDoors()
         {
-            // Clear previous controls if any
             panelRooms.Controls.Clear();
 
-            // Create a list of door info for example purposes
             var doors = new List<(string Name, string Status)>
-    {
-        ("Main Entrance", "Open"),
-        ("Back Door", "Closed")
-    };
-
-            int yOffset = 10;
+            {
+                ("A14", "Open"),
+                ("A16", "Closed")
+            };
 
             foreach (var door in doors)
             {
                 var doorCard = new DoorCardControl();
-                doorCard.Name = $"doorCard_{door.Name.Replace(" ", "")}";
-                doorCard.SetDoorInfo(door.Name, door.Status);
+                doorCard.SetDoorInfo(door.Name, door.Status); 
 
-                // Positioning
-                doorCard.Location = new Point(10, yOffset);
-                doorCard.Width = panelRooms.Width - 20;
-                doorCard.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                doorCard.Margin = new Padding(10);
+                doorCard.Width = 150;
+                doorCard.Height = 150;
 
-                // Add to panel
                 panelRooms.Controls.Add(doorCard);
-
-                // Adjust spacing for next item
-                yOffset += doorCard.Height + 10;
             }
         }
 

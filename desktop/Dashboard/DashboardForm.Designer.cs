@@ -30,7 +30,7 @@
         {
             panel1 = new Panel();
             lblTitle = new Label();
-            panelRooms = new Panel();
+            panelRooms = new FlowLayoutPanel();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -61,11 +61,10 @@
             // 
             // panelRooms
             // 
+            panelRooms.AutoScroll = true;
             panelRooms.Dock = DockStyle.Fill;
             panelRooms.Location = new Point(0, 79);
-            panelRooms.Margin = new Padding(10);
             panelRooms.Name = "panelRooms";
-            panelRooms.Padding = new Padding(10);
             panelRooms.Size = new Size(875, 441);
             panelRooms.TabIndex = 1;
             // 
@@ -90,6 +89,6 @@
         #endregion
         private Label lblTitle;
         private Panel panel1;
-        private Panel panelRooms;
+        private FlowLayoutPanel panelRooms;
     }
 }
