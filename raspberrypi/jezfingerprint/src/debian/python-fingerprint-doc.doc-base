@@ -1,9 +1,0 @@
-Document: python-fingerprint-api
-Title: PyFingerprint API
-Author: Bastian Raschke <bastian.raschke@posteo.de>
-Abstract: PyFingerprint API documentation
-Section: Programming
-
-Format: HTML
-Index: /usr/share/doc/python-fingerprint-doc/html/PyFingerprint.html
-Files: /usr/share/doc/python-fingerprint-doc/html/*.html
