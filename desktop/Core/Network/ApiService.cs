@@ -13,6 +13,11 @@ namespace PiSync.Core.Network
 
         private static string LoadIPAddress()
         {
+            var TRIESHA_BOARDING_IP = "192.168.1.98";
+            var BOARDING_IP = "192.168.68.118";
+
+            Console.WriteLine($"{TRIESHA_BOARDING_IP}, {BOARDING_IP}");
+
             if (!File.Exists(configPath))
             {
                 // default ip if not found
@@ -20,7 +25,7 @@ namespace PiSync.Core.Network
             }
 
             //return File.ReadAllText(configPath).Trim();
-            return "192.168.1.98";
+            return BOARDING_IP;
         }
     }
 }
