@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using PiSync.Core.Model;
 using PiSync.Core.Network;
 using PiSync.Home;
+using PiSync.Room.NewRoom;
 
 namespace PiSync.Room
 {
@@ -172,6 +173,13 @@ namespace PiSync.Room
         private void panelTopbar_MouseDown(object sender, MouseEventArgs e)
         {
             OnMouseDown();
+        }
+
+        private void btnNewRoom_Click(object sender, EventArgs e)
+        {
+            var newRoomForm = new NewRoomForm();
+
+            newRoomForm.ShowDialog(this);
         }
     }
 }

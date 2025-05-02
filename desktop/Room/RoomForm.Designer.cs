@@ -104,6 +104,7 @@
             btnNewRoom.TabIndex = 5;
             btnNewRoom.Text = "NEW";
             btnNewRoom.UseVisualStyleBackColor = false;
+            btnNewRoom.Click += btnNewRoom_Click;
             // 
             // lblEmpty
             // 
