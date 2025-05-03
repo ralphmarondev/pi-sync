@@ -2,6 +2,7 @@
 using PiSync.Core.Model;
 using PiSync.Core.Network;
 using PiSync.Home;
+using PiSync.Room.Details;
 using PiSync.Room.NewRoom;
 
 namespace PiSync.Room
@@ -29,6 +30,7 @@ namespace PiSync.Room
         private void SetupDataGridView()
         {
             dataGridViewRooms.Columns.Clear();
+            dataGridViewRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             dataGridViewRooms.Columns.Add("id", "ID");
             dataGridViewRooms.Columns["id"].Visible = false;
@@ -50,6 +52,10 @@ namespace PiSync.Room
             dataGridViewRooms.ColumnHeadersDefaultCellStyle.ForeColor = Color.Purple;
             dataGridViewRooms.EnableHeadersVisualStyles = false;
 
+            dataGridViewRooms.CellClick += DataGridViewRooms_CellClick;
+            dataGridViewRooms.MultiSelect = false;
+            dataGridViewRooms.Cursor = Cursors.Hand;
+
             SetDataGridViewPadding();
         }
 
@@ -62,6 +68,7 @@ namespace PiSync.Room
                 {
                     rooms = response;
                     PopulateRooms();
+                    dataGridViewRooms.ClearSelection();
                 }
                 else
                 {
@@ -89,6 +96,7 @@ namespace PiSync.Room
                     room.isActive ? "Active" : "Inactive"
                 );
             }
+            dataGridViewRooms.ClearSelection();
         }
 
         private void ShowEmptyMessage()
@@ -115,6 +123,25 @@ namespace PiSync.Room
         {
             refreshTimer.Stop();
             base.OnFormClosed(e);
+        }
+
+        private void DataGridViewRooms_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Ignore clicks on header
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            var selectedRow = dataGridViewRooms.Rows[e.RowIndex];
+
+            var roomId = Convert.ToInt32(selectedRow.Cells["id"].Value);
+            var roomName = selectedRow.Cells["name"].Value.ToString();
+
+            System.Diagnostics.Debug.WriteLine($"Clicked room id: {roomId}, Name: {roomName}");
+
+            var detailForm = new RoomDetailsForm(roomId, roomName);
+            detailForm.ShowDialog(this);
         }
 
         #endregion
