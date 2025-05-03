@@ -2,7 +2,6 @@
 using PiSync.Core.Model;
 using PiSync.Core.Network;
 using PiSync.Home;
-using PiSync.Room.Details;
 using PiSync.Room.NewRoom;
 
 namespace PiSync.Room
@@ -140,8 +139,8 @@ namespace PiSync.Room
 
             System.Diagnostics.Debug.WriteLine($"Clicked room id: {roomId}, Name: {roomName}");
 
-            var detailForm = new RoomDetailsForm(roomId, roomName);
-            detailForm.ShowDialog(this);
+            RoomManageForm form = new RoomManageForm(roomId, roomName);
+            form.ShowDialog(this);
         }
 
         #endregion
