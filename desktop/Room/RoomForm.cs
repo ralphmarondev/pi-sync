@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Windows.Forms;
+﻿using System.Net.Http.Json;
 using PiSync.Core.Model;
 using PiSync.Core.Network;
 using PiSync.Home;
