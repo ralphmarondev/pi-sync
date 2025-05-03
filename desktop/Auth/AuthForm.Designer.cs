@@ -40,10 +40,12 @@
             label1 = new Label();
             tbUsername = new TextBox();
             pictureBox1 = new PictureBox();
+            btnSetupIp = new PictureBox();
             panelAuth.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)btnClose).BeginInit();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)btnSetupIp).BeginInit();
             SuspendLayout();
             // 
             // panelAuth
@@ -176,6 +178,20 @@
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
             // 
+            // btnSetupIp
+            // 
+            btnSetupIp.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSetupIp.BackColor = Color.GhostWhite;
+            btnSetupIp.Cursor = Cursors.Hand;
+            btnSetupIp.Image = (Image)resources.GetObject("btnSetupIp.Image");
+            btnSetupIp.Location = new Point(884, 499);
+            btnSetupIp.Name = "btnSetupIp";
+            btnSetupIp.Size = new Size(40, 40);
+            btnSetupIp.SizeMode = PictureBoxSizeMode.Zoom;
+            btnSetupIp.TabIndex = 2;
+            btnSetupIp.TabStop = false;
+            btnSetupIp.Click += btnSetupIp_Click;
+            // 
             // AuthForm
             // 
             AutoScaleDimensions = new SizeF(14F, 25F);
@@ -183,6 +199,7 @@
             BackColor = Color.GhostWhite;
             BackgroundImageLayout = ImageLayout.Center;
             ClientSize = new Size(936, 551);
+            Controls.Add(btnSetupIp);
             Controls.Add(pictureBox1);
             Controls.Add(panel2);
             Controls.Add(panelAuth);
@@ -198,6 +215,7 @@
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)btnSetupIp).EndInit();
             ResumeLayout(false);
         }
 
@@ -214,5 +232,6 @@
         private Label lblTitle;
         private PictureBox btnClose;
         private PictureBox pictureBox1;
+        private PictureBox btnSetupIp;
     }
 }

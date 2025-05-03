@@ -1,31 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PiSync.Core.Network
+﻿namespace PiSync.Core.Network
 {
     public class ApiService
     {
-        public static readonly string configPath = "config.txt";
+        public static readonly string configPath = "cute.config.txt";
         public static readonly string BASE_URL = $"http://{LoadIPAddress()}:8000/api/";
+        private static readonly HttpClient httpClient = CreateHttpClient();
 
         private static string LoadIPAddress()
         {
-            var TRIESHA_BOARDING_IP = "192.168.1.98";
-            var BOARDING_IP = "192.168.68.118";
-
-            Console.WriteLine($"{TRIESHA_BOARDING_IP}, {BOARDING_IP}");
-
-            if (!File.Exists(configPath))
+            try
             {
-                // default ip if not found
-                File.WriteAllText(configPath, "192.168.1.98");
-            }
+                if (!File.Exists(configPath))
+                {
+                    return "";
+                }
 
-            //return File.ReadAllText(configPath).Trim();
-            return BOARDING_IP;
+                var ip = File.ReadAllText(configPath).Trim();
+                if (string.IsNullOrEmpty(ip))
+                {
+                    return "";
+                }
+                System.Diagnostics.Debug.WriteLine($"Ip address: {ip}");
+                return ip;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        private static HttpClient CreateHttpClient()
+        {
+            var client = new HttpClient();
+
+            if (!string.IsNullOrWhiteSpace(BASE_URL))
+            {
+                client.BaseAddress = new Uri(BASE_URL);
+            }
+            return client;
         }
     }
 }

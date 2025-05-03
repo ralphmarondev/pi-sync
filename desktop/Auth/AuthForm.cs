@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using PiSync.Core.Network;
 using PiSync.Home;
 
@@ -157,6 +156,33 @@ namespace PiSync
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void btnSetupIp_Click(object sender, EventArgs e)
+        {
+            string ipAddress = Microsoft.VisualBasic.Interaction.InputBox(
+                "Enter the IP Address!",
+                "Setup IP Address",
+                "192.168.1.1");
+
+            if (string.IsNullOrWhiteSpace(ipAddress))
+            {
+                MessageBox.Show("IP Address setup canceled or invalid", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cute.config.txt");
+
+                File.WriteAllText(filePath, ipAddress);
+                MessageBox.Show($"IP Address saved to cute.config.txt\n\n{ipAddress}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to save IP Address.\n\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
