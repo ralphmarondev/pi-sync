@@ -28,11 +28,14 @@ namespace PiSync.Room.NewRoom
             }
             Console.WriteLine($"Room name: {roomName}");
 
-            await SaveRoomToDatabase(roomName);
-            Hide();
+            bool isSaved = await SaveRoomToDatabase(roomName);
+            if (isSaved)
+            {
+                Hide();
+            }
         }
 
-        private async Task SaveRoomToDatabase(string roomName)
+        private async Task<bool> SaveRoomToDatabase(string roomName)
         {
             try
             {
@@ -50,6 +53,7 @@ namespace PiSync.Room.NewRoom
                     string result = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"Server response: {result}");
                     MessageBox.Show("Room saved successfully");
+                    return true;
                 }
                 else
                 {
@@ -63,6 +67,7 @@ namespace PiSync.Room.NewRoom
                 Console.WriteLine($"Error: {ex.Message}");
                 MessageBox.Show($"Exception: {ex.Message}");
             }
+            return false;
         }
     }
 }
