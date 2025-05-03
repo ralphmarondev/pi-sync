@@ -36,7 +36,12 @@ namespace PiSync.Room
 
         private void btnDetails_Click(object sender, EventArgs e)
         {
+            OpenFormInPanel(new Details.RoomDetailsForm(Convert.ToInt32(room.id), room.name));
+        }
 
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new Delete.RoomDeleteForm());
         }
     }
 }

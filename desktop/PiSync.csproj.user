@@ -16,6 +16,9 @@
     <Compile Update="Home\HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Room\Delete\RoomDeleteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Room\Details\RoomDetailsForm.cs">
       <SubType>Form</SubType>
     </Compile>
