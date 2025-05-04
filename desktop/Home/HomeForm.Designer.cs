@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            btnHistory = new Button();
             btnLogout = new Button();
             btnTenants = new Button();
             btnRooms = new Button();
@@ -36,7 +37,6 @@
             panelLabel = new Panel();
             logoLabel = new Label();
             mainPanel = new Panel();
-            btnHistory = new Button();
             panel1.SuspendLayout();
             panelLabel.SuspendLayout();
             SuspendLayout();
@@ -55,6 +55,22 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(241, 690);
             panel1.TabIndex = 1;
+            // 
+            // btnHistory
+            // 
+            btnHistory.BackColor = Color.Lavender;
+            btnHistory.Cursor = Cursors.Hand;
+            btnHistory.FlatAppearance.BorderSize = 0;
+            btnHistory.FlatStyle = FlatStyle.Flat;
+            btnHistory.Font = new Font("Courier New", 14F);
+            btnHistory.Location = new Point(12, 312);
+            btnHistory.Margin = new Padding(0);
+            btnHistory.Name = "btnHistory";
+            btnHistory.Size = new Size(212, 61);
+            btnHistory.TabIndex = 5;
+            btnHistory.Text = "HISTORY";
+            btnHistory.UseVisualStyleBackColor = true;
+            btnHistory.Click += btnHistory_Click;
             // 
             // btnLogout
             // 
@@ -87,6 +103,7 @@
             btnTenants.TabIndex = 3;
             btnTenants.Text = "TENANTS";
             btnTenants.UseVisualStyleBackColor = true;
+            btnTenants.Click += btnTenants_Click;
             // 
             // btnRooms
             // 
@@ -155,22 +172,6 @@
             mainPanel.Name = "mainPanel";
             mainPanel.Size = new Size(884, 690);
             mainPanel.TabIndex = 2;
-            // 
-            // btnHistory
-            // 
-            btnHistory.BackColor = Color.Lavender;
-            btnHistory.Cursor = Cursors.Hand;
-            btnHistory.FlatAppearance.BorderSize = 0;
-            btnHistory.FlatStyle = FlatStyle.Flat;
-            btnHistory.Font = new Font("Courier New", 14F);
-            btnHistory.Location = new Point(12, 312);
-            btnHistory.Margin = new Padding(0);
-            btnHistory.Name = "btnHistory";
-            btnHistory.Size = new Size(212, 61);
-            btnHistory.TabIndex = 5;
-            btnHistory.Text = "HISTORY";
-            btnHistory.UseVisualStyleBackColor = true;
-            btnHistory.Click += btnHistory_Click;
             // 
             // HomeForm
             // 

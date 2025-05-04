@@ -52,6 +52,11 @@
             OpenFormInPanel(new Room.RoomForm());
         }
 
+        private void btnTenants_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new Tenant.TenantForm());
+        }
+
         private void btnHistory_Click(object sender, EventArgs e)
         {
             OpenFormInPanel(new History.HistoryForm());
