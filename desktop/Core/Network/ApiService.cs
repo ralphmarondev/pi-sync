@@ -4,7 +4,7 @@
     {
         public static readonly string configPath = "cute.config.txt";
         public static readonly string BASE_URL = $"http://{LoadIPAddress()}:8000/api/";
-        private static readonly HttpClient httpClient = CreateHttpClient();
+        public static readonly HttpClient httpClient = CreateHttpClient();
 
         private static string LoadIPAddress()
         {

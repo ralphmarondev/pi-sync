@@ -7,7 +7,6 @@ namespace PiSync
 {
     public partial class AuthForm : Form
     {
-        private readonly HttpClient httpClient = new HttpClient();
         public AuthForm()
         {
             InitializeComponent();
@@ -25,7 +24,7 @@ namespace PiSync
                 string json = JsonSerializer.Serialize(loginData);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await httpClient.PostAsync($"{ApiService.BASE_URL}login/", content);
+                var response = await ApiService.httpClient.PostAsync($"{ApiService.BASE_URL}login/", content);
 
                 if (response.IsSuccessStatusCode)
                 {
