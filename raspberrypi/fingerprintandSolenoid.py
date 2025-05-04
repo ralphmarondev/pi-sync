@@ -1,8 +1,8 @@
 import time
 import serial
-import RPi.GPIO as GPIO
-import adafruit_fingerprint
+import threading
 from gpiozero import OutputDevice
+import adafruit_fingerprint
 
 # Set up GPIO for controlling the solenoid (ACTIVE-LOW relay)
 SOLENOID_PIN = 17
@@ -17,24 +17,31 @@ def unlock_solenoid():
     print("Solenoid locked again.")
 
 # Initialize serial connection to the fingerprint sensor
+import serial
 uart = serial.Serial("/dev/ttyUSB0", baudrate=57600, timeout=1)
 finger = adafruit_fingerprint.Adafruit_Fingerprint(uart)
 
 def get_fingerprint():
     """Get a fingerprint image, template it, and see if it matches!"""
-    print("Waiting for image...")
-    while finger.get_image() != adafruit_fingerprint.OK:
-        pass
-    print("Templating...")
+    if finger.get_image() != adafruit_fingerprint.OK:
+        return False
     if finger.image_2_tz(1) != adafruit_fingerprint.OK:
         return False
-    print("Searching...")
     if finger.finger_search() != adafruit_fingerprint.OK:
         return False
     return True
 
+def auto_detect_loop():
+    """Continuously check for valid fingerprint"""
+    print("🟢 Auto fingerprint detection started.")
+    while True:
+        if get_fingerprint():
+            print("✅ Detected ID #", finger.finger_id, "Confidence:", finger.confidence)
+            unlock_solenoid()
+            time.sleep(1)  # Avoid rapid repeated reads
+        time.sleep(0.1)
+
 def enroll_finger(location):
-    """Take two fingerprint images and template them, then store in 'location'"""
     for fingerimg in range(1, 3):
         if fingerimg == 1:
             print("Place finger on sensor...", end="")
@@ -83,7 +90,6 @@ def enroll_finger(location):
         return False
 
 def save_fingerprint_image(filename):
-    """Scan fingerprint then save image to filename."""
     while finger.get_image():
         pass
 
@@ -108,7 +114,6 @@ def save_fingerprint_image(filename):
     img.save(filename)
 
 def get_num(max_number):
-    """Get a valid number from 0 to max_number."""
     i = -1
     while (i > max_number - 1) or (i < 0):
         try:
@@ -117,7 +122,10 @@ def get_num(max_number):
             pass
     return i
 
-# Main program loop
+# 🔁 Start background thread for auto-detection
+threading.Thread(target=auto_detect_loop, daemon=True).start()
+
+# Main menu loop for enrollment, deletion, etc.
 while True:
     print("----------------")
     if finger.read_templates() != adafruit_fingerprint.OK:
@@ -130,7 +138,6 @@ while True:
         raise RuntimeError("Failed to get system parameters")
     print("Size of template library: ", finger.library_size)
     print("e) enroll print")
-    print("f) find print")
     print("d) delete print")
     print("s) save fingerprint image")
     print("r) reset library")
@@ -140,12 +147,6 @@ while True:
 
     if c == "e":
         enroll_finger(get_num(finger.library_size))
-    elif c == "f":
-        if get_fingerprint():
-            print("Detected #", finger.finger_id, "with confidence", finger.confidence)
-            unlock_solenoid()
-        else:
-            print("Finger not found")
     elif c == "d":
         if finger.delete_model(get_num(finger.library_size)) == adafruit_fingerprint.OK:
             print("Deleted!")
