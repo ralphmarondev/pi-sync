@@ -39,11 +39,12 @@
             panel1.BackColor = Color.Lavender;
             panel1.Controls.Add(lblDoorStatus);
             panel1.Controls.Add(lblDoorName);
-            panel1.Location = new Point(0, 0);
+            panel1.Cursor = Cursors.Hand;
+            panel1.Location = new Point(5, 5);
             panel1.MaximumSize = new Size(140, 140);
             panel1.MinimumSize = new Size(140, 140);
             panel1.Name = "panel1";
-            panel1.Size = new Size(150, 150);
+            panel1.Size = new Size(140, 140);
             panel1.TabIndex = 0;
             // 
             // lblDoorStatus
