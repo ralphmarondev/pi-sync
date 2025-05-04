@@ -158,6 +158,7 @@
             Name = "RoomForm";
             StartPosition = FormStartPosition.Manual;
             Text = "RoomForm";
+            FormClosed += RoomForm_FormClosed;
             panelTopbar.ResumeLayout(false);
             panelTopbar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRooms).EndInit();

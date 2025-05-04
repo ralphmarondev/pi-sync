@@ -9,8 +9,7 @@ namespace PiSync.Room
     public partial class RoomForm : Form
     {
         private List<RoomModel> rooms = new List<RoomModel>();
-        private readonly HttpClient httpClient = new HttpClient { BaseAddress = new Uri(ApiService.BASE_URL) };
-        private readonly System.Windows.Forms.Timer refreshTimer = new System.Windows.Forms.Timer();
+        private readonly System.Windows.Forms.Timer refreshTimer;
 
         public RoomForm()
         {
@@ -19,11 +18,19 @@ namespace PiSync.Room
             FetchRoomsAsync();
 
             // Timer for auto-refresh every 3 seconds
+            refreshTimer = new System.Windows.Forms.Timer();
             refreshTimer.Interval = 3000;
             refreshTimer.Tick += (s, e) => FetchRoomsAsync();
             refreshTimer.Start();
         }
 
+
+        private void RoomForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            refreshTimer?.Stop();
+            refreshTimer?.Dispose();
+            base.OnFormClosed(e);
+        }
         #region DATAGRIDVIEW_SETUP_AND_FETCHING
 
         private void SetupDataGridView()
@@ -62,7 +69,7 @@ namespace PiSync.Room
         {
             try
             {
-                var response = await httpClient.GetFromJsonAsync<List<RoomModel>>("doors/");
+                var response = await ApiService.httpClient.GetFromJsonAsync<List<RoomModel>>("doors/");
                 if (response != null)
                 {
                     rooms = response;

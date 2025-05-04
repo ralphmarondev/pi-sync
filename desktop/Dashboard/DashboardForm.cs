@@ -7,6 +7,7 @@ namespace PiSync.Dashboard
 {
     public partial class DashboardForm : Form
     {
+        private System.Windows.Forms.Timer refreshTimer;
         public DashboardForm()
         {
             InitializeComponent();
@@ -15,6 +16,18 @@ namespace PiSync.Dashboard
         private void DashboardForm_Load(object sender, EventArgs e)
         {
             PopulateDoorsAsync();
+
+            refreshTimer = new System.Windows.Forms.Timer();
+            refreshTimer.Interval = 3000;
+            refreshTimer.Tick += async (s, args) => await PopulateDoorsAsync();
+            refreshTimer.Start();
+        }
+
+        private void DashboardForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            refreshTimer?.Stop();
+            refreshTimer?.Dispose();
+            base.OnFormClosed(e);
         }
 
         private async Task<List<RoomModel>> FetchRoomsAsync()
@@ -136,6 +149,5 @@ namespace PiSync.Dashboard
         {
             OnMouseDown();
         }
-
     }
 }
