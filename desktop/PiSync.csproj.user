@@ -13,6 +13,9 @@
     <Compile Update="Dashboard\DoorCardControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="History\HistoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Home\HomeForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace PiSync.Home
+﻿namespace PiSync.Home
 {
     public partial class HomeForm : Form
     {
@@ -60,6 +50,11 @@ namespace PiSync.Home
         public void OpenRoomForm()
         {
             OpenFormInPanel(new Room.RoomForm());
+        }
+
+        private void btnHistory_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new History.HistoryForm());
         }
         #endregion NAVIGATION
 
