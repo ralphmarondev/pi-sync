@@ -36,8 +36,8 @@ namespace PiSync.Room
 
             dataGridViewRooms.Columns.Add("name", "Name");
             dataGridViewRooms.Columns.Add("tenantCount", "Tenant Count");
-            dataGridViewRooms.Columns.Add("status", "Status"); // isOpen: Open/Closed
-            dataGridViewRooms.Columns.Add("isActive", "Active Status"); // New column
+            dataGridViewRooms.Columns.Add("status", "Door Status"); // isOpen: Open/Closed
+            dataGridViewRooms.Columns.Add("isActive", "Room Status"); // New column
 
             dataGridViewRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewRooms.ReadOnly = true;
