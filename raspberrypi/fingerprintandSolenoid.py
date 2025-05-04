@@ -2,32 +2,23 @@ import time
 import serial
 import RPi.GPIO as GPIO
 import adafruit_fingerprint
-
-# Set up GPIO for controlling the solenoid
 from gpiozero import OutputDevice
 
-SOLENOID_PIN = 17  # GPIO pin for solenoid
-solenoid = OutputDevice(SOLENOID_PIN, active_high=True, initial_value=False)
-def unlock_solenoid():
-    """Unlock the solenoid (activate)"""
-    print("Unlocking the solenoid...")
-    solenoid.on()   # Activate solenoid
-    time.sleep(5)   # Keep it unlocked for 5 seconds
-    solenoid.off()  # Deactivate solenoid
-    print("Solenoid locked again.")
+# Set up GPIO for controlling the solenoid (ACTIVE-LOW relay)
+SOLENOID_PIN = 17
+solenoid = OutputDevice(SOLENOID_PIN, active_high=False, initial_value=True)
 
+def unlock_solenoid():
+    """Unlock the solenoid (activate relay)"""
+    print("Unlocking the solenoid...")
+    solenoid.on()   # GPIO LOW → relay ON → solenoid unlocked
+    time.sleep(5)
+    solenoid.off()  # GPIO HIGH → relay OFF → solenoid locked
+    print("Solenoid locked again.")
 
 # Initialize serial connection to the fingerprint sensor
 uart = serial.Serial("/dev/ttyUSB0", baudrate=57600, timeout=1)
 finger = adafruit_fingerprint.Adafruit_Fingerprint(uart)
-
-def unlock_solenoid():
-    """Unlock the solenoid (activate)"""
-    print("Unlocking the solenoid...")
-    solenoid.on()
-    time.sleep(5)
-    solenoid.off()
-    print("Solenoid locked again.")
 
 def get_fingerprint():
     """Get a fingerprint image, template it, and see if it matches!"""
@@ -41,48 +32,6 @@ def get_fingerprint():
     if finger.finger_search() != adafruit_fingerprint.OK:
         return False
     return True
-
-def get_fingerprint_detail():
-    """Get a fingerprint image, template it, and see if it matches with detailed error messages"""
-    print("Getting image...", end="")
-    i = finger.get_image()
-    if i == adafruit_fingerprint.OK:
-        print("Image taken")
-    else:
-        if i == adafruit_fingerprint.NOFINGER:
-            print("No finger detected")
-        elif i == adafruit_fingerprint.IMAGEFAIL:
-            print("Imaging error")
-        else:
-            print("Other error")
-        return False
-
-    print("Templating...", end="")
-    i = finger.image_2_tz(1)
-    if i == adafruit_fingerprint.OK:
-        print("Templated")
-    else:
-        if i == adafruit_fingerprint.IMAGEMESS:
-            print("Image too messy")
-        elif i == adafruit_fingerprint.FEATUREFAIL:
-            print("Could not identify features")
-        elif i == adafruit_fingerprint.INVALIDIMAGE:
-            print("Image invalid")
-        else:
-            print("Other error")
-        return False
-
-    print("Searching...", end="")
-    i = finger.finger_fast_search()
-    if i == adafruit_fingerprint.OK:
-        print("Found fingerprint!")
-        return True
-    else:
-        if i == adafruit_fingerprint.NOTFOUND:
-            print("No match found")
-        else:
-            print("Other error")
-        return False
 
 def enroll_finger(location):
     """Take two fingerprint images and template them, then store in 'location'"""
@@ -111,47 +60,27 @@ def enroll_finger(location):
         if i == adafruit_fingerprint.OK:
             print("Templated")
         else:
-            if i == adafruit_fingerprint.IMAGEMESS:
-                print("Image too messy")
-            elif i == adafruit_fingerprint.FEATUREFAIL:
-                print("Could not identify features")
-            elif i == adafruit_fingerprint.INVALIDIMAGE:
-                print("Image invalid")
-            else:
-                print("Other error")
+            print("Template error")
             return False
 
         if fingerimg == 1:
             print("Remove finger")
             time.sleep(1)
-            while i != adafruit_fingerprint.NOFINGER:
-                i = finger.get_image()
+            while finger.get_image() != adafruit_fingerprint.NOFINGER:
+                pass
 
     print("Creating model...", end="")
-    i = finger.create_model()
-    if i == adafruit_fingerprint.OK:
-        print("Created")
-    else:
-        if i == adafruit_fingerprint.ENROLLMISMATCH:
-            print("Prints did not match")
-        else:
-            print("Other error")
+    if finger.create_model() != adafruit_fingerprint.OK:
+        print("Model creation failed")
         return False
 
     print("Storing model #%d..." % location, end="")
-    i = finger.store_model(location)
-    if i == adafruit_fingerprint.OK:
+    if finger.store_model(location) == adafruit_fingerprint.OK:
         print("Stored")
+        return True
     else:
-        if i == adafruit_fingerprint.BADLOCATION:
-            print("Bad storage location")
-        elif i == adafruit_fingerprint.FLASHERR:
-            print("Flash storage error")
-        else:
-            print("Other error")
+        print("Failed to store")
         return False
-
-    return True
 
 def save_fingerprint_image(filename):
     """Scan fingerprint then save image to filename."""
@@ -159,7 +88,6 @@ def save_fingerprint_image(filename):
         pass
 
     from PIL import Image
-
     img = Image.new("L", (256, 288), "white")
     pixeldata = img.load()
     mask = 0b00001111
@@ -177,10 +105,7 @@ def save_fingerprint_image(filename):
         else:
             x += 1
 
-    if not img.save(filename):
-        return True
-    return False
-
+    img.save(filename)
 
 def get_num(max_number):
     """Get a valid number from 0 to max_number."""
@@ -192,7 +117,7 @@ def get_num(max_number):
             pass
     return i
 
-
+# Main program loop
 while True:
     print("----------------")
     if finger.read_templates() != adafruit_fingerprint.OK:
@@ -215,27 +140,25 @@ while True:
 
     if c == "e":
         enroll_finger(get_num(finger.library_size))
-    if c == "f":
+    elif c == "f":
         if get_fingerprint():
             print("Detected #", finger.finger_id, "with confidence", finger.confidence)
-            unlock_solenoid()  # Unlock the solenoid after successful fingerprint match
+            unlock_solenoid()
         else:
             print("Finger not found")
-    if c == "d":
+    elif c == "d":
         if finger.delete_model(get_num(finger.library_size)) == adafruit_fingerprint.OK:
             print("Deleted!")
         else:
             print("Failed to delete")
-    if c == "s":
-        if save_fingerprint_image("fingerprint.png"):
-            print("Fingerprint image saved")
-        else:
-            print("Failed to save fingerprint image")
-    if c == "r":
+    elif c == "s":
+        save_fingerprint_image("fingerprint.png")
+        print("Fingerprint image saved")
+    elif c == "r":
         if finger.empty_library() == adafruit_fingerprint.OK:
             print("Library empty!")
         else:
             print("Failed to empty library")
-    if c == "q":
+    elif c == "q":
         print("Exiting fingerprint example program")
-        raise SystemExit
+        break
