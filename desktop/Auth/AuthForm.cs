@@ -1,5 +1,7 @@
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using PiSync.Core.Model;
 using PiSync.Core.Network;
 using PiSync.Home;
 
@@ -89,9 +91,36 @@ namespace PiSync
             }
         }
 
-        private void btnForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private async void btnForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBox.Show("No hint available.");
+            string username = tbUsername.Text.Trim();
+
+            if (string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("Username is empty!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                tbUsername.Focus();
+                return;
+            }
+
+            try
+            {
+                string url = $"user/password-hint/{username}/";
+                var response = await ApiService.httpClient.GetFromJsonAsync<PasswordHintResponse>(url);
+
+                if (response != null && response.success && !string.IsNullOrEmpty(response.password_hint))
+                {
+                    MessageBox.Show($"{response.password_hint}", "Password Hint", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("No hint available.", "Password Hint", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                MessageBox.Show("No hint available.", "Password Hint", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
 
