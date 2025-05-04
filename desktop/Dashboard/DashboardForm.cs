@@ -37,8 +37,8 @@ namespace PiSync.Dashboard
             panelRooms.Controls.Clear();
 
             var rooms = await FetchRoomsAsync();
-
-            foreach (var room in rooms)
+            var sortedRooms = rooms.OrderBy(r => r.name).ToList();
+            foreach (var room in sortedRooms)
             {
                 var doorCard = new DoorCardControl();
 
