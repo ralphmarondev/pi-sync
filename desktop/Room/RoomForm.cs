@@ -19,7 +19,7 @@ namespace PiSync.Room
 
             // Timer for auto-refresh every 3 seconds
             refreshTimer = new System.Windows.Forms.Timer();
-            refreshTimer.Interval = 3000;
+            refreshTimer.Interval = 10000;
             refreshTimer.Tick += (s, e) => FetchRoomsAsync();
             refreshTimer.Start();
         }
