@@ -1,13 +1,7 @@
-﻿using PiSync.Core.Model;
+﻿using System.Net.Http.Json;
+using PiSync.Core.Model;
 using PiSync.Core.Network;
 using PiSync.Home;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace PiSync.Dashboard
 {
@@ -54,6 +48,7 @@ namespace PiSync.Dashboard
                 string statusText = room.isOpen ? "Open" : "Closed";
 
                 doorCard.SetDoorInfo(room.name, statusText);
+                doorCard.DoorClicked += DoorCard_DoorClicked;
 
                 doorCard.Margin = new Padding(10);
                 doorCard.Width = 150;
@@ -61,6 +56,11 @@ namespace PiSync.Dashboard
 
                 panelRooms.Controls.Add(doorCard);
             }
+        }
+
+        private void DoorCard_DoorClicked(object sender, string doorName)
+        {
+            MessageBox.Show($"Clicked door: {doorName}", "Door Clicked", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #region DRAG_AND_DROP
