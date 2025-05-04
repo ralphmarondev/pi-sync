@@ -19,12 +19,9 @@ namespace PiSync.Dashboard
 
         private async Task<List<RoomModel>> FetchRoomsAsync()
         {
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri(ApiService.BASE_URL);
-
             try
             {
-                var response = await client.GetFromJsonAsync<List<RoomModel>>("doors/");
+                var response = await ApiService.httpClient.GetFromJsonAsync<List<RoomModel>>("doors/");
                 return response ?? new List<RoomModel>();
             }
             catch (Exception ex)
@@ -47,7 +44,7 @@ namespace PiSync.Dashboard
 
                 string statusText = room.isOpen ? "Open" : "Closed";
 
-                doorCard.SetDoorInfo(room.name, statusText);
+                doorCard.SetDoorInfo(Convert.ToInt32(room.id), room.name, statusText, room.isOpen);
                 doorCard.DoorClicked += DoorCard_DoorClicked;
 
                 doorCard.Margin = new Padding(10);
@@ -58,9 +55,39 @@ namespace PiSync.Dashboard
             }
         }
 
-        private void DoorCard_DoorClicked(object sender, string doorName)
+        private async void DoorCard_DoorClicked(object sender, (int doorId, string doorName, bool isOpen) doorInfo)
         {
-            MessageBox.Show($"Clicked door: {doorName}", "Door Clicked", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //MessageBox.Show($"Clicked door: {doorInfo.doorName}", "Door Clicked", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            System.Diagnostics.Debug.WriteLine($"Clicked door: {doorInfo.doorName}");
+
+            var (doorId, doorName, isOpen) = doorInfo;
+            bool shouldOpen = !isOpen;
+
+            await SendDoorActionAsync(doorId, shouldOpen);
+            await PopulateDoorsAsync();
+        }
+
+        private async Task SendDoorActionAsync(int doorId, bool open)
+        {
+            var body = new
+            {
+                usernname = "admin",
+                description = open ? "Opened via dashboard" : "Closed via dashboard"
+            };
+            string endpoint = open ? $"door/open/{doorId}/" : $"door/close/{doorId}/";
+
+            try
+            {
+                var response = await ApiService.httpClient.PostAsJsonAsync(endpoint, body);
+                response.EnsureSuccessStatusCode();
+
+                //MessageBox.Show($"Door {(open ? "opened" : "closed")} successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                System.Diagnostics.Debug.WriteLine($"Door {(open ? "opened" : "closed")} successfully!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to {(open ? "open" : "close")} door: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         #region DRAG_AND_DROP
