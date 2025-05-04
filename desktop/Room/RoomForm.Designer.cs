@@ -79,6 +79,7 @@
             tbSearch.PlaceholderText = "A14";
             tbSearch.Size = new Size(225, 34);
             tbSearch.TabIndex = 6;
+            tbSearch.TextChanged += tbSearch_TextChanged;
             // 
             // lblTitle
             // 

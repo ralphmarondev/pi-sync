@@ -18,18 +18,18 @@ namespace PiSync.Room
             FetchRoomsAsync();
 
             // Timer for auto-refresh
-            refreshTimer = new System.Windows.Forms.Timer();
-            refreshTimer.Interval = 10000;
-            refreshTimer.Tick += (s, e) => FetchRoomsAsync();
-            refreshTimer.Start();
+            //refreshTimer = new System.Windows.Forms.Timer();
+            //refreshTimer.Interval = 10000;
+            //refreshTimer.Tick += (s, e) => FetchRoomsAsync();
+            //refreshTimer.Start();
         }
 
 
         private void RoomForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            refreshTimer?.Stop();
-            refreshTimer?.Dispose();
-            base.OnFormClosed(e);
+            //refreshTimer?.Stop();
+            //refreshTimer?.Dispose();
+            //base.OnFormClosed(e);
         }
         #region DATAGRIDVIEW_SETUP_AND_FETCHING
 
@@ -92,7 +92,29 @@ namespace PiSync.Room
             lblEmpty.Visible = rooms.Count == 0;
             dataGridViewRooms.Rows.Clear();
 
-            foreach (var room in rooms)
+
+            var sortedRooms = rooms.OrderBy(r => r.name).ToList();
+            foreach (var room in sortedRooms)
+            {
+                dataGridViewRooms.Rows.Add(
+                    room.id,
+                    room.name,
+                    room.tenantCount,
+                    room.isOpen ? "Open" : "Closed",
+                    room.isActive ? "Active" : "Inactive"
+                );
+            }
+            dataGridViewRooms.ClearSelection();
+        }
+
+        private void PopulateRooms(List<RoomModel> filteredRooms)
+        {
+            lblEmpty.Visible = rooms.Count == 0;
+            dataGridViewRooms.Rows.Clear();
+
+
+            var sortedRooms = filteredRooms.OrderBy(r => r.name).ToList();
+            foreach (var room in sortedRooms)
             {
                 dataGridViewRooms.Rows.Add(
                     room.id,
@@ -208,6 +230,25 @@ namespace PiSync.Room
             var newRoomForm = new NewRoomForm();
 
             newRoomForm.ShowDialog(this);
+            FetchRoomsAsync();
+        }
+
+        private void tbSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = tbSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                PopulateRooms();
+            }
+            else
+            {
+                var filterRooms = rooms
+                    .Where(r => r.name != null && r.name.ToLower().Contains(searchText))
+                    .OrderBy(r => r.name)
+                    .ToList();
+                PopulateRooms(filterRooms);
+            }
         }
     }
 }
