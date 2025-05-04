@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            lblTitle = new Label();
+            btnNewTenant = new Button();
             label2 = new Label();
             tbSearch = new TextBox();
-            btnNewTenant = new Button();
+            lblTitle = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -49,40 +49,6 @@
             panel1.Size = new Size(875, 79);
             panel1.TabIndex = 0;
             // 
-            // lblTitle
-            // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Courier New", 16F);
-            lblTitle.ForeColor = Color.Lavender;
-            lblTitle.Location = new Point(59, 24);
-            lblTitle.Margin = new Padding(5, 0, 5, 0);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(125, 30);
-            lblTitle.TabIndex = 2;
-            lblTitle.Text = "TENANTS";
-            // 
-            // label2
-            // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Font = new Font("Courier New", 10F);
-            label2.ForeColor = Color.Lavender;
-            label2.Location = new Point(490, 9);
-            label2.Name = "label2";
-            label2.Size = new Size(169, 20);
-            label2.TabIndex = 9;
-            label2.Text = "SEARCH USERNAME:";
-            // 
-            // tbSearch
-            // 
-            tbSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            tbSearch.BackColor = Color.Lavender;
-            tbSearch.Location = new Point(490, 32);
-            tbSearch.Name = "tbSearch";
-            tbSearch.PlaceholderText = "A14";
-            tbSearch.Size = new Size(225, 30);
-            tbSearch.TabIndex = 8;
-            // 
             // btnNewTenant
             // 
             btnNewTenant.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -95,6 +61,39 @@
             btnNewTenant.TabIndex = 10;
             btnNewTenant.Text = "NEW";
             btnNewTenant.UseVisualStyleBackColor = false;
+            // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label2.AutoSize = true;
+            label2.Font = new Font("Courier New", 10F);
+            label2.ForeColor = Color.Lavender;
+            label2.Location = new Point(490, 9);
+            label2.Name = "label2";
+            label2.Size = new Size(169, 20);
+            label2.TabIndex = 9;
+            label2.Text = "TENANT USERNAME:";
+            // 
+            // tbSearch
+            // 
+            tbSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            tbSearch.BackColor = Color.Lavender;
+            tbSearch.Location = new Point(490, 32);
+            tbSearch.Name = "tbSearch";
+            tbSearch.Size = new Size(225, 30);
+            tbSearch.TabIndex = 8;
+            // 
+            // lblTitle
+            // 
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Courier New", 16F);
+            lblTitle.ForeColor = Color.Lavender;
+            lblTitle.Location = new Point(59, 24);
+            lblTitle.Margin = new Padding(5, 0, 5, 0);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(125, 30);
+            lblTitle.TabIndex = 2;
+            lblTitle.Text = "TENANTS";
             // 
             // TenantForm
             // 

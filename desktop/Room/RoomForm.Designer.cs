@@ -66,9 +66,9 @@
             label2.ForeColor = Color.Lavender;
             label2.Location = new Point(490, 9);
             label2.Name = "label2";
-            label2.Size = new Size(129, 20);
+            label2.Size = new Size(109, 20);
             label2.TabIndex = 7;
-            label2.Text = "SEARCH NAME:";
+            label2.Text = "ROOM NAME:";
             // 
             // tbSearch
             // 
