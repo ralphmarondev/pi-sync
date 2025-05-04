@@ -39,10 +39,11 @@
             panel1.BackColor = Color.Lavender;
             panel1.Controls.Add(lblDoorStatus);
             panel1.Controls.Add(lblDoorName);
-            panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
+            panel1.MaximumSize = new Size(140, 140);
+            panel1.MinimumSize = new Size(140, 140);
             panel1.Name = "panel1";
-            panel1.Size = new Size(135, 102);
+            panel1.Size = new Size(150, 150);
             panel1.TabIndex = 0;
             // 
             // lblDoorStatus
@@ -50,7 +51,7 @@
             lblDoorStatus.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblDoorStatus.AutoSize = true;
             lblDoorStatus.Font = new Font("Courier New", 12F);
-            lblDoorStatus.Location = new Point(12, 65);
+            lblDoorStatus.Location = new Point(12, 113);
             lblDoorStatus.Name = "lblDoorStatus";
             lblDoorStatus.Size = new Size(58, 22);
             lblDoorStatus.TabIndex = 1;
@@ -72,8 +73,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(panel1);
             Font = new Font("Courier New", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            MaximumSize = new Size(150, 150);
+            MinimumSize = new Size(150, 150);
             Name = "DoorCardControl";
-            Size = new Size(135, 102);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
