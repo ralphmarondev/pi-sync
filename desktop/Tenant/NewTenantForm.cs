@@ -33,6 +33,40 @@
             {
                 System.Diagnostics.Debug.WriteLine($"`{item}`");
             }
+
+            if (string.IsNullOrEmpty(firstName))
+            {
+                ShowWarning("First name cannot be empty.");
+                return;
+            }
+            if (string.IsNullOrEmpty(lastName))
+            {
+                ShowWarning("Last name cannot be empty.");
+                return;
+            }
+            if (string.IsNullOrEmpty(username))
+            {
+                ShowWarning("Username cannot be empty.");
+                return;
+            }
+            if (string.IsNullOrEmpty(gender))
+            {
+                ShowWarning("Gender cannot be empty.");
+                return;
+            }
+            if (string.IsNullOrEmpty(password))
+            {
+                ShowWarning("Password cannot be empty.");
+                return;
+            }
+
+
+
+        }
+
+        private static void ShowWarning(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

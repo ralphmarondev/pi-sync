@@ -170,6 +170,7 @@
             // 
             tbPasswordHint.Location = new Point(358, 192);
             tbPasswordHint.Name = "tbPasswordHint";
+            tbPasswordHint.PlaceholderText = "Optional";
             tbPasswordHint.Size = new Size(289, 30);
             tbPasswordHint.TabIndex = 14;
             // 
