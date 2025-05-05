@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace PiSync.Tenant
+﻿namespace PiSync.Tenant
 {
     public partial class TenantForm : Form
     {
         public TenantForm()
         {
             InitializeComponent();
+        }
+
+        private void btnNewTenant_Click(object sender, EventArgs e)
+        {
+            NewTenantForm form = new NewTenantForm();
+            form.ShowDialog(this);
         }
     }
 }

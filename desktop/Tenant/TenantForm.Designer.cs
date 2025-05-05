@@ -61,6 +61,7 @@
             btnNewTenant.TabIndex = 10;
             btnNewTenant.Text = "NEW";
             btnNewTenant.UseVisualStyleBackColor = false;
+            btnNewTenant.Click += btnNewTenant_Click;
             // 
             // label2
             // 
