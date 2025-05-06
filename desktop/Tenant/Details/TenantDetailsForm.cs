@@ -53,6 +53,7 @@ namespace PiSync.Tenant.Details
         {
             if (doorIds == null || doorIds.Count == 0)
             {
+                System.Diagnostics.Debug.WriteLine($"No rooms. Door count: {doorIds?.Count}");
                 tbRegisteredDoors.Text = "No roooms";
                 return;
             }
@@ -63,11 +64,10 @@ namespace PiSync.Tenant.Details
             {
                 try
                 {
-                    var doorResponse = await ApiService.httpClient.GetFromJsonAsync<ApiResponse<DoorModel>>($"door/{doorId}/");
-                    System.Diagnostics.Debug.WriteLine(doorResponse);
-                    if (doorResponse?.success == true && doorResponse.message != null)
+                    var room = await ApiService.httpClient.GetFromJsonAsync<RoomModel>($"door/{doorId}/");
+                    if (room != null)
                     {
-                        doorNames.Add(doorResponse.message);
+                        doorNames.Add(room.name);
                     }
                 }
                 catch (Exception ex)
