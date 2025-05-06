@@ -88,7 +88,7 @@
             // 
             tbDoorStatus.DropDownStyle = ComboBoxStyle.DropDownList;
             tbDoorStatus.FormattingEnabled = true;
-            tbDoorStatus.Items.AddRange(new object[] { "OPEN", "CLOSE" });
+            tbDoorStatus.Items.AddRange(new object[] { "OPEN", "CLOSED" });
             tbDoorStatus.Location = new Point(26, 138);
             tbDoorStatus.Name = "tbDoorStatus";
             tbDoorStatus.Size = new Size(288, 30);

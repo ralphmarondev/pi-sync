@@ -47,8 +47,8 @@ namespace PiSync.Room.Update
         private void PopulateDetails()
         {
             tbRoomName.Text = room.name;
-            tbDoorStatus.Text = room.isOpen ? "Open" : "Close";
-            tbRoomStatus.Text = room.isActive ? "Active" : "Inactive";
+            tbDoorStatus.Text = room.isOpen ? "OPEN" : "CLOSED";
+            tbRoomStatus.Text = room.isActive ? "ACTIVE" : "INACTIVE";
         }
 
         private async void btnUpdate_Click(object sender, EventArgs e)
