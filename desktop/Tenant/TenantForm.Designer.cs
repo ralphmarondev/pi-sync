@@ -33,7 +33,12 @@
             label2 = new Label();
             tbSearch = new TextBox();
             lblTitle = new Label();
+            panel2 = new Panel();
+            dataGridViewTenant = new DataGridView();
+            lblEmpty = new Label();
             panel1.SuspendLayout();
+            panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewTenant).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -96,11 +101,48 @@
             lblTitle.TabIndex = 2;
             lblTitle.Text = "TENANTS";
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.Lavender;
+            panel2.Controls.Add(lblEmpty);
+            panel2.Controls.Add(dataGridViewTenant);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(0, 79);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(875, 441);
+            panel2.TabIndex = 1;
+            // 
+            // dataGridViewTenant
+            // 
+            dataGridViewTenant.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewTenant.BackgroundColor = Color.Lavender;
+            dataGridViewTenant.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewTenant.Location = new Point(20, 20);
+            dataGridViewTenant.Margin = new Padding(10);
+            dataGridViewTenant.Name = "dataGridViewTenant";
+            dataGridViewTenant.RowHeadersWidth = 51;
+            dataGridViewTenant.Size = new Size(844, 402);
+            dataGridViewTenant.TabIndex = 0;
+            // 
+            // lblEmpty
+            // 
+            lblEmpty.AutoSize = true;
+            lblEmpty.BackColor = Color.Lavender;
+            lblEmpty.Font = new Font("Courier New", 16F);
+            lblEmpty.ForeColor = Color.MediumPurple;
+            lblEmpty.Location = new Point(327, 205);
+            lblEmpty.Margin = new Padding(5, 0, 5, 0);
+            lblEmpty.Name = "lblEmpty";
+            lblEmpty.Size = new Size(253, 30);
+            lblEmpty.TabIndex = 4;
+            lblEmpty.Text = "NO TENANTS YET.";
+            // 
             // TenantForm
             // 
             AutoScaleDimensions = new SizeF(12F, 22F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(875, 520);
+            Controls.Add(panel2);
             Controls.Add(panel1);
             Font = new Font("Courier New", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.None;
@@ -110,6 +152,9 @@
             Text = "TenantForm";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewTenant).EndInit();
             ResumeLayout(false);
         }
 
@@ -120,5 +165,8 @@
         private Label label2;
         private TextBox tbSearch;
         private Button btnNewTenant;
+        private Panel panel2;
+        private DataGridView dataGridViewTenant;
+        private Label lblEmpty;
     }
 }
