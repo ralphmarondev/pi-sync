@@ -211,3 +211,28 @@ class RegisteredDoorsByUsernameView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+# this is needed on desktop lol
+class GetDoorDetailByNameView(APIView):
+    def get(self, request, name):
+        try:
+            # door = Door.objects.get(name=name, is_deleted=False)
+            # to ignore case sensitivity 
+            door = Door.objects.get(name__iexact=name, is_deleted=False)
+            serializer = DoorSerializer(door)
+            return Response(
+                data = {
+                    'success': True,
+                    'message': f'Door with name {name} retrieved successfully',
+                    'door': serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
+        except Door.DoesNotExist:
+            return Response(
+                data={
+                    'success': False,
+                    'message': f'Door with name {name} not found'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )

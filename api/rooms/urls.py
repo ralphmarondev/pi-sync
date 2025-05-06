@@ -11,5 +11,8 @@ urlpatterns = [
     path('door/open/<int:pk>/', OpenDoorView.as_view(), name='door_open'),
     path('door/close/<int:pk>/', CloseDoorView.as_view(), name='door_close'),
     path('door/status/<int:pk>/', DoorStatusView.as_view(), name='door_status'),
-    path('doors/username/<str:username>/', RegisteredDoorsByUsernameView.as_view(), name='door_list_by_username')
+    path('doors/username/<str:username>/', RegisteredDoorsByUsernameView.as_view(), name='door_list_by_username'),
+
+    # updates for desktop lol
+    path('door/name/<str:name>/', GetDoorDetailByNameView.as_view(), name='door_detail_by_name'),
 ]
