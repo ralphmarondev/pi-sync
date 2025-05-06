@@ -158,5 +158,53 @@ namespace PiSync.Tenant
                 form.ShowDialog(this);
             }
         }
+
+        private async void tbSearch_TextChanged(object sender, EventArgs e)
+        {
+            string search = tbSearch.Text.Trim().ToLower();
+
+            var filteredTenants = tenants.Where(tenant =>
+            $"{tenant.first_name} {tenant.last_name}"
+            .ToLower().Contains(search) ||
+            (!string.IsNullOrEmpty(tenant.email) && tenant.email.ToLower().Contains(search)))
+                .ToList();
+
+            await PopulateTenants(filteredTenants);
+        }
+
+        private async Task PopulateTenants(List<UserModel>? filteredList = null)
+        {
+            var listToDisplay = filteredList ?? tenants;
+
+            lblEmpty.Visible = listToDisplay.Count == 0;
+            dataGridViewTenant.Rows.Clear();
+
+            foreach (var tenant in listToDisplay)
+            {
+                string fullName = $"{tenant.first_name} {tenant.last_name}";
+                string email = string.IsNullOrEmpty(tenant.email) ? "No Email found" : tenant.email;
+
+                List<string> doorNames = new List<string>();
+                if (tenant.registered_doors != null)
+                {
+                    foreach (var doorId in tenant.registered_doors)
+                    {
+                        string doorName = await GetDoorNameById(doorId);
+                        doorNames.Add(doorName);
+                    }
+                }
+
+                string rooms = doorNames.Count > 0 ? string.Join(", ", doorNames) : "No rooms";
+
+                dataGridViewTenant.Rows.Add(
+                    tenant.id,
+                    fullName,
+                    email,
+                    rooms
+                );
+            }
+            dataGridViewTenant.ClearSelection();
+        }
+
     }
 }

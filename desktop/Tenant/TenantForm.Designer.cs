@@ -34,8 +34,8 @@
             tbSearch = new TextBox();
             lblTitle = new Label();
             panel2 = new Panel();
-            dataGridViewTenant = new DataGridView();
             lblEmpty = new Label();
+            dataGridViewTenant = new DataGridView();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewTenant).BeginInit();
@@ -88,6 +88,7 @@
             tbSearch.Name = "tbSearch";
             tbSearch.Size = new Size(225, 30);
             tbSearch.TabIndex = 8;
+            tbSearch.TextChanged += tbSearch_TextChanged;
             // 
             // lblTitle
             // 
@@ -112,18 +113,6 @@
             panel2.Size = new Size(875, 441);
             panel2.TabIndex = 1;
             // 
-            // dataGridViewTenant
-            // 
-            dataGridViewTenant.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridViewTenant.BackgroundColor = Color.Lavender;
-            dataGridViewTenant.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewTenant.Location = new Point(20, 20);
-            dataGridViewTenant.Margin = new Padding(10);
-            dataGridViewTenant.Name = "dataGridViewTenant";
-            dataGridViewTenant.RowHeadersWidth = 51;
-            dataGridViewTenant.Size = new Size(844, 402);
-            dataGridViewTenant.TabIndex = 0;
-            // 
             // lblEmpty
             // 
             lblEmpty.AutoSize = true;
@@ -136,6 +125,18 @@
             lblEmpty.Size = new Size(253, 30);
             lblEmpty.TabIndex = 4;
             lblEmpty.Text = "NO TENANTS YET.";
+            // 
+            // dataGridViewTenant
+            // 
+            dataGridViewTenant.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewTenant.BackgroundColor = Color.Lavender;
+            dataGridViewTenant.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewTenant.Location = new Point(20, 20);
+            dataGridViewTenant.Margin = new Padding(10);
+            dataGridViewTenant.Name = "dataGridViewTenant";
+            dataGridViewTenant.RowHeadersWidth = 51;
+            dataGridViewTenant.Size = new Size(844, 402);
+            dataGridViewTenant.TabIndex = 0;
             // 
             // TenantForm
             // 
