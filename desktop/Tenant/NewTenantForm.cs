@@ -82,8 +82,24 @@ namespace PiSync.Tenant
             }
 
             Console.WriteLine("Saving to database...");
-            bool success = await SaveTenantAsync(firstName, lastName, username, password, passwordHint, gender, registeredDoorList);
 
+            var doorIds = new List<int>();
+            foreach (var doorName in registeredDoorList)
+            {
+                var doorId = await GetRoomIdByNameAsync(doorName);
+                if (doorId.HasValue)
+                {
+                    doorIds.Add(doorId.Value);
+                }
+                else
+                {
+                    MessageBox.Show($"Room `{doorName}` not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+            Console.WriteLine("All doors found. Proceeding to save...");
+
+            bool success = await SaveTenantAsync(firstName, lastName, username, password, passwordHint, gender, doorIds);
             if (success)
             {
                 MessageBox.Show("Tenant registered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -101,7 +117,7 @@ namespace PiSync.Tenant
         }
 
         // saving to api lol
-        private async Task<bool> SaveTenantAsync(string firstName, string lastName, string username, string password, string passwordHint, string gender, List<string> registeredDoorList)
+        private async Task<bool> SaveTenantAsync(string firstName, string lastName, string username, string password, string passwordHint, string gender, List<int> registeredDoorList)
         {
             var requestBody = new RegisterTenantRequest
             {
@@ -111,7 +127,7 @@ namespace PiSync.Tenant
                 Password = password,
                 HintPassword = passwordHint,
                 Gender = gender,
-                RegisteredDoors = registeredDoorList.Select(s => int.Parse(s)).ToList()
+                RegisteredDoors = registeredDoorList
             };
 
             // 🟠 Debug print: Show the JSON payload before sending
@@ -148,6 +164,39 @@ namespace PiSync.Tenant
                 System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
                 return false;
             }
+        }
+
+        private async Task<int?> GetRoomIdByNameAsync(string roomName)
+        {
+            try
+            {
+                string url = $"door/name/{roomName}/";
+                var response = await ApiService.httpClient.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var roomResponse = await response.Content.ReadFromJsonAsync<RoomResponse>();
+
+                    if (roomResponse != null && roomResponse.Door != null)
+                    {
+                        return roomResponse.Door.Id;
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("Room not found in the response");
+                    }
+                }
+                else
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"Room lookup failed. {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Exception in GetRoomIdByNameAsync: {ex.Message}");
+            }
+            return null;
         }
     }
 }
