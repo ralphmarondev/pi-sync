@@ -48,5 +48,10 @@
         {
             OpenFormInPanel(new Delete.TenantDeleteForm(tenantId, tenantName));
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
     }
 }
