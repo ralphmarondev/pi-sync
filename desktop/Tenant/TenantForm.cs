@@ -13,6 +13,8 @@ namespace PiSync.Tenant
             InitializeComponent();
             SetupDataGridView();
             FetchTenantsAsync();
+
+            dataGridViewTenant.CellClick += dataGridViewTenant_Click;
         }
 
         private void btnNewTenant_Click(object sender, EventArgs e)
@@ -143,6 +145,18 @@ namespace PiSync.Tenant
                 MessageBox.Show($"Failed to fetch door details for ID {doorId}: {ex.Message}");
             }
             return "Unknown Door";
+        }
+
+        private void dataGridViewTenant_Click(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                int tenantId = (int)dataGridViewTenant.Rows[e.RowIndex].Cells["id"].Value;
+                string tenantFullName = (string)dataGridViewTenant.Rows[e.RowIndex].Cells["fullName"].Value;
+
+                TenantManageForm form = new TenantManageForm(tenantId, tenantFullName);
+                form.ShowDialog(this);
+            }
         }
     }
 }

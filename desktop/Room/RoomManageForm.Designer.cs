@@ -28,73 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
-            btnClose = new Button();
-            btnDelete = new Button();
-            btnUpdate = new Button();
-            btnDetails = new Button();
             panelContent = new Panel();
+            btnDetails = new Button();
+            btnUpdate = new Button();
+            btnDelete = new Button();
+            btnClose = new Button();
+            panel1 = new Panel();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // panel1
+            // panelContent
             // 
-            panel1.BackColor = Color.GhostWhite;
-            panel1.Controls.Add(btnClose);
-            panel1.Controls.Add(btnDelete);
-            panel1.Controls.Add(btnUpdate);
-            panel1.Controls.Add(btnDetails);
-            panel1.Dock = DockStyle.Left;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(241, 515);
-            panel1.TabIndex = 2;
-            // 
-            // btnClose
-            // 
-            btnClose.BackColor = Color.Lavender;
-            btnClose.Cursor = Cursors.Hand;
-            btnClose.FlatAppearance.BorderSize = 0;
-            btnClose.FlatStyle = FlatStyle.Flat;
-            btnClose.Font = new Font("Courier New", 14F);
-            btnClose.Location = new Point(12, 446);
-            btnClose.Margin = new Padding(0);
-            btnClose.Name = "btnClose";
-            btnClose.Size = new Size(212, 61);
-            btnClose.TabIndex = 7;
-            btnClose.Text = "CLOSE";
-            btnClose.UseVisualStyleBackColor = true;
-            // 
-            // btnDelete
-            // 
-            btnDelete.BackColor = Color.Lavender;
-            btnDelete.Cursor = Cursors.Hand;
-            btnDelete.FlatAppearance.BorderSize = 0;
-            btnDelete.FlatStyle = FlatStyle.Flat;
-            btnDelete.Font = new Font("Courier New", 14F);
-            btnDelete.Location = new Point(12, 152);
-            btnDelete.Margin = new Padding(0);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(212, 61);
-            btnDelete.TabIndex = 6;
-            btnDelete.Text = "DELETE";
-            btnDelete.UseVisualStyleBackColor = true;
-            btnDelete.Click += btnDelete_Click;
-            // 
-            // btnUpdate
-            // 
-            btnUpdate.BackColor = Color.Lavender;
-            btnUpdate.Cursor = Cursors.Hand;
-            btnUpdate.FlatAppearance.BorderSize = 0;
-            btnUpdate.FlatStyle = FlatStyle.Flat;
-            btnUpdate.Font = new Font("Courier New", 14F);
-            btnUpdate.Location = new Point(12, 80);
-            btnUpdate.Margin = new Padding(0);
-            btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(212, 61);
-            btnUpdate.TabIndex = 5;
-            btnUpdate.Text = "UPDATE";
-            btnUpdate.UseVisualStyleBackColor = true;
+            panelContent.Dock = DockStyle.Fill;
+            panelContent.Location = new Point(241, 0);
+            panelContent.Name = "panelContent";
+            panelContent.Size = new Size(654, 515);
+            panelContent.TabIndex = 3;
             // 
             // btnDetails
             // 
@@ -112,13 +61,64 @@
             btnDetails.UseVisualStyleBackColor = true;
             btnDetails.Click += btnDetails_Click;
             // 
-            // panelContent
+            // btnUpdate
             // 
-            panelContent.Dock = DockStyle.Fill;
-            panelContent.Location = new Point(241, 0);
-            panelContent.Name = "panelContent";
-            panelContent.Size = new Size(654, 515);
-            panelContent.TabIndex = 3;
+            btnUpdate.BackColor = Color.Lavender;
+            btnUpdate.Cursor = Cursors.Hand;
+            btnUpdate.FlatAppearance.BorderSize = 0;
+            btnUpdate.FlatStyle = FlatStyle.Flat;
+            btnUpdate.Font = new Font("Courier New", 14F);
+            btnUpdate.Location = new Point(12, 80);
+            btnUpdate.Margin = new Padding(0);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(212, 61);
+            btnUpdate.TabIndex = 5;
+            btnUpdate.Text = "UPDATE";
+            btnUpdate.UseVisualStyleBackColor = true;
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = Color.Lavender;
+            btnDelete.Cursor = Cursors.Hand;
+            btnDelete.FlatAppearance.BorderSize = 0;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Font = new Font("Courier New", 14F);
+            btnDelete.Location = new Point(12, 152);
+            btnDelete.Margin = new Padding(0);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(212, 61);
+            btnDelete.TabIndex = 6;
+            btnDelete.Text = "DELETE";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
+            // 
+            // btnClose
+            // 
+            btnClose.BackColor = Color.Lavender;
+            btnClose.Cursor = Cursors.Hand;
+            btnClose.FlatAppearance.BorderSize = 0;
+            btnClose.FlatStyle = FlatStyle.Flat;
+            btnClose.Font = new Font("Courier New", 14F);
+            btnClose.Location = new Point(12, 446);
+            btnClose.Margin = new Padding(0);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(212, 61);
+            btnClose.TabIndex = 7;
+            btnClose.Text = "CLOSE";
+            btnClose.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.GhostWhite;
+            panel1.Controls.Add(btnClose);
+            panel1.Controls.Add(btnDelete);
+            panel1.Controls.Add(btnUpdate);
+            panel1.Controls.Add(btnDetails);
+            panel1.Dock = DockStyle.Left;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(241, 515);
+            panel1.TabIndex = 2;
             // 
             // RoomManageForm
             // 
@@ -139,12 +139,11 @@
         }
 
         #endregion
-
-        private Panel panel1;
-        private Button btnClose;
-        private Button btnDelete;
-        private Button btnUpdate;
-        private Button btnDetails;
         private Panel panelContent;
+        private Button btnDetails;
+        private Button btnUpdate;
+        private Button btnDelete;
+        private Button btnClose;
+        private Panel panel1;
     }
 }
