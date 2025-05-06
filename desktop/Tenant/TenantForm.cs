@@ -80,12 +80,13 @@ namespace PiSync.Tenant
             foreach (var tenant in tenants)
             {
                 string fullName = $"{tenant.first_name} {tenant.last_name}";
+                string email = string.IsNullOrEmpty(tenant.email) ? "No Email found" : tenant.email;
                 string rooms = tenant.registered_doors != null ? string.Join(", ", tenant.registered_doors) : "No rooms";
 
                 dataGridViewTenant.Rows.Add(
                     tenant.id,
                     fullName,
-                    tenant.email,
+                    email,
                     rooms
                 );
             }
