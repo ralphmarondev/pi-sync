@@ -1,6 +1,5 @@
 ﻿namespace PiSync.Core.Model
 {
-    // UserModel.cs
     public class UserModel
     {
         public int id { get; set; }
@@ -19,7 +18,6 @@
         public string image_url { get; set; }
     }
 
-    // ApiResponse.cs
     public class ApiResponse<T>
     {
         public bool success { get; set; }

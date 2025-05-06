@@ -1,6 +1,5 @@
 ﻿namespace PiSync.Core.Model
 {
-    // TenantDetailsResponse.cs
     public class TenantDetailsResponse
     {
         public bool success { get; set; }
