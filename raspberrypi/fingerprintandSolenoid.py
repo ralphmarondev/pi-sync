@@ -20,19 +20,6 @@ def unlock_solenoid():
 uart = serial.Serial("/dev/ttyUSB0", baudrate=57600, timeout=1)
 finger = adafruit_fingerprint.Adafruit_Fingerprint(uart)
 
-def get_fingerprint():
-    """Get a fingerprint image, template it, and see if it matches!"""
-    print("Waiting for image...")
-    while finger.get_image() != adafruit_fingerprint.OK:
-        pass
-    print("Templating...")
-    if finger.image_2_tz(1) != adafruit_fingerprint.OK:
-        return False
-    print("Searching...")
-    if finger.finger_search() != adafruit_fingerprint.OK:
-        return False
-    return True
-
 def enroll_finger(location):
     """Take two fingerprint images and template them, then store in 'location'"""
     for fingerimg in range(1, 3):
@@ -117,48 +104,26 @@ def get_num(max_number):
             pass
     return i
 
-# Main program loop
-while True:
-    print("----------------")
-    if finger.read_templates() != adafruit_fingerprint.OK:
-        raise RuntimeError("Failed to read templates")
-    print("Fingerprint templates: ", finger.templates)
-    if finger.count_templates() != adafruit_fingerprint.OK:
-        raise RuntimeError("Failed to read templates")
-    print("Number of templates found: ", finger.template_count)
-    if finger.read_sysparam() != adafruit_fingerprint.OK:
-        raise RuntimeError("Failed to get system parameters")
-    print("Size of template library: ", finger.library_size)
-    print("e) enroll print")
-    print("f) find print")
-    print("d) delete print")
-    print("s) save fingerprint image")
-    print("r) reset library")
-    print("q) quit")
-    print("----------------")
-    c = input("> ")
+# --- AUTO-DETECT FINGERPRINT LOOP ---
 
-    if c == "e":
-        enroll_finger(get_num(finger.library_size))
-    elif c == "f":
-        if get_fingerprint():
-            print("Detected #", finger.finger_id, "with confidence", finger.confidence)
-            unlock_solenoid()
-        else:
-            print("Finger not found")
-    elif c == "d":
-        if finger.delete_model(get_num(finger.library_size)) == adafruit_fingerprint.OK:
-            print("Deleted!")
-        else:
-            print("Failed to delete")
-    elif c == "s":
-        save_fingerprint_image("fingerprint.png")
-        print("Fingerprint image saved")
-    elif c == "r":
-        if finger.empty_library() == adafruit_fingerprint.OK:
-            print("Library empty!")
-        else:
-            print("Failed to empty library")
-    elif c == "q":
-        print("Exiting fingerprint example program")
-        break
+print("Starting automatic fingerprint detection...")
+
+if finger.read_templates() != adafruit_fingerprint.OK:
+    raise RuntimeError("Failed to read templates")
+
+while True:
+    if finger.get_image() == adafruit_fingerprint.OK:
+        if finger.image_2_tz(1) == adafruit_fingerprint.OK:
+            if finger.finger_search() == adafruit_fingerprint.OK:
+                print("Authorized fingerprint detected!")
+                print("ID #", finger.finger_id, "with confidence", finger.confidence)
+                unlock_solenoid()
+                # Wait until finger is removed to prevent duplicate unlocks
+                while finger.get_image() != adafruit_fingerprint.NOFINGER:
+                    time.sleep(0.1)
+            else:
+                print("Unauthorized fingerprint.")
+                # Optional: wait for finger to be removed
+                while finger.get_image() != adafruit_fingerprint.NOFINGER:
+                    time.sleep(0.1)
+    time.sleep(0.1)  # Small delay to avoid high CPU usage
