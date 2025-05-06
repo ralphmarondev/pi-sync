@@ -92,6 +92,7 @@ def get_num(max_number):
 
 # -------- Background Detection Thread --------
 def auto_detect_loop():
+    """Continuously detect and authenticate fingerprints."""
     while True:
         if finger.get_image() == adafruit_fingerprint.OK:
             if finger.image_2_tz(1) == adafruit_fingerprint.OK:
@@ -101,6 +102,7 @@ def auto_detect_loop():
                     unlock_solenoid()
                     while finger.get_image() != adafruit_fingerprint.NOFINGER:
                         time.sleep(0.1)
+                    print("🛑 Finger removed, relocking solenoid.")
                 else:
                     print("❌ Unauthorized fingerprint.")
                     while finger.get_image() != adafruit_fingerprint.NOFINGER:
@@ -116,7 +118,7 @@ if finger.read_templates() != adafruit_fingerprint.OK:
 if finger.count_templates() != adafruit_fingerprint.OK:
     raise RuntimeError("❌ Failed to count templates.")
 
-# Start background thread
+# Start background thread for automatic fingerprint detection
 threading.Thread(target=auto_detect_loop, daemon=True).start()
 
 # Menu loop
