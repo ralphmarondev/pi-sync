@@ -2,7 +2,7 @@
 using PiSync.Core.Model;
 using PiSync.Core.Network;
 
-namespace PiSync.Tenant
+namespace PiSync.Tenant.NewTenant
 {
     public partial class NewTenantForm : Form
     {

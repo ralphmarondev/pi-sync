@@ -1,4 +1,4 @@
-﻿namespace PiSync.Tenant
+﻿namespace PiSync.Tenant.NewTenant
 {
     partial class NewTenantForm
     {

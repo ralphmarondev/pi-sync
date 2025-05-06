@@ -34,7 +34,7 @@
     <Compile Update="Room\RoomManageForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Tenant\NewTenantForm.cs">
+    <Compile Update="Tenant\NewTenant\NewTenantForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Tenant\TenantForm.cs">

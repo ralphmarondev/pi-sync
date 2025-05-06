@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using PiSync.Core.Model;
 using PiSync.Core.Network;
+using PiSync.Tenant.NewTenant;
 
 namespace PiSync.Tenant
 {

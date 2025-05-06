@@ -23,8 +23,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Tenant\NewTenant\" />
-  </ItemGroup>
-
 </Project>
