@@ -72,7 +72,7 @@ namespace PiSync.Tenant
         }
 
         // Populate the DataGridView with tenants' information
-        private void PopulateTenants()
+        private async Task PopulateTenants()
         {
             lblEmpty.Visible = tenants.Count == 0;
             dataGridViewTenant.Rows.Clear();
@@ -81,7 +81,18 @@ namespace PiSync.Tenant
             {
                 string fullName = $"{tenant.first_name} {tenant.last_name}";
                 string email = string.IsNullOrEmpty(tenant.email) ? "No Email found" : tenant.email;
-                string rooms = tenant.registered_doors != null ? string.Join(", ", tenant.registered_doors) : "No rooms";
+
+                List<string> doorNames = new List<string>();
+                if (tenant.registered_doors != null)
+                {
+                    foreach (var doorId in tenant.registered_doors)
+                    {
+                        string doorName = await GetDoorNameById(doorId);
+                        doorNames.Add(doorName);
+                    }
+                }
+
+                string rooms = doorNames.Count > 0 ? string.Join(", ", doorNames) : "No rooms";
 
                 dataGridViewTenant.Rows.Add(
                     tenant.id,
@@ -114,6 +125,23 @@ namespace PiSync.Tenant
         {
             base.OnResize(e);
             SetDataGridViewPadding();
+        }
+
+        private async Task<string> GetDoorNameById(int doorId)
+        {
+            try
+            {
+                var response = await ApiService.httpClient.GetFromJsonAsync<DoorModel>($"door/{doorId}/");
+                if (response != null && response.is_active && !response.is_deleted)
+                {
+                    return response.name;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to fetch door details for ID {doorId}: {ex.Message}");
+            }
+            return "Unknown Door";
         }
     }
 }
