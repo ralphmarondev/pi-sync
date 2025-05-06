@@ -1,7 +1,13 @@
 ﻿namespace PiSync.Core.Model
 {
-    // UserModel.cs
-    public class UserModel
+    // TenantDetailsResponse.cs
+    public class TenantDetailsResponse
+    {
+        public bool success { get; set; }
+        public TenantDetailsMessage message { get; set; }
+    }
+
+    public class TenantDetailsMessage
     {
         public int id { get; set; }
         public List<int> registered_doors { get; set; }
@@ -17,13 +23,5 @@
         public bool is_deleted { get; set; }
         public DateTime update_date { get; set; }
         public string image_url { get; set; }
-    }
-
-    // ApiResponse.cs
-    public class ApiResponse<T>
-    {
-        public bool success { get; set; }
-        public string message { get; set; }
-        public T users { get; set; }
     }
 }
