@@ -48,5 +48,10 @@ namespace PiSync.Room
         {
             Hide();
         }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            OpenFormInPanel(new Update.RoomUpdateForm(Convert.ToInt32(room.id), room.name));
+        }
     }
 }
