@@ -106,6 +106,7 @@
             btnClose.TabIndex = 7;
             btnClose.Text = "CLOSE";
             btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
             // 
             // panel1
             // 

@@ -43,5 +43,10 @@ namespace PiSync.Room
         {
             OpenFormInPanel(new Delete.RoomDeleteForm(Convert.ToInt32(room.id), room.name));
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
     }
 }
