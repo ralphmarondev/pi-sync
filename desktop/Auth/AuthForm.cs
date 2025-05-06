@@ -14,6 +14,25 @@ namespace PiSync
             InitializeComponent();
         }
 
+        private async Task<UserModel?> GetUserByUsername(string username)
+        {
+            try
+            {
+                var response = await ApiService.httpClient.GetFromJsonAsync<AuthResponse<UserModel>>($"user/username/{username}/");
+
+                if (response != null && response.success && response.user != null)
+                {
+                    return response.user;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching user: {ex.Message}");
+            }
+
+            return null;
+        }
+
         private async Task<bool> isValid(string username, string password)
         {
             try
@@ -80,6 +99,20 @@ namespace PiSync
 
             if (isAuthenticated)
             {
+                var user = await GetUserByUsername(username);
+
+                if (user == null)
+                {
+                    MessageBox.Show("Failed to retrieve user data.");
+                    return;
+                }
+
+                if (!user.is_superuser)
+                {
+                    MessageBox.Show("Only superusers are allowed to login.");
+                    return;
+                }
+
                 MessageBox.Show("Login successful.");
                 var home = new HomeForm();
                 this.Hide();

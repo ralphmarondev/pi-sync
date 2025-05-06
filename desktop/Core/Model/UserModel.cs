@@ -26,4 +26,11 @@
         public string message { get; set; }
         public T users { get; set; }
     }
+
+    public class AuthResponse<T>
+    {
+        public bool success { get; set; }
+        public string message { get; set; }
+        public T user { get; set; }
+    }
 }
