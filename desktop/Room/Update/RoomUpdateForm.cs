@@ -47,17 +47,55 @@ namespace PiSync.Room.Update
         private void PopulateDetails()
         {
             tbRoomName.Text = room.name;
-            tbDoorStatus.Text = room.isOpen ? "Open" : "Closed";
+            tbDoorStatus.Text = room.isOpen ? "Open" : "Close";
             tbRoomStatus.Text = room.isActive ? "Active" : "Inactive";
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private async void btnUpdate_Click(object sender, EventArgs e)
         {
             string roomName = tbRoomName.Text.Trim();
             string doorStatus = tbDoorStatus.Text.Trim();
             string roomStatus = tbRoomStatus.Text.Trim();
 
-            System.Diagnostics.Debug.WriteLine($"Room name: `{roomName}`, doorStatus: `{doorStatus}`, roomStatus: `{roomStatus}`"); ;
+            bool isOpen = doorStatus.Equals("OPEN", StringComparison.OrdinalIgnoreCase);
+            bool isActive = roomStatus.Equals("ACTIVE", StringComparison.OrdinalIgnoreCase);
+
+            System.Diagnostics.Debug.WriteLine($"Room name: `{roomName}`, doorStatus: `{doorStatus}`, roomStatus: `{roomStatus}`, isOpen: `{isOpen}`, isActive: `{isActive}`");
+
+            room.name = roomName;
+            room.isOpen = isOpen;
+            room.isActive = isActive;
+
+            try
+            {
+                var json = System.Text.Json.JsonSerializer.Serialize(room);
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(HttpMethod.Put, $"door/update/{room.id}/")
+                {
+                    Content = content
+                };
+
+                var response = await ApiService.httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse<RoomModel>>();
+
+                if (result?.success == true)
+                {
+                    MessageBox.Show("Room updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    string errors = result?.message ?? "Unknown error";
+                    MessageBox.Show($"Failed to update room: {errors}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error updating room: {ex.Message}");
+                MessageBox.Show($"Error updating room: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
