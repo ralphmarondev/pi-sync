@@ -1,4 +1,8 @@
-﻿namespace PiSync.Tenant
+﻿using System.Net.Http.Json;
+using PiSync.Core.Model;
+using PiSync.Core.Network;
+
+namespace PiSync.Tenant
 {
     public partial class NewTenantForm : Form
     {
@@ -12,13 +16,13 @@
             Hide();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             string firstName = tbFirstName.Text.Trim();
             string lastName = tbLastName.Text.Trim();
             string username = tbUsername.Text.Trim();
             string password = tbPassword.Text.Trim();
-            string passwordHint = tbPasswordHint.Text.Trim();
+            string passwordHint = tbPasswordHint.Text.Trim(); // optional, can be empty.
             string gender = tbGender.Text.Trim();
 
             string registeredDoorText = tbRegisteredDoors.Text.Trim();
@@ -32,6 +36,18 @@
             foreach (var item in registeredDoorList)
             {
                 System.Diagnostics.Debug.WriteLine($"`{item}`");
+            }
+
+            if (
+                string.IsNullOrEmpty(firstName) ||
+                string.IsNullOrEmpty(lastName) ||
+                string.IsNullOrEmpty(username) ||
+                string.IsNullOrEmpty(gender) ||
+                string.IsNullOrEmpty(password) ||
+                registeredDoorList.Count < 1)
+            {
+                ShowWarning("Please fill out all required fields.");
+                return;
             }
 
             if (string.IsNullOrEmpty(firstName))
@@ -59,14 +75,79 @@
                 ShowWarning("Password cannot be empty.");
                 return;
             }
+            if (registeredDoorList.Count < 1)
+            {
+                ShowWarning("Registered doors cannot be empty.");
+                return;
+            }
 
+            Console.WriteLine("Saving to database...");
+            bool success = await SaveTenantAsync(firstName, lastName, username, password, passwordHint, gender, registeredDoorList);
 
-
+            if (success)
+            {
+                MessageBox.Show("Tenant registered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Hide();
+            }
+            else
+            {
+                MessageBox.Show("Failed to register tenant. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private static void ShowWarning(string message)
         {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        // saving to api lol
+        private async Task<bool> SaveTenantAsync(string firstName, string lastName, string username, string password, string passwordHint, string gender, List<string> registeredDoorList)
+        {
+            var requestBody = new RegisterTenantRequest
+            {
+                Username = username,
+                FirstName = firstName,
+                LastName = lastName,
+                Password = password,
+                HintPassword = passwordHint,
+                Gender = gender,
+                RegisteredDoors = registeredDoorList.Select(s => int.Parse(s)).ToList()
+            };
+
+            // 🟠 Debug print: Show the JSON payload before sending
+            string jsonPayload = System.Text.Json.JsonSerializer.Serialize(requestBody, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+            System.Diagnostics.Debug.WriteLine("➡️ Sending JSON payload:\n" + jsonPayload);
+
+            try
+            {
+                // 🔥 Use HttpRequestMessage to ensure correct Content-Type and view raw JSON
+                var request = new HttpRequestMessage(HttpMethod.Post, "register/")
+                {
+                    Content = JsonContent.Create(requestBody)
+                };
+
+                // 🟠 Debug print: show raw content (should look like JSON)
+                string rawContent = await request.Content.ReadAsStringAsync();
+                System.Diagnostics.Debug.WriteLine("➡️ Raw HTTP Body being sent:\n" + rawContent);
+
+                var response = await ApiService.httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"API error: {error}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
+                return false;
+            }
         }
     }
 }
