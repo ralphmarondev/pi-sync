@@ -41,7 +41,7 @@
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-
+            OpenFormInPanel(new Update.TenantUpdateForm(tenantId));
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
