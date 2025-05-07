@@ -5,4 +5,5 @@ urlpatterns = [
     path('api/', include('users.urls')),
     path('api/', include('rooms.urls')),
     path('api/', include('history.urls')),
+    path('api/', include('fingerprint.urls')),
 ]

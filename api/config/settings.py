@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'users',
     'rooms',
     'history',
+    'fingerprint',
 ]
 
 MIDDLEWARE = [
