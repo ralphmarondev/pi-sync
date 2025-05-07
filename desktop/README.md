@@ -1,4 +1,4 @@
 # Todo
 
-- Updating Tenant
-- Inserting fingerprint and image.
+- Updating Tenant.
+- Inserting fingerprint from api searched by name.
