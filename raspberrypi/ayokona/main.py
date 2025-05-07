@@ -4,96 +4,62 @@ import requests
 import base64
 from pyfingerprint.pyfingerprint import PyFingerprint
 
-# Variable to store the fingerprint template (Base64-encoded string)
-current_fingerprint_template = None
-
-# Function to initialize the fingerprint sensor and scan the fingerprint
-def scan_fingerprint():
-    global current_fingerprint_template
-
+def read_and_test_fingerprint():
     try:
+        # Initialize sensor
         f = PyFingerprint('/dev/ttyUSB0', 57600)
-
         if not f.verifyPassword():
             raise ValueError('Incorrect fingerprint sensor password!')
 
         messagebox.showinfo("Fingerprint", "Place your finger on the sensor...")
 
+        # Wait for a finger to be read
         while not f.readImage():
             pass
 
         f.convertImage(0x01)
 
-        # Check if this fingerprint already exists
-        result = f.searchTemplate()
-        positionNumber = result[0]
+        # Download scanned fingerprint characteristics
+        scanned = f.downloadCharacteristics(0x01)
 
-        if positionNumber >= 0:
-            messagebox.showinfo("Fingerprint", f"Fingerprint already exists at position {positionNumber}")
-            return False
+        # Fetch all stored templates
+        response = requests.get("http://192.168.1.98:8000/api/fingerprint/")
+        if response.status_code != 200:
+            raise Exception(f"Failed to fetch templates: {response.status_code}")
 
-        # Store template at first available position
-        positionNumber = f.storeTemplate()
+        templates = response.json()
 
-        # Download and encode characteristics
-        characteristics = f.downloadCharacteristics(0x01)
-        characteristics_bytes = bytearray(characteristics)
-        template_b64 = base64.b64encode(characteristics_bytes).decode('utf-8')
+        for item in templates:
+            name = item.get("name")
+            template_b64 = item.get("template")
 
-        current_fingerprint_template = template_b64
+            if not template_b64:
+                continue
 
-        messagebox.showinfo("Fingerprint", f"Fingerprint stored at position {positionNumber}.\n\nTemplate (Base64):\n{template_b64}")
-        return True
+            # Decode base64 string to bytes then to list of ints
+            decoded = base64.b64decode(template_b64)
+            template_chars = list(decoded)
+
+            # Upload downloaded template to char buffer 2
+            f.uploadCharacteristics(0x02, template_chars)
+
+            # Compare with current scanned fingerprint in buffer 1
+            score = f.compareCharacteristics()
+
+            if score >= 50:  # You can tweak the threshold
+                messagebox.showinfo("Match Found", f"Matched with: {name}\nMatch Score: {score}")
+                return
+
+        messagebox.showinfo("No Match", "Fingerprint not recognized.")
 
     except Exception as e:
-        messagebox.showerror("Error", f"Error while scanning: {str(e)}")
-        return False
+        messagebox.showerror("Error", f"Matching failed: {str(e)}")
 
-# Function to save fingerprint data to the API
-def save_fingerprint():
-    name = name_entry.get()
-
-    if not name:
-        messagebox.showerror("Error", "Name cannot be empty!")
-        return
-
-    if current_fingerprint_template is None:
-        messagebox.showerror("Error", "No fingerprint scanned!")
-        return
-
-    data = {
-        'name': name,
-        'template': current_fingerprint_template
-    }
-
-    api_url = "http://192.168.1.98:8000/api/fingerprint/enroll/"
-
-    try:
-        response = requests.post(api_url, json=data)
-        if response.status_code == 201:
-            messagebox.showinfo("Success", f"Fingerprint saved successfully!\n\nTemplate:\n{current_fingerprint_template}")
-        else:
-            messagebox.showerror("Error", f"Error saving fingerprint: {response.json().get('detail', 'Unknown error')}")
-    except Exception as e:
-        messagebox.showerror("Error", f"Error connecting to API: {str(e)}")
-
-# Create the main Tkinter window
+# GUI setup
 root = tk.Tk()
-root.title("Fingerprint Registration")
+root.title("Test Fingerprint Against API")
 
-# Create the name label and entry field
-name_label = tk.Label(root, text="Name:")
-name_label.grid(row=0, column=0, padx=10, pady=10)
-name_entry = tk.Entry(root)
-name_entry.grid(row=0, column=1, padx=10, pady=10)
+match_button = tk.Button(root, text="Read & Test Fingerprint", command=read_and_test_fingerprint)
+match_button.pack(padx=20, pady=20)
 
-# Create the scan fingerprint button
-scan_button = tk.Button(root, text="Scan Fingerprint", command=scan_fingerprint)
-scan_button.grid(row=1, column=0, columnspan=2, pady=10)
-
-# Create the save button
-save_button = tk.Button(root, text="Save", command=save_fingerprint)
-save_button.grid(row=2, column=0, columnspan=2, pady=10)
-
-# Start the Tkinter main loop
 root.mainloop()
