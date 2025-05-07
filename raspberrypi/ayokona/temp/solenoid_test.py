@@ -13,7 +13,7 @@ try:
         solenoid.off()  # Activate relay (solenoid opens)
         time.sleep(5)
 
-        print("🔒 Closing solenoid...")
+        print("🔒 Closing  solenoid...")
         solenoid.on()  # Deactivate relay (solenoid closes)
         time.sleep(5)
 
