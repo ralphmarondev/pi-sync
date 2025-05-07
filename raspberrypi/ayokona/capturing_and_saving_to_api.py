@@ -6,10 +6,30 @@ from pyfingerprint.pyfingerprint import PyFingerprint
 
 # Variable to store the fingerprint template (Base64-encoded string)
 current_fingerprint_template = None
+user_name = None  # Variable to store the user's name
+
+# Function to initialize the fingerprint sensor and clear its memory
+def clear_fingerprint_memory():
+    try:
+        f = PyFingerprint('/dev/ttyUSB0', 57600)
+
+        if not f.verifyPassword():
+            raise ValueError('Incorrect fingerprint sensor password!')
+
+        # Clear the sensor memory
+        f.clearDatabase()
+        messagebox.showinfo("Fingerprint", "Fingerprint memory cleared successfully.")
+
+    except Exception as e:
+        messagebox.showerror("Error", f"Error clearing fingerprint memory: {str(e)}")
 
 # Function to initialize the fingerprint sensor and scan the fingerprint
 def scan_fingerprint():
-    global current_fingerprint_template
+    global current_fingerprint_template, user_name
+
+    if user_name is None:
+        messagebox.showerror("Error", "Please register a user first!")
+        return
 
     try:
         f = PyFingerprint('/dev/ttyUSB0', 57600)
@@ -51,10 +71,10 @@ def scan_fingerprint():
 
 # Function to save fingerprint data to the API
 def save_fingerprint():
-    name = name_entry.get()
+    global user_name
 
-    if not name:
-        messagebox.showerror("Error", "Name cannot be empty!")
+    if user_name is None:
+        messagebox.showerror("Error", "Please register a user first!")
         return
 
     if current_fingerprint_template is None:
@@ -62,7 +82,7 @@ def save_fingerprint():
         return
 
     data = {
-        'name': name,
+        'name': user_name,
         'template': current_fingerprint_template
     }
 
@@ -77,6 +97,20 @@ def save_fingerprint():
     except Exception as e:
         messagebox.showerror("Error", f"Error connecting to API: {str(e)}")
 
+# Function to register user
+def register_user():
+    global user_name
+    user_name = name_entry.get()
+
+    if not user_name:
+        messagebox.showerror("Error", "Name cannot be empty!")
+        return
+
+    # Clear fingerprint memory before starting the registration process
+    clear_fingerprint_memory()
+
+    messagebox.showinfo("Registration", f"User {user_name} registered. Please scan fingerprint now.")
+
 # Create the main Tkinter window
 root = tk.Tk()
 root.title("Fingerprint Registration")
@@ -87,13 +121,17 @@ name_label.grid(row=0, column=0, padx=10, pady=10)
 name_entry = tk.Entry(root)
 name_entry.grid(row=0, column=1, padx=10, pady=10)
 
+# Create the register button
+register_button = tk.Button(root, text="Register", command=register_user)
+register_button.grid(row=1, column=0, columnspan=2, pady=10)
+
 # Create the scan fingerprint button
 scan_button = tk.Button(root, text="Scan Fingerprint", command=scan_fingerprint)
-scan_button.grid(row=1, column=0, columnspan=2, pady=10)
+scan_button.grid(row=2, column=0, columnspan=2, pady=10)
 
 # Create the save button
 save_button = tk.Button(root, text="Save", command=save_fingerprint)
-save_button.grid(row=2, column=0, columnspan=2, pady=10)
+save_button.grid(row=3, column=0, columnspan=2, pady=10)
 
 # Start the Tkinter main loop
 root.mainloop()
