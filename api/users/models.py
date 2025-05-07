@@ -23,7 +23,7 @@ class User(AbstractUser):
     registered_doors = models.ManyToManyField('rooms.Door', related_name='users', blank=True)
 
     image = models.CharField(max_length=200, blank=True, null=True)  # we will store path as string
-    fingerprint_template = models.TextField(blank=True, null=True)
+    fingerprint_template = models.CharField(max_length=200, blank=True, null=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)

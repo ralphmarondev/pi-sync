@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rooms.models import Door
 from .models import User
 from .serializers import UserSerializer
+from fingerprint.models import FingerprintTemplate
 
 class UserRegisterView(APIView):
     def post(self, request):
@@ -14,7 +15,7 @@ class UserRegisterView(APIView):
         serializer = UserSerializer(data=data)
 
         image = request.FILES.get('image')
-        fingerprint_template = data.get('fingerprint_template')
+        fingerprint_template_name = data.get('fingerprint_template_name')
 
         if serializer.is_valid():
             user = serializer.save()
@@ -22,8 +23,23 @@ class UserRegisterView(APIView):
 
             if image:
                 user.image = image
-            if fingerprint_template:
-                user.fingerprint_template = fingerprint_template
+            if fingerprint_template_name:
+                try:
+                    # Get the fingerprint template by name
+                    fingerprint_template = FingerprintTemplate.objects.get(name=fingerprint_template_name)
+
+                    # Toggle the is_assigned to True
+                    fingerprint_template.is_assigned = True
+                    fingerprint_template.save()
+
+                    # Save the fingerprint template name in the user model
+                    user.save_fingerprint(fingerprint_template_name)  # Save using the new save_fingerprint method
+                except ValueError as e:
+                    return Response(data={
+                        'success': False,
+                        'message': str(e)
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            
             user.save()
 
             registered_doors = data.get('registered_doors', [])

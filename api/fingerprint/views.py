@@ -8,7 +8,7 @@ from .serializers import FingerprintTemplateSerializer
 # /fingerprint/  ➔ List all
 class FingerprintListView(APIView):
     def get(self, request):
-        templates = FingerprintTemplate.objects.filter(is_deleted=False)
+        templates = FingerprintTemplate.objects.filter(is_deleted=False, is_assigned=False)
         serializer = FingerprintTemplateSerializer(templates, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -30,3 +30,19 @@ class FingerprintDetailView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except FingerprintTemplate.DoesNotExist:
             return Response({'detail': 'Template not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+# /fingerprint/assign/  ➔ Update is_assigned to True when assigned
+class FingerprintAssignView(APIView):
+    def patch(self, request, name):
+        try:
+            # Get the fingerprint template by name
+            template = FingerprintTemplate.objects.get(name=name, is_deleted=False)
+            template.is_assigned = True
+            template.save()
+
+            # Return the updated template data
+            serializer = FingerprintTemplateSerializer(template)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except FingerprintTemplate.DoesNotExist:
+            return Response({'detail': 'Template not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
