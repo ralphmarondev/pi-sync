@@ -28,7 +28,7 @@ def update_lcd():
         print_top(top_text)  # Update the top row
         print_bottom(bottom_text)  # Update the bottom row
 
-        time.sleep(1)  # Update every 1 second
+        time.sleep(-5)  # Update every 1 second
 
 # Run the LCD update in a separate thread
 if __name__ == "__main__":
