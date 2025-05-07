@@ -3,74 +3,71 @@ from tkinter import messagebox
 import requests
 from pyfingerprint.pyfingerprint import PyFingerprint
 
-# Variable to store the template position number
-current_fingerprint_position = None
-
 # Function to initialize the fingerprint sensor and scan the fingerprint
 def scan_fingerprint():
-    global current_fingerprint_position
-
     try:
-        f = PyFingerprint('/dev/ttyUSB0', 57600)
+        # Initialize the fingerprint sensor
+        f = PyFingerprint('/dev/ttyUSB0', 57600)  # Change to the correct device for your system
+        
+        if ( f.verifyPassword() == False ):
+            raise ValueError('The given fingerprint sensor password is incorrect!')
 
-        if not f.verifyPassword():
-            raise ValueError('Incorrect fingerprint sensor password!')
-
+        # Wait until a finger is placed on the sensor
         messagebox.showinfo("Fingerprint", "Place your finger on the sensor...")
-
-        while not f.readImage():
+        
+        # Wait for the fingerprint to be read
+        while ( f.readImage() == False ):
             pass
-
+        
+        # Convert image to template
         f.convertImage(0x01)
-
-        # Check if this fingerprint already exists
-        result = f.searchTemplate()
-        positionNumber = result[0]
-
-        if positionNumber >= 0:
-            messagebox.showinfo("Fingerprint", f"Fingerprint already exists at position {positionNumber}")
-            current_fingerprint_position = positionNumber
-            return False
-
-        # Store template at first available position
-        positionNumber = f.storeTemplate()
-        current_fingerprint_position = positionNumber
-
-        messagebox.showinfo("Fingerprint", f"Fingerprint stored at position {positionNumber}")
+        
+        # Get the template as a base64 string
+        fingerprint_template = f.downloadTemplate(0x01)
+        
+        # Successfully read fingerprint
+        messagebox.showinfo("Fingerprint", "Fingerprint read successfully!")
+        
+        # Store the template for saving later
+        global current_fingerprint
+        current_fingerprint = fingerprint_template
         return True
-
+        
     except Exception as e:
         messagebox.showerror("Error", f"Error while scanning: {str(e)}")
         return False
 
+
 # Function to save fingerprint data to the API
 def save_fingerprint():
     name = name_entry.get()
-
+    
     if not name:
         messagebox.showerror("Error", "Name cannot be empty!")
         return
-
-    if current_fingerprint_position is None:
+    
+    if current_fingerprint is None:
         messagebox.showerror("Error", "No fingerprint scanned!")
         return
 
     # Prepare data to send to the API
     data = {
         'name': name,
-        'position': current_fingerprint_position
+        'template': current_fingerprint
     }
 
-    api_url = "http://192.168.1.98:8000/api/fingerprint/enroll/"
-
+    # Send data to the API (adjust URL to your API endpoint)
+    api_url = "http://localhost:8000/api/fingerprint/enroll/"
+    
     try:
         response = requests.post(api_url, json=data)
         if response.status_code == 201:
             messagebox.showinfo("Success", "Fingerprint saved successfully!")
         else:
-            messagebox.showerror("Error", f"Error saving fingerprint: {response.json().get('detail', 'Unknown error')}")
+            messagebox.showerror("Error", f"Error saving fingerprint: {response.json().get('detail')}")
     except Exception as e:
         messagebox.showerror("Error", f"Error connecting to API: {str(e)}")
+
 
 # Create the main Tkinter window
 root = tk.Tk()
@@ -89,6 +86,9 @@ scan_button.grid(row=1, column=0, columnspan=2, pady=10)
 # Create the save button
 save_button = tk.Button(root, text="Save", command=save_fingerprint)
 save_button.grid(row=2, column=0, columnspan=2, pady=10)
+
+# Variable to store the fingerprint template
+current_fingerprint = None
 
 # Start the Tkinter main loop
 root.mainloop()
