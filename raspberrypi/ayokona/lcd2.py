@@ -8,7 +8,7 @@ lcd = CharLCD(i2c_expander='PCF8574', address=0x27, port=1,
 try:
     while True:
         lcd.clear()
-        lcd.write_string('Hello World!')
+        lcd.write_string('SMART DOOR')
         lcd.cursor_pos = (1, 0)  # second line
         lcd.write_string(time.strftime('%H:%M:%S'))  # current time
         time.sleep(1)  # refresh every second
