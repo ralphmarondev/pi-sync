@@ -24,7 +24,9 @@ def unlock_solenoid():
 print("🔄 Solenoid monitoring started.")
 try:
     while True:
+        print('i am inside while true')
         try:
+            print('i am inside try block')
             response = requests.get(STATUS_URL, timeout=5)
             if response.status_code == 200:
                 data = response.json()
