@@ -1,11 +1,15 @@
 import time
 import requests
-from gpiozero import OutputDevice
+from gpiozero import OutputDevice, Button
 from lcd_utils import write_top
 
 # Solenoid GPIO setup (ACTIVE-LOW relay)
 SOLENOID_PIN = 17
 solenoid = OutputDevice(SOLENOID_PIN, active_high=False, initial_value=True)
+
+# Button GPIO setup
+BUTTON_PIN = 18  # Change this to your actual button pin
+button = Button(BUTTON_PIN)
 
 # API endpoints
 STATUS_URL = 'http://192.168.1.98:8000/api/door/status/1/'
@@ -36,9 +40,17 @@ def unlock_solenoid():
     except Exception as e:
         print(f"❌ Error sending close request: {e}")
 
-# Main loop
-print("🔄 Solenoid monitoring started.")
-try:
+def monitor_button():
+    """Monitor the button press and control the solenoid."""
+    while True:
+        if button.is_pressed:
+            print("Button pressed. Unlocking door...")
+            unlock_solenoid()
+        time.sleep(0.1)  # Small delay to avoid overloading the CPU
+
+def monitor_api():
+    """Monitor the door status from the API."""
+    global last_state
     while True:
         print('🌀 Checking door status from API...')
         try:
@@ -51,12 +63,12 @@ try:
 
                 if current_state and last_state != True:
                     unlock_solenoid()
-                    print('Door opened.')
+                    print('Door opened via API.')
                     write_top('Door opened')
                     last_state = True
                 elif not current_state:
                     last_state = False  # Reset state tracking
-                    print('Door closed')
+                    print('Door closed via API.')
                     write_top('Door closed')
             else:
                 print(f"⚠️ API error: {response.status_code}")
@@ -67,6 +79,20 @@ try:
 
         time.sleep(3)
 
-except KeyboardInterrupt:
-    print("\n🛑 Program terminated by user.")
-    solenoid.on()  # Ensure it's locked on exit
+# Main function to run both button monitoring and API status checking
+if __name__ == "__main__":
+    try:
+        print("🔄 Solenoid monitoring started.")
+        # Create two threads to handle button and API monitoring
+        from threading import Thread
+        
+        # Start the button monitoring in a separate thread
+        button_thread = Thread(target=monitor_button, daemon=True)
+        button_thread.start()
+
+        # Start the API monitoring in the main thread
+        monitor_api()
+
+    except KeyboardInterrupt:
+        print("\n🛑 Program terminated by user.")
+        solenoid.on()  # Ensure it's locked on exit
