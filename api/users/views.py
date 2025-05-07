@@ -23,9 +23,7 @@ class UserRegisterView(APIView):
             if image:
                 user.image = image
             if fingerprint_template:
-                if isinstance(fingerprint_template, str):
-                    fingerprint_template = base64.b64decode(fingerprint_template)
-                user.save_fingerprint(fingerprint_template)
+                user.fingerprint_template = fingerprint_template
             user.save()
 
             registered_doors = data.get('registered_doors', [])
