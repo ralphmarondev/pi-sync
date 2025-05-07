@@ -51,10 +51,12 @@ try:
 
                 if current_state and last_state != True:
                     unlock_solenoid()
+                    print('Door opened.')
                     write_top('Door opened')
                     last_state = True
                 elif not current_state:
                     last_state = False  # Reset state tracking
+                    print('Door closed')
                     write_top('Door closed')
             else:
                 print(f"⚠️ API error: {response.status_code}")
