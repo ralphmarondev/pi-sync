@@ -1,15 +1,14 @@
 import tkinter as tk
 from tkinter import messagebox
 import requests
-import base64
 from pyfingerprint.pyfingerprint import PyFingerprint
 
-# Variable to store the fingerprint template (Base64-encoded string)
-current_fingerprint_template = None
+# Variable to store the template position number
+current_fingerprint_position = None
 
 # Function to initialize the fingerprint sensor and scan the fingerprint
 def scan_fingerprint():
-    global current_fingerprint_template
+    global current_fingerprint_position
 
     try:
         f = PyFingerprint('/dev/ttyUSB0', 57600)
@@ -30,19 +29,14 @@ def scan_fingerprint():
 
         if positionNumber >= 0:
             messagebox.showinfo("Fingerprint", f"Fingerprint already exists at position {positionNumber}")
+            current_fingerprint_position = positionNumber
             return False
 
         # Store template at first available position
         positionNumber = f.storeTemplate()
+        current_fingerprint_position = positionNumber
 
-        # Download and encode characteristics
-        characteristics = f.downloadCharacteristics(0x01)
-        characteristics_bytes = bytearray(characteristics)
-        template_b64 = base64.b64encode(characteristics_bytes).decode('utf-8')
-
-        current_fingerprint_template = template_b64
-
-        messagebox.showinfo("Fingerprint", f"Fingerprint stored at position {positionNumber}.\n\nTemplate (Base64):\n{template_b64}")
+        messagebox.showinfo("Fingerprint", f"Fingerprint stored at position {positionNumber}")
         return True
 
     except Exception as e:
@@ -57,13 +51,14 @@ def save_fingerprint():
         messagebox.showerror("Error", "Name cannot be empty!")
         return
 
-    if current_fingerprint_template is None:
+    if current_fingerprint_position is None:
         messagebox.showerror("Error", "No fingerprint scanned!")
         return
 
+    # Prepare data to send to the API
     data = {
         'name': name,
-        'template': current_fingerprint_template
+        'position': current_fingerprint_position
     }
 
     api_url = "http://192.168.1.98:8000/api/fingerprint/enroll/"
@@ -71,7 +66,7 @@ def save_fingerprint():
     try:
         response = requests.post(api_url, json=data)
         if response.status_code == 201:
-            messagebox.showinfo("Success", f"Fingerprint saved successfully!\n\nTemplate:\n{current_fingerprint_template}")
+            messagebox.showinfo("Success", "Fingerprint saved successfully!")
         else:
             messagebox.showerror("Error", f"Error saving fingerprint: {response.json().get('detail', 'Unknown error')}")
     except Exception as e:
