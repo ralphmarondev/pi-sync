@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
-import requests
-from pyfingerprint.pyfingerprint import PyFingerprint
+import requests # type: ignore
+from pyfingerprint.pyfingerprint import PyFingerprint # type: ignore
 
 # Function to initialize the fingerprint sensor and scan the fingerprint
 def scan_fingerprint():
