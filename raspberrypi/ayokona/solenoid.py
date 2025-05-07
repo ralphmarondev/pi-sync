@@ -24,13 +24,14 @@ def unlock_solenoid():
 print("🔄 Solenoid monitoring started.")
 try:
     while True:
-        print('i am inside while true')
+        print('🌀 Checking door status from API...')
         try:
-            print('i am inside try block')
             response = requests.get(STATUS_URL, timeout=5)
             if response.status_code == 200:
                 data = response.json()
-                current_state = data.get('state', False)
+                print("🔍 API response:", data)
+
+                current_state = data.get('is_open', False)
 
                 if current_state and last_state != True:
                     unlock_solenoid()
@@ -46,3 +47,4 @@ try:
 
 except KeyboardInterrupt:
     print("\n🛑 Program terminated by user.")
+    solenoid.on()  # Ensure it's locked on exit
