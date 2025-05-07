@@ -1,20 +1,28 @@
-from RPLCD.i2c import CharLCD
+import os
 
-# Setup
-lcd = CharLCD(i2c_expander='PCF8574', address=0x27, port=1,
-              cols=16, rows=2, charmap='A00', auto_linebreaks=True)
+TOP_FILE = "upper.txt"
+BOTTOM_FILE = "bottom.txt"
 
-def print_top(text):
-    lcd.cursor_pos = (0, 0)
-    lcd.write_string(' ' * 16)  # clear line
-    lcd.cursor_pos = (0, 0)
-    lcd.write_string(text[:16])
+# Write text to the top LCD
+def write_top(text):
+    with open(TOP_FILE, 'w') as file:
+        file.write(text[:16])  # Ensure only 16 characters are written
 
-def print_bottom(text):
-    lcd.cursor_pos = (1, 0)
-    lcd.write_string(' ' * 16)  # clear line
-    lcd.cursor_pos = (1, 0)
-    lcd.write_string(text[:16])
+# Write text to the bottom LCD
+def write_bottom(text):
+    with open(BOTTOM_FILE, 'w') as file:
+        file.write(text[:16])  # Ensure only 16 characters are written
 
-def clear_lcd():
-    lcd.clear()
+# Read text from the top LCD file
+def read_top():
+    if os.path.exists(TOP_FILE):
+        with open(TOP_FILE, 'r') as file:
+            return file.read().strip()
+    return "Hello"
+
+# Read text from the bottom LCD file
+def read_bottom():
+    if os.path.exists(BOTTOM_FILE):
+        with open(BOTTOM_FILE, 'r') as file:
+            return file.read().strip()
+    return "World"

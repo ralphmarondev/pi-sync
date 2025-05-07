@@ -4,7 +4,7 @@ import base64
 import time
 from pyfingerprint.pyfingerprint import PyFingerprint
 import threading
-from lcd_utils import print_bottom  # 👈 LCD bottom row only
+from lcd_utils import write_bottom  # Update bottom row only
 
 API_URL = 'http://192.168.1.98:8000/api'
 
@@ -14,10 +14,10 @@ def fetch_templates_from_api():
         if response.status_code == 200:
             return response.json()
         else:
-            print_bottom("API fetch fail")
+            write_bottom("API fetch fail")  # Update bottom LCD
             return []
     except Exception as e:
-        print_bottom("API error")
+        write_bottom("API error")  # Update bottom LCD
         print(f"API error: {e}")
         return []
 
@@ -29,7 +29,7 @@ def initialize_sensor():
         f.clearDatabase()
         return f
     except Exception as e:
-        print_bottom("Sensor error")
+        write_bottom("Sensor error")  # Update bottom LCD
         print(f"Sensor initialization failed: {e}")
         return None
 
@@ -41,17 +41,17 @@ def open_door_api(name):
         }
         response = requests.post(f'{API_URL}/door/open/1/', json=data)
         if response.status_code == 200:
-            print_bottom("Door opened")
+            write_bottom("Door opened")  # Update bottom LCD
         else:
-            print_bottom("Open failed")
+            write_bottom("Open failed")  # Update bottom LCD
             print(f"Failed to open door. Status: {response.status_code}")
     except Exception as e:
-        print_bottom("API open error")
+        write_bottom("API open error")  # Update bottom LCD
         print(f"API door open error: {e}")
 
 def match_fingerprint(f, api_templates):
     try:
-        print_bottom("Place finger...")
+        write_bottom("Place finger...")  # Update bottom LCD
         while not f.readImage():
             time.sleep(0.1)
 
@@ -73,7 +73,7 @@ def match_fingerprint(f, api_templates):
         return None
 
     except Exception as e:
-        print_bottom("Scan failed")
+        write_bottom("Scan failed")  # Update bottom LCD
         print(f"Scan error: {e}")
         return None
 
@@ -89,11 +89,11 @@ def fingerprint_loop():
     while True:
         matched_name = match_fingerprint(f, api_templates)
         if matched_name:
-            print_bottom(f"Welcome {matched_name[:12]}")
+            write_bottom(f"Welcome {matched_name[:12]}")  # Update bottom LCD
             open_door_api(matched_name)
             time.sleep(3)
         else:
-            print_bottom("Not recognized")
+            write_bottom("Not recognized")  # Update bottom LCD
         time.sleep(1)
 
 def start_fingerprint_thread():
