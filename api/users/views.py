@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rooms.models import Door
 from .models import User
 from .serializers import UserSerializer
+from fingerprint.models import FingerprintTemplate
 
 class UserRegisterView(APIView):
     def post(self, request):
@@ -14,20 +15,38 @@ class UserRegisterView(APIView):
         serializer = UserSerializer(data=data)
 
         image = request.FILES.get('image')
-        fingerprint_template = data.get('fingerprint_template')
+        fingerprint_template_name = data.get('fingerprint_template_name')
 
         if serializer.is_valid():
             user = serializer.save()
             user.set_password(data['password'])
 
+            # Save the user image if provided
             if image:
                 user.image = image
-            if fingerprint_template:
-                if isinstance(fingerprint_template, str):
-                    fingerprint_template = base64.b64decode(fingerprint_template)
-                user.save_fingerprint(fingerprint_template)
+
+            # Save the fingerprint template by name and toggle is_assigned
+            if fingerprint_template_name:
+                try:
+                    # Get the fingerprint template by name
+                    fingerprint_template = FingerprintTemplate.objects.get(name=fingerprint_template_name)
+
+                    # Toggle the is_assigned to True
+                    fingerprint_template.is_assigned = True
+                    fingerprint_template.save()
+
+                    # Save the fingerprint template name in the user model
+                    user.save_fingerprint(fingerprint_template_name)  # Save using the new save_fingerprint method
+
+                except FingerprintTemplate.DoesNotExist:
+                    return Response(data={
+                        'success': False,
+                        'message': 'Fingerprint template not found'
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            
             user.save()
 
+            # Handle registered doors
             registered_doors = data.get('registered_doors', [])
             if registered_doors:
                 user.registered_doors.set(registered_doors)
@@ -37,8 +56,8 @@ class UserRegisterView(APIView):
                         door_obj = Door.objects.get(id=door_id)
                         door_obj.tenant_count += 1
                         door_obj.save()
-                    except Door.DoesNotExists:
-                        print('Door does not exists')
+                    except Door.DoesNotExist:  # Fixed typo here
+                        print('Door does not exist')
                         continue
 
             return Response(data={
@@ -46,6 +65,7 @@ class UserRegisterView(APIView):
                 'message': 'User registered successfully',
                 'user': serializer.data
             }, status=status.HTTP_201_CREATED)
+
         return Response(data={
             'success': False,
             'message': 'Registration failed',
