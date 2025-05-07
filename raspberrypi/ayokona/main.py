@@ -6,9 +6,11 @@ import time
 from pyfingerprint.pyfingerprint import PyFingerprint
 import threading
 
+API_URL = 'http://192.168.1.98:8000/api'
+
 def fetch_templates_from_api():
     try:
-        response = requests.get('http://192.168.1.98:8000/api/fingerprint/')
+        response = requests.get(f'{API_URL}/fingerprint/')
         if response.status_code == 200:
             return response.json()
         else:
@@ -28,6 +30,20 @@ def initialize_sensor():
     except Exception as e:
         print(f"Sensor initialization failed: {e}")
         return None
+
+def open_door_api(name):
+    try:
+        data = {
+            'username': name,
+            'description': 'opened via fingerprint'
+        }
+        response = requests.post(f'{API_URL}/door/open/1/', json=data)
+        if response.status_code == 200:
+            print("Door opened successfully.")
+        else:
+            print(f"Failed to open door. Status: {response.status_code}")
+    except Exception as e:
+        print(f"API door open error: {e}")
 
 def match_fingerprint(f, api_templates):
     try:
@@ -66,7 +82,9 @@ def fingerprint_loop():
     while True:
         matched_name = match_fingerprint(f, api_templates)
         if matched_name:
-            messagebox.showinfo("Success", f"Fingerprint matched: {matched_name}")
+            # messagebox.showinfo("Success", f"Fingerprint matched: {matched_name}")
+            print(f"Fingerprint matched: {matched_name}")
+            open_door_api(matched_name)
             time.sleep(3)
         else:
             print("Fingerprint not recognized")
