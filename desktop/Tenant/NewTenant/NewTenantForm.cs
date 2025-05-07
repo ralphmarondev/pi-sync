@@ -119,6 +119,10 @@ namespace PiSync.Tenant.NewTenant
         // saving to api lol
         private async Task<bool> SaveTenantAsync(string firstName, string lastName, string username, string password, string passwordHint, string gender, List<int> registeredDoorList)
         {
+            // Get the selected fingerprint template from the ComboBox (it can be null)
+            var selectedTemplate = tbFingerprint.SelectedValue?.ToString();  // This will be null if nothing is selected
+
+            // Create the request body
             var requestBody = new RegisterTenantRequest
             {
                 Username = username,
@@ -127,7 +131,8 @@ namespace PiSync.Tenant.NewTenant
                 Password = password,
                 HintPassword = passwordHint,
                 Gender = gender,
-                RegisteredDoors = registeredDoorList
+                RegisteredDoors = registeredDoorList,
+                FingerprintTemplate = selectedTemplate  // This can be null
             };
 
             // 🟠 Debug print: Show the JSON payload before sending
@@ -197,6 +202,38 @@ namespace PiSync.Tenant.NewTenant
                 System.Diagnostics.Debug.WriteLine($"Exception in GetRoomIdByNameAsync: {ex.Message}");
             }
             return null;
+        }
+
+        private async Task<List<FingerprintTemplate>> FetchFingerprintTemplatesAsync()
+        {
+            try
+            {
+                var response = await ApiService.httpClient.GetAsync("fingerprint/");
+                if (response.IsSuccessStatusCode)
+                {
+                    var templates = await response.Content.ReadFromJsonAsync<List<FingerprintTemplate>>();
+                    return templates ?? new List<FingerprintTemplate>();
+                }
+                else
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"Failed to fetch fingerprints: {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Exception fetching fingerprints: {ex.Message}");
+            }
+            return new List<FingerprintTemplate>();
+        }
+
+        private async void NewTenantForm_Load(object sender, EventArgs e)
+        {
+            var fingerprints = await FetchFingerprintTemplatesAsync();
+
+            tbFingerprint.DataSource = fingerprints;
+            tbFingerprint.DisplayMember = "Name";       // Shows fingerprint name
+            tbFingerprint.ValueMember = "Template";     // Underlying value = template
         }
     }
 }
