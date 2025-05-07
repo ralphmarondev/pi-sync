@@ -1,164 +1,138 @@
 import time
 import serial
-import RPi.GPIO as GPIO
 import adafruit_fingerprint
 from gpiozero import OutputDevice
+import threading
 
-# Set up GPIO for controlling the solenoid (ACTIVE-LOW relay)
+# Set up GPIO for solenoid (ACTIVE-LOW relay logic)
 SOLENOID_PIN = 17
 solenoid = OutputDevice(SOLENOID_PIN, active_high=False, initial_value=True)
 
 def unlock_solenoid():
     """Unlock the solenoid (activate relay)"""
-    print("Unlocking the solenoid...")
-    solenoid.on()   # GPIO LOW → relay ON → solenoid unlocked
-    time.sleep(5)
-    solenoid.off()  # GPIO HIGH → relay OFF → solenoid locked
-    print("Solenoid locked again.")
+    print("🔓 Unlocking solenoid...")
+    solenoid.off()  # GPIO LOW → relay ON → solenoid unlocked
+    time.sleep(10)  # Keep it unlocked for 10 seconds
+    solenoid.on()   # GPIO HIGH → relay OFF → solenoid locked
+    print("🔒 Solenoid locked again.")
 
-# Initialize serial connection to the fingerprint sensor
+# Initialize fingerprint sensor
 uart = serial.Serial("/dev/ttyUSB0", baudrate=57600, timeout=1)
 finger = adafruit_fingerprint.Adafruit_Fingerprint(uart)
 
-def get_fingerprint():
-    """Get a fingerprint image, template it, and see if it matches!"""
-    print("Waiting for image...")
-    while finger.get_image() != adafruit_fingerprint.OK:
-        pass
-    print("Templating...")
-    if finger.image_2_tz(1) != adafruit_fingerprint.OK:
-        return False
-    print("Searching...")
-    if finger.finger_search() != adafruit_fingerprint.OK:
-        return False
-    return True
-
 def enroll_finger(location):
-    """Take two fingerprint images and template them, then store in 'location'"""
+    """Enroll a fingerprint into specified location"""
     for fingerimg in range(1, 3):
         if fingerimg == 1:
-            print("Place finger on sensor...", end="")
+            print("➡️ Place finger on sensor and hold it still.")
         else:
-            print("Place same finger again...", end="")
+            print("➡️ Place the SAME finger again.")
 
-        while True:
+        start_time = time.time()
+        timeout = 20  # Allow up to 20 seconds for user to place finger
+
+        while time.time() - start_time < timeout:
             i = finger.get_image()
             if i == adafruit_fingerprint.OK:
-                print("Image taken")
+                print("✅ Image taken.")
                 break
-            if i == adafruit_fingerprint.NOFINGER:
-                print(".", end="")
+            elif i == adafruit_fingerprint.NOFINGER:
+                print(".", end="", flush=True)
+                time.sleep(0.5)
             elif i == adafruit_fingerprint.IMAGEFAIL:
-                print("Imaging error")
+                print("\n❌ Imaging error.")
                 return False
             else:
-                print("Other error")
+                print("\n❌ Unknown error.")
                 return False
+        else:
+            print("\n⏱️ Timeout: No finger detected in time.")
+            return False
 
         print("Templating...", end="")
         i = finger.image_2_tz(fingerimg)
         if i == adafruit_fingerprint.OK:
-            print("Templated")
+            print("✅ Templated.")
         else:
-            print("Template error")
+            print("❌ Template error.")
             return False
 
         if fingerimg == 1:
-            print("Remove finger")
-            time.sleep(1)
+            print("✋ Remove finger.")
+            time.sleep(2)
+            remove_start = time.time()
             while finger.get_image() != adafruit_fingerprint.NOFINGER:
-                pass
+                if time.time() - remove_start > 10:
+                    print("⚠️ Finger not removed in time.")
+                    return False
+                time.sleep(0.1)
 
-    print("Creating model...", end="")
+    print("🧠 Creating model...", end="")
     if finger.create_model() != adafruit_fingerprint.OK:
-        print("Model creation failed")
+        print("❌ Model creation failed.")
         return False
 
-    print("Storing model #%d..." % location, end="")
+    print(f"💾 Storing model #{location}...", end="")
     if finger.store_model(location) == adafruit_fingerprint.OK:
-        print("Stored")
+        print("✅ Stored successfully.")
         return True
     else:
-        print("Failed to store")
+        print("❌ Failed to store fingerprint.")
         return False
 
-def save_fingerprint_image(filename):
-    """Scan fingerprint then save image to filename."""
-    while finger.get_image():
-        pass
-
-    from PIL import Image
-    img = Image.new("L", (256, 288), "white")
-    pixeldata = img.load()
-    mask = 0b00001111
-    result = finger.get_fpdata(sensorbuffer="image")
-
-    x = 0
-    y = 0
-    for i in range(len(result)):
-        pixeldata[x, y] = (int(result[i]) >> 4) * 17
-        x += 1
-        pixeldata[x, y] = (int(result[i]) & mask) * 17
-        if x == 255:
-            x = 0
-            y += 1
-        else:
-            x += 1
-
-    img.save(filename)
-
 def get_num(max_number):
-    """Get a valid number from 0 to max_number."""
+    """Get a valid fingerprint ID number from user."""
     i = -1
-    while (i > max_number - 1) or (i < 0):
+    while (i < 0) or (i > max_number - 1):
         try:
-            i = int(input(f"Enter ID # from 0-{max_number - 1}: "))
+            i = int(input(f"Enter ID # (0 to {max_number - 1}): "))
         except ValueError:
             pass
     return i
 
-# Main program loop
-while True:
-    print("----------------")
-    if finger.read_templates() != adafruit_fingerprint.OK:
-        raise RuntimeError("Failed to read templates")
-    print("Fingerprint templates: ", finger.templates)
-    if finger.count_templates() != adafruit_fingerprint.OK:
-        raise RuntimeError("Failed to read templates")
-    print("Number of templates found: ", finger.template_count)
-    if finger.read_sysparam() != adafruit_fingerprint.OK:
-        raise RuntimeError("Failed to get system parameters")
-    print("Size of template library: ", finger.library_size)
-    print("e) enroll print")
-    print("f) find print")
-    print("d) delete print")
-    print("s) save fingerprint image")
-    print("r) reset library")
-    print("q) quit")
-    print("----------------")
-    c = input("> ")
+# -------- Background Detection Thread --------
+def auto_detect_loop():
+    """Continuously detect and authenticate fingerprints."""
+    while True:
+        if finger.get_image() == adafruit_fingerprint.OK:
+            if finger.image_2_tz(1) == adafruit_fingerprint.OK:
+                if finger.finger_search() == adafruit_fingerprint.OK:
+                    print("✅ Authorized fingerprint detected!")
+                    print("ID #", finger.finger_id, "Confidence:", finger.confidence)
+                    unlock_solenoid()
+                    while finger.get_image() != adafruit_fingerprint.NOFINGER:
+                        time.sleep(0.1)
+                    print("🛑 Finger removed, relocking solenoid.")
+                else:
+                    print("❌ Unauthorized fingerprint.")
+                    while finger.get_image() != adafruit_fingerprint.NOFINGER:
+                        time.sleep(0.1)
+        time.sleep(0.1)
 
-    if c == "e":
-        enroll_finger(get_num(finger.library_size))
-    elif c == "f":
-        if get_fingerprint():
-            print("Detected #", finger.finger_id, "with confidence", finger.confidence)
-            unlock_solenoid()
-        else:
-            print("Finger not found")
-    elif c == "d":
-        if finger.delete_model(get_num(finger.library_size)) == adafruit_fingerprint.OK:
-            print("Deleted!")
-        else:
-            print("Failed to delete")
-    elif c == "s":
-        save_fingerprint_image("fingerprint.png")
-        print("Fingerprint image saved")
-    elif c == "r":
-        if finger.empty_library() == adafruit_fingerprint.OK:
-            print("Library empty!")
-        else:
-            print("Failed to empty library")
-    elif c == "q":
-        print("Exiting fingerprint example program")
+# -------- Main Program --------
+print("📦 Fingerprint system ready.")
+print("Press Ctrl+C to exit at any time.")
+
+if finger.read_templates() != adafruit_fingerprint.OK:
+    raise RuntimeError("❌ Failed to read fingerprint templates.")
+if finger.count_templates() != adafruit_fingerprint.OK:
+    raise RuntimeError("❌ Failed to count templates.")
+
+# Start background thread for automatic fingerprint detection
+threading.Thread(target=auto_detect_loop, daemon=True).start()
+
+# Menu loop
+while True:
+    print("\nMenu Options:")
+    print("e) Enroll fingerprint")
+    print("q) Quit")
+    choice = input("Select option: ").lower()
+
+    if choice == "e":
+        location = get_num(finger.library_size)
+        enroll_finger(location)
+    elif choice == "q":
+        print("👋 Exiting program.")
         break
+    else:
+        print("❓ Invalid option. Try again.")
