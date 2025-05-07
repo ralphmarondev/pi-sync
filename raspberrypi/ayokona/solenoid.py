@@ -18,8 +18,10 @@ def unlock_solenoid():
     """Unlock the solenoid for 10 seconds"""
     print("🔓 Unlocking solenoid...")
     solenoid.off()
+    write_top('Door opened')
     time.sleep(10)
     solenoid.on()
+    write_top('Door closed')
     print("🔒 Solenoid locked again.")
 
     # Close on the API
