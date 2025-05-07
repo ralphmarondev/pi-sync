@@ -1,7 +1,6 @@
 import time
 import requests
 from gpiozero import OutputDevice
-from lcd_utils import print_top  # 👈 Import the LCD helper
 
 # Solenoid GPIO setup (ACTIVE-LOW relay)
 SOLENOID_PIN = 17
@@ -16,12 +15,10 @@ last_state = None
 
 def unlock_solenoid():
     """Unlock the solenoid for 10 seconds"""
-    print_top("🔓 Unlocking...")
     print("🔓 Unlocking solenoid...")
     solenoid.off()
     time.sleep(10)
     solenoid.on()
-    print_top("🔒 Locked again")
     print("🔒 Solenoid locked again.")
 
     # Close on the API
@@ -50,22 +47,17 @@ try:
                 current_state = data.get('is_open', False)
 
                 if current_state and last_state != True:
-                    print_top("🚪 Door Opened")
                     unlock_solenoid()
                     last_state = True
                 elif not current_state:
-                    print_top("🔒 Door Locked")
-                    last_state = False
+                    last_state = False  # Reset state tracking
             else:
                 print(f"⚠️ API error: {response.status_code}")
-                print_top("API Error")
         except Exception as e:
             print(f"❌ Error checking status: {e}")
-            print_top("Conn. Error")
 
         time.sleep(3)
 
 except KeyboardInterrupt:
     print("\n🛑 Program terminated by user.")
-    solenoid.on()
-    print_top("System stopped")
+    solenoid.on()  # Ensure it's locked on exit
