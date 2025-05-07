@@ -1,19 +1,20 @@
+# NOTE: YOU CAN FIX THE BRIGHTNESS BY ROTATING THE BLUE SOMETHING ON THE BACK OF THE IC2
+
 from RPLCD.i2c import CharLCD
 import time
 
-# Change address below if yours is different (e.g. 0x3F)
+# LCD setup (adjust address if needed)
 lcd = CharLCD(i2c_expander='PCF8574', address=0x27, port=1,
-              cols=16, rows=2, dotsize=8,
-              charmap='A00', auto_linebreaks=True,
-              backlight_enabled=True)
+              cols=16, rows=2, charmap='A00', auto_linebreaks=True)
 
 try:
-    lcd.clear()
-    lcd.write_string("Hello, world!")
-    lcd.crlf()
-    lcd.write_string("Raspberry Pi 5")
-    time.sleep(10)
+    while True:
+        lcd.clear()
+        lcd.write_string('SMART DOOR')
+        lcd.cursor_pos = (1, 0)  # second line
+        lcd.write_string(time.strftime('%H:%M:%S'))  # current time
+        time.sleep(1)  # refresh every second
 
-finally:
+except KeyboardInterrupt:
+    print("\n🛑 Stopped by user.")
     lcd.clear()
-    lcd.backlight_enabled = False
