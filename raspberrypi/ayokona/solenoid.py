@@ -6,8 +6,9 @@ from gpiozero import OutputDevice
 SOLENOID_PIN = 17
 solenoid = OutputDevice(SOLENOID_PIN, active_high=False, initial_value=True)
 
-# API endpoint
+# API endpoints
 STATUS_URL = 'http://192.168.1.98:8000/api/door/status/1/'
+CLOSE_URL = 'http://192.168.1.98:8000/api/door/close/1/'
 
 # Track the last known state to avoid redundant switching
 last_state = None
@@ -19,6 +20,18 @@ def unlock_solenoid():
     time.sleep(10)
     solenoid.on()
     print("🔒 Solenoid locked again.")
+
+    # Close on the API
+    try:
+        response = requests.post(CLOSE_URL, json={
+            "description": "closed after 10s via solenoid auto-control"
+        }, timeout=5)
+        if response.status_code == 200:
+            print("✅ API door closed successfully.")
+        else:
+            print(f"⚠️ Failed to close door on API: {response.status_code}")
+    except Exception as e:
+        print(f"❌ Error sending close request: {e}")
 
 # Main loop
 print("🔄 Solenoid monitoring started.")
