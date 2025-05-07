@@ -21,8 +21,11 @@ class UserRegisterView(APIView):
             user = serializer.save()
             user.set_password(data['password'])
 
+            # Save the user image if provided
             if image:
                 user.image = image
+
+            # Save the fingerprint template by name and toggle is_assigned
             if fingerprint_template_name:
                 try:
                     # Get the fingerprint template by name
@@ -34,14 +37,16 @@ class UserRegisterView(APIView):
 
                     # Save the fingerprint template name in the user model
                     user.save_fingerprint(fingerprint_template_name)  # Save using the new save_fingerprint method
-                except ValueError as e:
+
+                except FingerprintTemplate.DoesNotExist:
                     return Response(data={
                         'success': False,
-                        'message': str(e)
+                        'message': 'Fingerprint template not found'
                     }, status=status.HTTP_400_BAD_REQUEST)
             
             user.save()
 
+            # Handle registered doors
             registered_doors = data.get('registered_doors', [])
             if registered_doors:
                 user.registered_doors.set(registered_doors)
@@ -51,8 +56,8 @@ class UserRegisterView(APIView):
                         door_obj = Door.objects.get(id=door_id)
                         door_obj.tenant_count += 1
                         door_obj.save()
-                    except Door.DoesNotExists:
-                        print('Door does not exists')
+                    except Door.DoesNotExist:  # Fixed typo here
+                        print('Door does not exist')
                         continue
 
             return Response(data={
@@ -60,6 +65,7 @@ class UserRegisterView(APIView):
                 'message': 'User registered successfully',
                 'user': serializer.data
             }, status=status.HTTP_201_CREATED)
+
         return Response(data={
             'success': False,
             'message': 'Registration failed',
