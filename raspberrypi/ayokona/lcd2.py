@@ -11,3 +11,10 @@ lcd.write_string('Hello World!')
 
 time.sleep(5)
 lcd.clear()
+
+
+lcd.write_string('Ralph is cute :)')
+time.sleep(5)
+lcd.clear()
+lcd.write('Hehehhee')
+time.sleep(50)
