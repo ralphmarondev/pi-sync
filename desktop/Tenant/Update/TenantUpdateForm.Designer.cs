@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            tbGender = new ComboBox();
             btnUpdate = new Button();
             label9 = new Label();
             tbImage = new TextBox();
@@ -47,7 +48,6 @@
             tbLastName = new TextBox();
             label1 = new Label();
             tbFirstName = new TextBox();
-            tbGender = new ComboBox();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -78,6 +78,16 @@
             panel1.Size = new Size(694, 551);
             panel1.TabIndex = 2;
             // 
+            // tbGender
+            // 
+            tbGender.DropDownStyle = ComboBoxStyle.DropDownList;
+            tbGender.FormattingEnabled = true;
+            tbGender.Items.AddRange(new object[] { "Male", "Female" });
+            tbGender.Location = new Point(358, 116);
+            tbGender.Name = "tbGender";
+            tbGender.Size = new Size(289, 30);
+            tbGender.TabIndex = 26;
+            // 
             // btnUpdate
             // 
             btnUpdate.Cursor = Cursors.Hand;
@@ -98,6 +108,7 @@
             label9.Size = new Size(76, 21);
             label9.TabIndex = 21;
             label9.Text = "Image:";
+            label9.Visible = false;
             // 
             // tbImage
             // 
@@ -106,6 +117,7 @@
             tbImage.PlaceholderText = "Not implement yet. Can leave as null";
             tbImage.Size = new Size(606, 30);
             tbImage.TabIndex = 20;
+            tbImage.Visible = false;
             // 
             // label7
             // 
@@ -239,16 +251,6 @@
             tbFirstName.Name = "tbFirstName";
             tbFirstName.Size = new Size(289, 30);
             tbFirstName.TabIndex = 4;
-            // 
-            // tbGender
-            // 
-            tbGender.DropDownStyle = ComboBoxStyle.DropDownList;
-            tbGender.FormattingEnabled = true;
-            tbGender.Items.AddRange(new object[] { "Male", "Female" });
-            tbGender.Location = new Point(358, 116);
-            tbGender.Name = "tbGender";
-            tbGender.Size = new Size(289, 30);
-            tbGender.TabIndex = 26;
             // 
             // TenantUpdateForm
             // 

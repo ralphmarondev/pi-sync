@@ -81,6 +81,7 @@
             label9.Size = new Size(76, 21);
             label9.TabIndex = 21;
             label9.Text = "Image:";
+            label9.Visible = false;
             // 
             // tbImage
             // 
@@ -91,6 +92,7 @@
             tbImage.ReadOnly = true;
             tbImage.Size = new Size(606, 30);
             tbImage.TabIndex = 20;
+            tbImage.Visible = false;
             // 
             // label7
             // 
