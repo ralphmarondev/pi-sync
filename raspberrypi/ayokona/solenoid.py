@@ -90,15 +90,18 @@ def monitor_api():
 def monitor_keyswitch():
     """Monitor the key switch for manual override (no API involved)."""
     print('🔑 Key switch monitoring started.')
+    override_active = False  # Track if override is active
     while True:
-        if keyswitch.is_pressed:
+        if keyswitch.is_pressed and not override_active:
             solenoid.off()  # Unlock while key is turned
             write_top('Door opened (key)')
             print("🔓 Key turned: Solenoid unlocked.")
-        else:
-            solenoid.on()  # Lock when key released
+            override_active = True
+        elif not keyswitch.is_pressed and override_active:
+            solenoid.on()  # Lock back when key released
             write_top('Door closed (key)')
             print("🔒 Key released: Solenoid locked.")
+            override_active = False
         time.sleep(0.1)
 
 # Main function to run everything
