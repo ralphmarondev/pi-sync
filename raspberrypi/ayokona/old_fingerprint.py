@@ -9,43 +9,17 @@ from lcd_utils import write_bottom
 
 API_URL = 'http://192.168.1.98:8000/api'
 
-def fetch_users_with_templates():
+def fetch_templates_from_api():
     try:
-        response = requests.get(f'{API_URL}/users/')
+        response = requests.get(f'{API_URL}/fingerprint/')
         if response.status_code == 200:
-            users = response.json().get('users', [])
-            templates = []
-
-            for user in users:
-                username = user.get("username")
-                template_name = user.get("fingerprint_template")
-
-                if template_name:
-                    template_data = fetch_template_detail(template_name)
-                    if template_data:
-                        templates.append({
-                            "username": username,
-                            "template": template_data
-                        })
-            return templates
+            return response.json()
         else:
-            print("Failed to fetch users.")
+            print("Failed to fetch templates.")
             return []
     except Exception as e:
         print(f"API error: {e}")
         return []
-
-def fetch_template_detail(template_name):
-    try:
-        response = requests.get(f'{API_URL}/fingerprint/details/{template_name}/')
-        if response.status_code == 200:
-            return response.json().get('template')
-        else:
-            print(f"Failed to fetch template for {template_name}")
-            return None
-    except Exception as e:
-        print(f"API error while fetching template {template_name}: {e}")
-        return None
 
 def initialize_sensor():
     try:
@@ -58,10 +32,10 @@ def initialize_sensor():
         print(f"Sensor initialization failed: {e}")
         return None
 
-def open_door_api(username):
+def open_door_api(name):
     try:
         data = {
-            'username': username,
+            'username': name,
             'description': 'opened via fingerprint'
         }
         response = requests.post(f'{API_URL}/door/open/1/', json=data)
@@ -72,7 +46,7 @@ def open_door_api(username):
     except Exception as e:
         print(f"API door open error: {e}")
 
-def match_fingerprint(f, templates):
+def match_fingerprint(f, api_templates):
     try:
         print("Waiting for finger...")
         while not f.readImage():
@@ -81,19 +55,18 @@ def match_fingerprint(f, templates):
         f.convertImage(0x01)
         scanned_char = f.downloadCharacteristics(0x01)
 
-        for item in templates:
-            username = item["username"]
-            template_b64 = item["template"]
-
+        for template in api_templates:
+            name = template.get("name")
+            template_b64 = template.get("template")
             try:
                 stored_char_bytes = base64.b64decode(template_b64 + '===')
                 stored_char = list(stored_char_bytes)
                 f.uploadCharacteristics(0x02, stored_char)
                 score = f.compareCharacteristics()
                 if score >= 50:
-                    return username
+                    return name
             except Exception as e:
-                print(f"Failed to compare with {username}: {e}")
+                print(f"Failed to compare with {name}: {e}")
         return None
 
     except Exception as e:
@@ -105,14 +78,15 @@ def fingerprint_loop():
     if not f:
         return
 
-    templates = fetch_users_with_templates()
+    api_templates = fetch_templates_from_api()
 
     while True:
-        matched_username = match_fingerprint(f, templates)
-        if matched_username:
-            print(f"Fingerprint matched: {matched_username}")
+        matched_name = match_fingerprint(f, api_templates)
+        if matched_name:
+            # messagebox.showinfo("Success", f"Fingerprint matched: {matched_name}")
+            print(f"Fingerprint matched: {matched_name}")
             write_bottom('Welcome home!')
-            open_door_api(matched_username)
+            open_door_api(matched_name)
             time.sleep(3)
         else:
             print("Fingerprint not recognized")
