@@ -13,7 +13,6 @@ button = Button(BUTTON_PIN)
 
 # API endpoints
 STATUS_URL = 'http://192.168.1.98:8000/api/door/status/1/'
-OPEN_URL = 'http://192.168.1.98:8000/api/door/open/1/'
 CLOSE_URL = 'http://192.168.1.98:8000/api/door/close/1/'
 
 # Track the last known state to avoid redundant switching
@@ -41,31 +40,19 @@ def unlock_solenoid():
     except Exception as e:
         print(f"❌ Error sending close request: {e}")
 
-def press_button_trigger_api():
-    """Send an open door request to the API when button is pressed."""
-    print("🔘 Button pressed! Sending open request to API...")
-    try:
-        response = requests.post(OPEN_URL, json={
-            "description": "opened via physical button press"
-        }, timeout=5)
-        if response.status_code == 200:
-            print("✅ Door open request sent successfully.")
-        else:
-            print(f"⚠️ Failed to open door on API: {response.status_code}")
-    except Exception as e:
-        print(f"❌ Error sending open request: {e}")
-
 def monitor_button():
-    """Monitor the button press and send open request to API."""
-    print('🚪 Button monitoring started.')
+    """Monitor the button press and control the solenoid."""
+    print('inside monitor button')
     while True:
+        print('inside while true in monitor button')
         if button.is_pressed:
-            press_button_trigger_api()
-            time.sleep(1)  # Prevent multiple rapid requests while button is held
+            write_top('Door opened')
+            print("Button pressed. Unlocking door...")
+            unlock_solenoid()
         time.sleep(0.1)  # Small delay to avoid overloading the CPU
 
 def monitor_api():
-    """Monitor the door status from the API and control solenoid."""
+    """Monitor the door status from the API."""
     global last_state
     while True:
         print('🌀 Checking door status from API...')
@@ -79,12 +66,12 @@ def monitor_api():
 
                 if current_state and last_state != True:
                     unlock_solenoid()
-                    print('✅ Door opened via API.')
+                    print('Door opened via API.')
                     write_top('Door opened')
                     last_state = True
-                elif not current_state and last_state != False:
+                elif not current_state:
                     last_state = False  # Reset state tracking
-                    print('🔒 Door closed via API.')
+                    print('Door closed via API.')
                     write_top('Door closed')
             else:
                 print(f"⚠️ API error: {response.status_code}")
@@ -99,6 +86,7 @@ def monitor_api():
 if __name__ == "__main__":
     try:
         print("🔄 Solenoid monitoring started.")
+        # Create two threads to handle button and API monitoring
         from threading import Thread
         
         # Start the button monitoring in a separate thread
