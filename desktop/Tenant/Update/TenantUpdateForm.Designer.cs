@@ -41,19 +41,20 @@
             label6 = new Label();
             tbPassword = new TextBox();
             label3 = new Label();
-            tbGender = new TextBox();
             label4 = new Label();
             tbUsername = new TextBox();
             label2 = new Label();
             tbLastName = new TextBox();
             label1 = new Label();
             tbFirstName = new TextBox();
+            tbGender = new ComboBox();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = SystemColors.Control;
+            panel1.Controls.Add(tbGender);
             panel1.Controls.Add(btnUpdate);
             panel1.Controls.Add(label9);
             panel1.Controls.Add(tbImage);
@@ -66,7 +67,6 @@
             panel1.Controls.Add(label6);
             panel1.Controls.Add(tbPassword);
             panel1.Controls.Add(label3);
-            panel1.Controls.Add(tbGender);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(tbUsername);
             panel1.Controls.Add(label2);
@@ -189,13 +189,6 @@
             label3.TabIndex = 11;
             label3.Text = "Gender:";
             // 
-            // tbGender
-            // 
-            tbGender.Location = new Point(358, 116);
-            tbGender.Name = "tbGender";
-            tbGender.Size = new Size(289, 30);
-            tbGender.TabIndex = 10;
-            // 
             // label4
             // 
             label4.AutoSize = true;
@@ -247,6 +240,16 @@
             tbFirstName.Size = new Size(289, 30);
             tbFirstName.TabIndex = 4;
             // 
+            // tbGender
+            // 
+            tbGender.DropDownStyle = ComboBoxStyle.DropDownList;
+            tbGender.FormattingEnabled = true;
+            tbGender.Items.AddRange(new object[] { "Male", "Female" });
+            tbGender.Location = new Point(358, 116);
+            tbGender.Name = "tbGender";
+            tbGender.Size = new Size(289, 30);
+            tbGender.TabIndex = 26;
+            // 
             // TenantUpdateForm
             // 
             AutoScaleDimensions = new SizeF(12F, 22F);
@@ -280,12 +283,12 @@
         private Label label6;
         private TextBox tbPassword;
         private Label label3;
-        private TextBox tbGender;
         private Label label4;
         private TextBox tbUsername;
         private Label label2;
         private TextBox tbLastName;
         private Label label1;
         private TextBox tbFirstName;
+        private ComboBox tbGender;
     }
 }
