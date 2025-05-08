@@ -239,7 +239,7 @@ namespace PiSync.Tenant.NewTenant
 
             tbFingerprint.DataSource = fingerprints;
             tbFingerprint.DisplayMember = "Name";
-            tbFingerprint.ValueMember = "Template";
+            tbFingerprint.ValueMember = "Name";
             tbFingerprint.SelectedIndex = 0;
         }
     }
