@@ -42,7 +42,9 @@ def unlock_solenoid():
 
 def monitor_button():
     """Monitor the button press and control the solenoid."""
+    print('inside monitor button')
     while True:
+        print('inside while true in monitor button')
         if button.is_pressed:
             print("Button pressed. Unlocking door...")
             unlock_solenoid()
