@@ -31,15 +31,16 @@ namespace PiSync.Tenant.Update
             try
             {
                 var response = await ApiService.httpClient.GetFromJsonAsync<TenantUpdateResponse>($"user/{tenantId}/");
-                if (response?.success == true && response.message != null)
+                if (response?.success == true && response.user != null)
                 {
-                    this.tenant = response.message;
+                    this.tenant = response.user;
 
                     tbFirstName.Text = tenant.first_name;
                     tbLastName.Text = tenant.last_name;
                     tbUsername.Text = tenant.username;
                     tbPasswordHint.Text = tenant.hint_password;
                     tbGender.Text = tenant.gender;
+                    tbFingerprint.Text = string.IsNullOrEmpty(tenant.fingerprint_template) ? "No fingerprint template" : tenant.fingerprint_template;
 
                     await LoadRegisteredDoorNameAsync(tenant.registered_doors);
                 }

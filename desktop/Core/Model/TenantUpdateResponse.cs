@@ -3,7 +3,8 @@
     public class TenantUpdateResponse
     {
         public bool success { get; set; }
-        public TenantUpdateMessage message { get; set; }
+        public string message { get; set; }
+        public TenantUpdateMessage user { get; set; }
     }
 
     public class TenantUpdateMessage
