@@ -231,9 +231,16 @@ namespace PiSync.Tenant.NewTenant
         {
             var fingerprints = await FetchFingerprintTemplatesAsync();
 
+            fingerprints.Insert(0, new FingerprintTemplate
+            {
+                Name = "Select fingerprint",
+                Template = null
+            });
+
             tbFingerprint.DataSource = fingerprints;
-            tbFingerprint.DisplayMember = "Name";       // Shows fingerprint name
-            tbFingerprint.ValueMember = "Template";     // Underlying value = template
+            tbFingerprint.DisplayMember = "Name";
+            tbFingerprint.ValueMember = "Template";
+            tbFingerprint.SelectedIndex = 0;
         }
     }
 }
