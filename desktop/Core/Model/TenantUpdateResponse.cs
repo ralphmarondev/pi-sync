@@ -1,13 +1,12 @@
 ﻿namespace PiSync.Core.Model
 {
-    public class TenantDetailsResponse
+    public class TenantUpdateResponse
     {
         public bool success { get; set; }
-        public string message { get; set; }
-        public TenantDetailsMessage user { get; set; }
+        public TenantUpdateMessage message { get; set; }
     }
 
-    public class TenantDetailsMessage
+    public class TenantUpdateMessage
     {
         public int id { get; set; }
         public List<int> registered_doors { get; set; }

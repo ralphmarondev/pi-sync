@@ -26,15 +26,16 @@ namespace PiSync.Tenant.Details
             try
             {
                 var response = await ApiService.httpClient.GetFromJsonAsync<TenantDetailsResponse>($"user/{tenantId}/");
-                if (response?.success == true && response.message != null)
+                if (response?.success == true && response.user != null)
                 {
-                    TenantDetailsMessage tenant = response.message;
+                    TenantDetailsMessage tenant = response.user;
 
                     tbFirstName.Text = tenant.first_name;
                     tbLastName.Text = tenant.last_name;
                     tbUsername.Text = tenant.username;
                     tbPasswordHint.Text = tenant.hint_password;
                     tbGender.Text = tenant.gender;
+                    tbFingerprint.Text = string.IsNullOrEmpty(tenant.fingerprint_template) ? tenant.fingerprint_template : "No fingerprint template";
 
                     await LoadRegisteredDoorNameAsync(tenant.registered_doors);
                 }

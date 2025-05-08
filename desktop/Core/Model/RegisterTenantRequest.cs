@@ -25,7 +25,6 @@ namespace PiSync.Core.Model
         [JsonPropertyName("registered_doors")]
         public List<int> RegisteredDoors { get; set; }
 
-        // New property to accept fingerprint template as a base64 string
         [JsonPropertyName("fingerprint_template")]
         public string FingerprintTemplate { get; set; }
     }

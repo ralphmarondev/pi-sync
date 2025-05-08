@@ -7,7 +7,7 @@ namespace PiSync.Tenant.Update
     public partial class TenantUpdateForm : Form
     {
         private int tenantId;
-        private TenantDetailsMessage tenant;
+        private TenantUpdateMessage tenant;
 
         public TenantUpdateForm(int tenantId)
         {
@@ -30,7 +30,7 @@ namespace PiSync.Tenant.Update
         {
             try
             {
-                var response = await ApiService.httpClient.GetFromJsonAsync<TenantDetailsResponse>($"user/{tenantId}/");
+                var response = await ApiService.httpClient.GetFromJsonAsync<TenantUpdateResponse>($"user/{tenantId}/");
                 if (response?.success == true && response.message != null)
                 {
                     this.tenant = response.message;
