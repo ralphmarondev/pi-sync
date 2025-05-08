@@ -21,9 +21,9 @@ class User(AbstractUser):
     is_deleted = models.BooleanField(default=False)
     update_date = models.DateTimeField(auto_now=True)
     registered_doors = models.ManyToManyField('rooms.Door', related_name='users', blank=True)
+    fingerprint_template = models.CharField(max_length=200, blank=True, null=True)  # Assuming this is a string representation of the template
 
     image = models.CharField(max_length=200, blank=True, null=True)  # we will store path as string
-    fingerprint_template = models.CharField(max_length=200, blank=True, null=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
@@ -34,12 +34,12 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
-    def save_fingerprint(self, template):
-        self.fingerprint_template = template
-        self.save()
+    # def save_fingerprint(self, template):
+    #     self.fingerprint_template = template
+    #     self.save()
 
-    def get_fingerprint(self):
-        return self.fingerprint_template
+    # def get_fingerprint(self):
+    #     return self.fingerprint_template
 
     def save_image(self, uploaded_file):
         if uploaded_file:

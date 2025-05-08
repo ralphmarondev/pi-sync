@@ -15,7 +15,7 @@ class UserRegisterView(APIView):
         serializer = UserSerializer(data=data)
 
         image = request.FILES.get('image')
-        fingerprint_template_name = data.get('fingerprint_template_name')
+        fingerprint_template_name = data.get('fingerprint_template')  # Get the fingerprint template name
 
         if serializer.is_valid():
             user = serializer.save()
@@ -23,27 +23,22 @@ class UserRegisterView(APIView):
 
             # Save the user image if provided
             if image:
-                user.image = image
+                user.save_image(image)  # Use your existing save_image method
 
-            # Save the fingerprint template by name and toggle is_assigned
+            # Save and mark the fingerprint template as assigned
             if fingerprint_template_name:
                 try:
-                    # Get the fingerprint template by name
                     fingerprint_template = FingerprintTemplate.objects.get(name=fingerprint_template_name)
-
-                    # Toggle the is_assigned to True
                     fingerprint_template.is_assigned = True
                     fingerprint_template.save()
 
-                    # Save the fingerprint template name in the user model
-                    user.save_fingerprint(fingerprint_template_name)  # Save using the new save_fingerprint method
-
+                    user.fingerprint_template = fingerprint_template_name  # Save directly
                 except FingerprintTemplate.DoesNotExist:
                     return Response(data={
                         'success': False,
                         'message': 'Fingerprint template not found'
                     }, status=status.HTTP_400_BAD_REQUEST)
-            
+
             user.save()
 
             # Handle registered doors
@@ -56,8 +51,7 @@ class UserRegisterView(APIView):
                         door_obj = Door.objects.get(id=door_id)
                         door_obj.tenant_count += 1
                         door_obj.save()
-                    except Door.DoesNotExist:  # Fixed typo here
-                        print('Door does not exist')
+                    except Door.DoesNotExist:
                         continue
 
             return Response(data={
@@ -125,12 +119,13 @@ class UserDetailView(APIView):
         serializer = UserSerializer(user)
         user_data = serializer.data
         user_data['image_url'] = user.get_image_url()
-        user_data['fingerprint_template'] = user.get_fingerprint()
+        user_data['fingerprint_template'] = user.fingerprint_template  # Directly access the field
 
         return Response(
             data={
                 'success': True,
-                'message': user_data
+                'message': 'User retrieved successfully',
+                'user': user_data
             },
             status=status.HTTP_200_OK
         )
@@ -139,7 +134,7 @@ class UserUpdateView(APIView):
     def put(self, request, pk):
         try:
             user = User.objects.get(pk=pk)
-        except  User.DoesNotExists:
+        except User.DoesNotExist:  # Fixed typo: DoesNotExist (not DoesNotExists)
             return Response(
                 data={
                     'success': False,
@@ -153,8 +148,16 @@ class UserUpdateView(APIView):
 
         if serializer.is_valid():
             user = serializer.save()
-            user.set_password(data.get('password', user.password))
-            user.save()
+
+            # Update password if provided
+            if 'password' in data:
+                user.set_password(data['password'])
+                user.save()
+
+            # Update fingerprint if provided
+            if 'fingerprint' in data:
+                user.fingerprint = data['fingerprint']
+                user.save()
 
             # Get the current and updated registered doors
             previous_doors = set(user.registered_doors.values_list('id', flat=True))
@@ -175,6 +178,7 @@ class UserUpdateView(APIView):
                 door.save()
 
             user.registered_doors.set(updated_doors)
+
             return Response(
                 data={
                     'success': True,

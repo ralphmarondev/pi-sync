@@ -5,7 +5,7 @@ class FingerprintTemplate(models.Model):
     template = models.TextField(null=True, blank=True) 
     create_date = models.DateTimeField(auto_now=True)
     update_date = models.DateTimeField(auto_now=True)
-    is_assigned = models.BooleanField(defualt=False)
+    is_assigned = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
