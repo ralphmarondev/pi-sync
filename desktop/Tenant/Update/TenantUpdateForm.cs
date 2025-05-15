@@ -22,19 +22,17 @@ namespace PiSync.Tenant.Update
             try
             {
                 var registeredDoorText = tbRegisteredDoors.Text.Trim();
-                var doorIds = await RoomHelper.ParseRoomNamesToIdsAsync(registeredDoorText);
+                List<int> doorIds;
 
-                System.Diagnostics.Debug.WriteLine($"doorIds count: {doorIds.Count}");
-                System.Diagnostics.Debug.WriteLine($"doorIds: {string.Join(", ", doorIds)}");
-
-                if (doorIds == null)
+                if (registeredDoorText.Equals("No rooms", StringComparison.OrdinalIgnoreCase) ||
+                    string.IsNullOrEmpty(registeredDoorText))
                 {
-                    
-                    if (string.IsNullOrEmpty(registeredDoorText))
-                    {
-                        doorIds = new List<int>();
-                    }
-                    else
+                    doorIds = new List<int>();
+                }
+                else
+                {
+                    doorIds = await RoomHelper.ParseRoomNamesToIdsAsync(registeredDoorText);
+                    if (doorIds == null)
                     {
                         MessageBox.Show("One or more rooms could not be resolved to IDs.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
@@ -53,33 +51,43 @@ namespace PiSync.Tenant.Update
                     RegisteredDoors = doorIds
                 };
 
-                var content = JsonContent.Create(updateTenant);
-                var response = await ApiService.httpClient.PutAsync($"user/update/{tenantId}/", content);
+                var json = System.Text.Json.JsonSerializer.Serialize(updateTenant);
+                System.Diagnostics.Debug.WriteLine($"Payload to send: {json}");
 
-                if (response.IsSuccessStatusCode)
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                var request = new HttpRequestMessage(HttpMethod.Put, $"user/update/{tenantId}/")
                 {
-                    var result = await response.Content.ReadFromJsonAsync<ApiResponse>();
-                    if (result?.success == true)
-                    {
-                        MessageBox.Show("Tenant updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show(result?.message ?? "Update failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    Content = content
+                };
+
+                var response = await ApiService.httpClient.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                var result = await response.Content.ReadFromJsonAsync<ApiResponse>();
+
+                if (result?.success == true)
+                {
+                    MessageBox.Show("Tenant updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    string errorText = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Failed to update tenant.\nStatus: {response.StatusCode}\n{errorText}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    string errors = result?.message ?? "Unknown error";
+                    MessageBox.Show($"Failed to update tenant: {errors}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                System.Diagnostics.Debug.WriteLine($"HTTP error updating tenant: {httpEx.Message}");
+                MessageBox.Show($"HTTP error updating tenant: {httpEx.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
-                MessageBox.Show("Error updating tenant.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Debug.WriteLine($"Error updating tenant: {ex.Message}");
+                MessageBox.Show($"Error updating tenant: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private async void TenantUpdateForm_Load(object sender, EventArgs e)
         {
             await FetchTenantDetailsAsync();
@@ -120,7 +128,7 @@ namespace PiSync.Tenant.Update
             if (doorIds == null || doorIds.Count == 0)
             {
                 System.Diagnostics.Debug.WriteLine($"No rooms. Door count: {doorIds?.Count}");
-                tbRegisteredDoors.Text = "No roooms";
+                tbRegisteredDoors.Text = "No rooms";
                 return;
             }
 
