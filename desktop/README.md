@@ -1,4 +1,4 @@
 # Todo
 
-- Updating Tenant.
-- Inserting fingerprint from api searched by name.
+- Update `is_assigned` when updating fingerprint of a tenant [user].
+
