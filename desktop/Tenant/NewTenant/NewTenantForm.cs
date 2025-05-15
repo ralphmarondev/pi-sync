@@ -109,6 +109,10 @@ namespace PiSync.Tenant.NewTenant
             if (success)
             {
                 MessageBox.Show("Tenant registered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (this.Owner is TenantForm parent)
+                {
+                    parent.RefreshData();
+                }
                 Hide();
             }
             else
@@ -178,6 +182,7 @@ namespace PiSync.Tenant.NewTenant
                         selectedTemplate = null;
                         return true;
                     }
+                    MessageBox.Show($"Error: {error}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
             }
