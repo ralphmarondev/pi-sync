@@ -24,6 +24,7 @@ namespace PiSync.Tenant.NewTenant
             string password = tbPassword.Text.Trim();
             string passwordHint = tbPasswordHint.Text.Trim(); // optional, can be empty.
             string gender = tbGender.Text.Trim();
+            string email = tbEmail.Text.Trim();
 
             string registeredDoorText = tbRegisteredDoors.Text.Trim();
             List<string> registeredDoorList = registeredDoorText
@@ -75,6 +76,11 @@ namespace PiSync.Tenant.NewTenant
                 ShowWarning("Password cannot be empty.");
                 return;
             }
+            if (string.IsNullOrEmpty(email))
+            {
+                ShowWarning("Email cannot be empty.");
+                return;
+            }
             if (registeredDoorList.Count < 1)
             {
                 ShowWarning("Registered doors cannot be empty.");
@@ -99,7 +105,7 @@ namespace PiSync.Tenant.NewTenant
             }
             Console.WriteLine("All doors found. Proceeding to save...");
 
-            bool success = await SaveTenantAsync(firstName, lastName, username, password, passwordHint, gender, doorIds);
+            bool success = await SaveTenantAsync(firstName, lastName, username, password, passwordHint, gender, email, doorIds);
             if (success)
             {
                 MessageBox.Show("Tenant registered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -117,7 +123,7 @@ namespace PiSync.Tenant.NewTenant
         }
 
         // saving to api lol
-        private async Task<bool> SaveTenantAsync(string firstName, string lastName, string username, string password, string passwordHint, string gender, List<int> registeredDoorList)
+        private async Task<bool> SaveTenantAsync(string firstName, string lastName, string username, string password, string passwordHint, string gender, string email, List<int> registeredDoorList)
         {
             // Get the selected fingerprint template from the ComboBox (it can be null)
             var selectedTemplate = tbFingerprint.SelectedValue?.ToString();  // This will be null if nothing is selected
@@ -135,6 +141,7 @@ namespace PiSync.Tenant.NewTenant
                 Password = password,
                 HintPassword = passwordHint,
                 Gender = gender,
+                Email = email,
                 RegisteredDoors = registeredDoorList,
                 FingerprintTemplate = selectedTemplate  // This can be null
             };
