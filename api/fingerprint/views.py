@@ -45,4 +45,16 @@ class FingerprintAssignView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except FingerprintTemplate.DoesNotExist:
             return Response({'detail': 'Template not found.'}, status=status.HTTP_404_NOT_FOUND)
-        
+    
+# /fingerprint/unassign/<name>/  ➔ Set is_assigned = False
+class FingerprintUnassignView(APIView):
+    def patch(self, request, name):
+        try:
+            template = FingerprintTemplate.objects.get(name=name, is_deleted=False)
+            template.is_assigned = False
+            template.save()
+
+            serializer = FingerprintTemplateSerializer(template)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except FingerprintTemplate.DoesNotExist:
+            return Response({'detail': 'Template not found.'}, status=status.HTTP_404_NOT_FOUND)
