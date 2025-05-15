@@ -1,6 +1,0 @@
-# Ignore everything
-*
-
-# But NOT install.sh
-!install.sh
-!.gitignore
