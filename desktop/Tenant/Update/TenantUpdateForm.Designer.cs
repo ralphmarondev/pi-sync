@@ -179,15 +179,15 @@
             label6.Font = new Font("Courier New", 11F);
             label6.Location = new Point(41, 165);
             label6.Name = "label6";
-            label6.Size = new Size(109, 21);
+            label6.Size = new Size(153, 21);
             label6.TabIndex = 13;
-            label6.Text = "Password:";
+            label6.Text = "New Password:";
             // 
             // tbPassword
             // 
             tbPassword.Location = new Point(41, 192);
             tbPassword.Name = "tbPassword";
-            tbPassword.PlaceholderText = "Hidden :)";
+            tbPassword.PlaceholderText = "Enter new password";
             tbPassword.Size = new Size(289, 30);
             tbPassword.TabIndex = 12;
             // 
