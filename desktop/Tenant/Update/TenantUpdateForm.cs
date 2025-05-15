@@ -91,6 +91,46 @@ namespace PiSync.Tenant.Update
         private async void TenantUpdateForm_Load(object sender, EventArgs e)
         {
             await FetchTenantDetailsAsync();
+
+            var fingerprints = await FetchFingerprintTemplatesAsync();
+
+            fingerprints.Insert(0, new FingerprintTemplate
+            {
+                Name = "Select fingerprint",
+                Template = null
+            });
+
+            // If tenant has a fingerprint assigned, fetch and insert it manually
+            if (!string.IsNullOrWhiteSpace(tenant?.fingerprint_template) && tenant.fingerprint_template != "No fingerprint template")
+            {
+                var currentFingerprint = await FetchFingerprintDetailAsync(tenant.fingerprint_template);
+
+                if (currentFingerprint != null)
+                {
+                    // Avoid duplicate entries (e.g., if template is mistakenly in the unassigned list)
+                    if (!fingerprints.Any(f => f.Name == currentFingerprint.Name))
+                    {
+                        fingerprints.Insert(1, currentFingerprint);
+                    }
+                }
+            }
+
+            tbFingerprint.DataSource = fingerprints;
+            tbFingerprint.DisplayMember = "Name";
+            tbFingerprint.ValueMember = "Name";
+            tbFingerprint.SelectedIndex = 0;
+
+            // Select current assigned fingerprint if present
+            if (!string.IsNullOrWhiteSpace(tenant?.fingerprint_template) &&
+                tenant.fingerprint_template != "No fingerprint template")
+            {
+                var index = fingerprints.FindIndex(f => f.Name == tenant.fingerprint_template);
+                tbFingerprint.SelectedIndex = index >= 0 ? index : 0;
+            }
+            else
+            {
+                tbFingerprint.SelectedIndex = 0;
+            }
         }
 
 
@@ -151,6 +191,72 @@ namespace PiSync.Tenant.Update
                 }
             }
             tbRegisteredDoors.Text = doorNames.Count > 0 ? string.Join(", ", doorNames) : "No rooms";
+        }
+
+        private async Task<List<FingerprintTemplate>> FetchFingerprintTemplatesAsync()
+        {
+            try
+            {
+                var response = await ApiService.httpClient.GetAsync("fingerprint/");
+                if (response.IsSuccessStatusCode)
+                {
+                    var templates = await response.Content.ReadFromJsonAsync<List<FingerprintTemplate>>();
+                    return templates ?? new List<FingerprintTemplate>();
+                }
+                else
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"Failed to fetch fingerprints: {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Exception fetching fingerprints: {ex.Message}");
+            }
+            return new List<FingerprintTemplate>();
+        }
+
+        private async Task<FingerprintTemplate?> FetchFingerprintDetailAsync(string fingerprintName)
+        {
+            if (string.IsNullOrWhiteSpace(fingerprintName) || fingerprintName == "Select fingerprint")
+                return null;
+
+            try
+            {
+                var response = await ApiService.httpClient.GetAsync($"fingerprint/details/{fingerprintName}/");
+                if (response.IsSuccessStatusCode)
+                {
+                    var detail = await response.Content.ReadFromJsonAsync<FingerprintTemplate>();
+                    return detail;
+                }
+                else
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    System.Diagnostics.Debug.WriteLine($"Failed to fetch fingerprint details: {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Exception fetching fingerprint details: {ex.Message}");
+            }
+            return null;
+        }
+
+        private async void tbFingerprint_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tbFingerprint.SelectedItem is FingerprintTemplate selectedFingerprint)
+            {
+                var detail = await FetchFingerprintDetailAsync(selectedFingerprint.Name);
+                if (detail != null)
+                {
+                    tbFingerprint.Text = detail.Name ?? "";
+                    System.Diagnostics.Debug.WriteLine($"Loaded fingerprint template for {detail.Name}");
+                }
+                else
+                {
+                    tbFingerprint.Text = ""; 
+                }
+            }
         }
     }
 

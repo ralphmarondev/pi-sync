@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            tbFingerprint = new ComboBox();
             tbGender = new ComboBox();
             btnUpdate = new Button();
             label9 = new Label();
             tbImage = new TextBox();
             label7 = new Label();
-            tbFingerprint = new TextBox();
             label8 = new Label();
             tbRegisteredDoors = new TextBox();
             label5 = new Label();
@@ -54,12 +54,12 @@
             // panel1
             // 
             panel1.BackColor = SystemColors.Control;
+            panel1.Controls.Add(tbFingerprint);
             panel1.Controls.Add(tbGender);
             panel1.Controls.Add(btnUpdate);
             panel1.Controls.Add(label9);
             panel1.Controls.Add(tbImage);
             panel1.Controls.Add(label7);
-            panel1.Controls.Add(tbFingerprint);
             panel1.Controls.Add(label8);
             panel1.Controls.Add(tbRegisteredDoors);
             panel1.Controls.Add(label5);
@@ -77,6 +77,16 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(694, 551);
             panel1.TabIndex = 2;
+            // 
+            // tbFingerprint
+            // 
+            tbFingerprint.DropDownStyle = ComboBoxStyle.DropDownList;
+            tbFingerprint.FormattingEnabled = true;
+            tbFingerprint.Location = new Point(41, 350);
+            tbFingerprint.Name = "tbFingerprint";
+            tbFingerprint.Size = new Size(606, 30);
+            tbFingerprint.TabIndex = 27;
+            tbFingerprint.SelectedIndexChanged += tbFingerprint_SelectedIndexChanged;
             // 
             // tbGender
             // 
@@ -128,14 +138,6 @@
             label7.Size = new Size(142, 21);
             label7.TabIndex = 19;
             label7.Text = "Fingerprint:";
-            // 
-            // tbFingerprint
-            // 
-            tbFingerprint.Location = new Point(41, 353);
-            tbFingerprint.Name = "tbFingerprint";
-            tbFingerprint.PlaceholderText = "Not implement yet. Can leave as null";
-            tbFingerprint.Size = new Size(606, 30);
-            tbFingerprint.TabIndex = 18;
             // 
             // label8
             // 
@@ -277,7 +279,6 @@
         private Label label9;
         private TextBox tbImage;
         private Label label7;
-        private TextBox tbFingerprint;
         private Label label8;
         private TextBox tbRegisteredDoors;
         private Label label5;
@@ -292,5 +293,6 @@
         private Label label1;
         private TextBox tbFirstName;
         private ComboBox tbGender;
+        private ComboBox tbFingerprint;
     }
 }
