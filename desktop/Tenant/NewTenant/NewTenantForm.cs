@@ -121,6 +121,10 @@ namespace PiSync.Tenant.NewTenant
         {
             // Get the selected fingerprint template from the ComboBox (it can be null)
             var selectedTemplate = tbFingerprint.SelectedValue?.ToString();  // This will be null if nothing is selected
+            if (selectedTemplate == "Select fingerprint")
+            {
+                selectedTemplate = null;
+            }
 
             // Create the request body
             var requestBody = new RegisterTenantRequest
@@ -161,6 +165,12 @@ namespace PiSync.Tenant.NewTenant
                 {
                     string error = await response.Content.ReadAsStringAsync();
                     System.Diagnostics.Debug.WriteLine($"API error: {error}");
+                    // if its just the fingerprint something, continue :>>
+                    if (selectedTemplate == "Select fingerprint" || selectedTemplate == null)
+                    {
+                        selectedTemplate = null;
+                        return true;
+                    }
                     return false;
                 }
             }
