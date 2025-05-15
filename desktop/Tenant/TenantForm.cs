@@ -53,7 +53,7 @@ namespace PiSync.Tenant
         }
 
         // Fetch tenants from the API
-        private async void FetchTenantsAsync()
+        private async Task FetchTenantsAsync()
         {
             try
             {
@@ -61,7 +61,7 @@ namespace PiSync.Tenant
                 if (response?.success == true)
                 {
                     tenants = response.users;
-                    PopulateTenants();
+                    await PopulateTenants();
                 }
                 else
                 {
@@ -206,5 +206,11 @@ namespace PiSync.Tenant
             dataGridViewTenant.ClearSelection();
         }
 
+        public async void RefreshData()
+        {
+            FetchTenantsAsync();
+            SetupDataGridView();
+            PopulateTenants();
+        }
     }
 }
