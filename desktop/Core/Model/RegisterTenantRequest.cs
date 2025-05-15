@@ -22,6 +22,9 @@ namespace PiSync.Core.Model
         [JsonPropertyName("gender")]
         public string Gender { get; set; }
 
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
+
         [JsonPropertyName("registered_doors")]
         public List<int> RegisteredDoors { get; set; }
 
