@@ -26,10 +26,10 @@ last_state = None
 def unlock_solenoid():
     """Unlock the solenoid for 10 seconds"""
     print("🔓 Unlocking solenoid for 10 seconds...")
-    solenoid.off()
+    solenoid.on()
     write_top('Door opened')
     time.sleep(10)
-    solenoid.on()
+    solenoid.off ()
     write_top('Door closed')
     print("🔒 Solenoid locked again.")
 
