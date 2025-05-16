@@ -36,6 +36,12 @@ namespace PiSync.Room.Delete
                     if (response.IsSuccessStatusCode)
                     {
                         MessageBox.Show("Room deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        RoomForm mainForm = ParentForm as RoomForm;
+                        if (mainForm != null)
+                        {
+                            mainForm.RefreshData();
+                        }
                         Close();
                     }
                     else
