@@ -86,7 +86,7 @@ def save_fingerprint():
         'template': current_fingerprint_template
     }
 
-    api_url = "http://192.168.1.98:8000/api/fingerprint/enroll/"
+    api_url = "http://192.168.1.223:8000/api/fingerprint/enroll/"
 
     try:
         response = requests.post(api_url, json=data)
