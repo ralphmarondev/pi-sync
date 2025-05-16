@@ -11,10 +11,10 @@ Progress we've made and to be done. More updates to come, stay tuned!
 - Syncing with other way of closing | opening of door
 - Getting password hint with username inputted.
 - Getting history list by room id
+- Show image depending on gender [MALE | FEMALE]
 
 ## Actions todo
 
-- Show image depending on gender [MALE | FEMALE]
 - Implement onboarding screen.
 - Change app icon, make it look better.
 - Change theme and font.
