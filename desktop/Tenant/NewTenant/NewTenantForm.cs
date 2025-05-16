@@ -167,6 +167,7 @@ namespace PiSync.Tenant.NewTenant
                 System.Diagnostics.Debug.WriteLine("➡️ Raw HTTP Body being sent:\n" + rawContent);
 
                 var response = await ApiService.httpClient.SendAsync(request);
+                string responseBody = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -174,21 +175,40 @@ namespace PiSync.Tenant.NewTenant
                 }
                 else
                 {
-                    string error = await response.Content.ReadAsStringAsync();
-                    System.Diagnostics.Debug.WriteLine($"API error: {error}");
-                    // if its just the fingerprint something, continue :>>
-                    if (selectedTemplate == "Select fingerprint" || selectedTemplate == null)
+                    System.Diagnostics.Debug.WriteLine($"API error: {responseBody}");
+
+                    try
                     {
-                        selectedTemplate = null;
-                        return true;
+                        var errorJson = System.Text.Json.JsonDocument.Parse(responseBody);
+                        if (errorJson.RootElement.TryGetProperty("errors", out var errors))
+                        {
+                            string message = "Registration failed:\n";
+
+                            foreach (var prop in errors.EnumerateObject())
+                            {
+                                string field = prop.Name;
+                                string detail = string.Join(", ", prop.Value.EnumerateArray().Select(v => v.GetString()));
+                                message += $"- {field}: {detail}\n";
+                            }
+                            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            MessageBox.Show($"Error: {responseBody}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
                     }
-                    MessageBox.Show($"Error: {error}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    catch
+                    {
+                        MessageBox.Show($"Error: {responseBody}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Exception: {ex.Message}");
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
