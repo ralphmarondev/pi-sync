@@ -206,6 +206,11 @@ class UserDeleteView(APIView):
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
+        
+        for door in user.registered_doors.all():
+            if door.tenant_count > 0:
+                door.tenant_count -= 1
+                door.save()
 
         user.is_deleted = True
         user.save()
