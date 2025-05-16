@@ -17,6 +17,7 @@ class UserDetailRepositoryImpl(
             lastName = user.last_name,
             username = user.username,
             email = user.email,
+            gender = user.gender,
             hintPassword = user.hint_password,
             isSuperUser = user.is_superuser,
             image = user.image

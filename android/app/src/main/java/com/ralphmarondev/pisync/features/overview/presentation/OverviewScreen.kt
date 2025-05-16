@@ -40,7 +40,7 @@ fun OverviewScreen() {
     val isLoading = viewModel.isLoading.collectAsState().value
     val fullName = viewModel.fullName.collectAsState().value
     val email = viewModel.email.collectAsState().value
-    val image = viewModel.image.collectAsState().value
+    val gender = viewModel.gender.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -81,7 +81,7 @@ fun OverviewScreen() {
                     .padding(16.dp),
                 fullName = fullName,
                 email = email,
-                profilePictureUrl = image
+                gender = gender
             )
 
             Text(

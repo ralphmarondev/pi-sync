@@ -6,6 +6,7 @@ data class UserDetail(
     val lastName: String,
     val username: String,
     val email: String,
+    val gender: String,
     val hintPassword: String,
     val isSuperUser: Boolean,
     val image: String?
