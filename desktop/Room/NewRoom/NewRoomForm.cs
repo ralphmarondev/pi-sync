@@ -31,6 +31,11 @@ namespace PiSync.Room.NewRoom
             bool isSaved = await SaveRoomToDatabase(roomName);
             if (isSaved)
             {
+                RoomForm mainForm = ParentForm as RoomForm;
+                if (mainForm != null)
+                {
+                    mainForm.RefreshData();
+                }
                 Hide();
             }
         }
