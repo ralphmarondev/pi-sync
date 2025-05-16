@@ -1,4 +1,3 @@
 # Todo
 
-- Update `is_assigned` when updating fingerprint of a tenant [user].
-
+- Implement auto refresh of mainforms after CRUD operation.
