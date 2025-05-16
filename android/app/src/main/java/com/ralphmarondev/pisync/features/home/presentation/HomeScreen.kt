@@ -28,7 +28,9 @@ import org.koin.androidx.compose.koinViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    navigateToAbout: () -> Unit,
+    navigateToDeveloper: () -> Unit
 ) {
     val viewModel: HomeViewModel = koinViewModel()
     val selectedIndex = viewModel.selectedIndex.collectAsState().value
@@ -94,7 +96,9 @@ fun HomeScreen(
             0 -> OverviewScreen()
             1 -> HistoryScreen()
             2 -> SettingScreen(
-                logout = onLogout
+                logout = onLogout,
+                navigateToDeveloper = navigateToDeveloper,
+                navigateToAbout = navigateToAbout
             )
         }
     }
