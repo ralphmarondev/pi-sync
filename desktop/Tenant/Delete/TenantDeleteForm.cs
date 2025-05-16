@@ -69,6 +69,7 @@ namespace PiSync.Tenant.Delete
                     tbUsername.Text = tenant.username;
                     tbPasswordHint.Text = tenant.hint_password;
                     tbGender.Text = tenant.gender;
+                    tbEmail.Text = tenant.email;
                     tbFingerprint.Text = string.IsNullOrEmpty(tenant.fingerprint_template) ? "No fingerprint template" : tenant.fingerprint_template;
 
                     await LoadRegisteredDoorNameAsync(tenant.registered_doors);
