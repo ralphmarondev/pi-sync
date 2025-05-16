@@ -13,6 +13,16 @@ namespace PiSync.Room
             room.name = roomName;
         }
 
+        public void CloseAndRefreshData()
+        {
+            RoomForm mainForm = ParentForm as RoomForm;
+            if (mainForm != null)
+            {
+                mainForm.RefreshData();
+            }
+            Hide();
+        }
+
         private void RoomManageForm_Load(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine($"Name: {room.name}, id: {room.id}");
@@ -46,7 +56,7 @@ namespace PiSync.Room
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Hide();
+            CloseAndRefreshData();
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
