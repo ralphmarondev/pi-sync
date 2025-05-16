@@ -156,7 +156,27 @@ class UserUpdateView(APIView):
 
             # Update fingerprint if provided
             if 'fingerprint' in data:
-                user.fingerprint = data['fingerprint']
+                new_fp_id = data['fingerprint']
+                old_fp = user.fingerprint
+
+                # Unassign old fingerprint
+                if old_fp and old_fp.id != new_fp_id:
+                    old_fp.is_assigned = False
+                    old_fp.save()
+
+                try:
+                    new_fp = FingerprintTemplate.objects.get(id=new_fp_id)
+                    new_fp.is_assigned = True
+                    new_fp.save()
+                    user.fingerprint = new_fp  # Set the actual object, not just the ID
+                except FingerprintTemplate.DoesNotExist:
+                    return Response(
+                        data={
+                            'success': False,
+                            'message': 'Fingerprint not found'
+                        },
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
                 user.save()
 
             # Get the current and updated registered doors
