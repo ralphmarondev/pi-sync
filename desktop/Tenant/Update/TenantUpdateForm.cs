@@ -46,6 +46,7 @@ namespace PiSync.Tenant.Update
                     Username = string.IsNullOrWhiteSpace(tbUsername.Text) ? null : tbUsername.Text.Trim(),
                     HintPassword = string.IsNullOrWhiteSpace(tbPasswordHint.Text) ? null : tbPasswordHint.Text.Trim(),
                     Gender = string.IsNullOrWhiteSpace(tbGender.Text) ? null : tbGender.Text.Trim(),
+                    Email = string.IsNullOrWhiteSpace(tbEmail.Text) ? null : tbEmail.Text.Trim(),
                     FingerprintTemplate = string.IsNullOrWhiteSpace(tbFingerprint.Text) ? null : tbFingerprint.Text.Trim(),
                     Password = string.IsNullOrWhiteSpace(tbPassword.Text) ? null : tbPassword.Text.Trim(),
                     RegisteredDoors = doorIds
@@ -148,6 +149,7 @@ namespace PiSync.Tenant.Update
                     tbUsername.Text = tenant.username;
                     tbPasswordHint.Text = tenant.hint_password;
                     tbGender.Text = tenant.gender;
+                    tbEmail.Text = tenant.email;
                     tbFingerprint.Text = string.IsNullOrEmpty(tenant.fingerprint_template) ? "No fingerprint template" : tenant.fingerprint_template;
 
                     await LoadRegisteredDoorNameAsync(tenant.registered_doors);
@@ -287,6 +289,10 @@ namespace PiSync.Tenant.Update
         [JsonPropertyName("gender")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Gender { get; set; }
+
+        [JsonPropertyName("email")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? Email { get; set; }
 
         [JsonPropertyName("fingerprint_template")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
