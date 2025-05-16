@@ -32,8 +32,6 @@
             tbFingerprint = new ComboBox();
             tbGender = new ComboBox();
             btnUpdate = new Button();
-            label9 = new Label();
-            tbImage = new TextBox();
             label7 = new Label();
             label8 = new Label();
             tbRegisteredDoors = new TextBox();
@@ -48,17 +46,19 @@
             tbLastName = new TextBox();
             label1 = new Label();
             tbFirstName = new TextBox();
+            label10 = new Label();
+            tbEmail = new TextBox();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = SystemColors.Control;
+            panel1.Controls.Add(label10);
+            panel1.Controls.Add(tbEmail);
             panel1.Controls.Add(tbFingerprint);
             panel1.Controls.Add(tbGender);
             panel1.Controls.Add(btnUpdate);
-            panel1.Controls.Add(label9);
-            panel1.Controls.Add(tbImage);
             panel1.Controls.Add(label7);
             panel1.Controls.Add(label8);
             panel1.Controls.Add(tbRegisteredDoors);
@@ -82,10 +82,10 @@
             // 
             tbFingerprint.DropDownStyle = ComboBoxStyle.DropDownList;
             tbFingerprint.FormattingEnabled = true;
-            tbFingerprint.Location = new Point(41, 350);
+            tbFingerprint.Location = new Point(41, 420);
             tbFingerprint.Name = "tbFingerprint";
             tbFingerprint.Size = new Size(606, 30);
-            tbFingerprint.TabIndex = 27;
+            tbFingerprint.TabIndex = 9;
             tbFingerprint.SelectedIndexChanged += tbFingerprint_SelectedIndexChanged;
             // 
             // tbGender
@@ -96,44 +96,25 @@
             tbGender.Location = new Point(358, 116);
             tbGender.Name = "tbGender";
             tbGender.Size = new Size(289, 30);
-            tbGender.TabIndex = 26;
+            tbGender.TabIndex = 4;
             // 
             // btnUpdate
             // 
+            btnUpdate.BackColor = Color.FromArgb(192, 255, 192);
             btnUpdate.Cursor = Cursors.Hand;
             btnUpdate.Location = new Point(41, 488);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(289, 47);
-            btnUpdate.TabIndex = 23;
+            btnUpdate.TabIndex = 10;
             btnUpdate.Text = "UPDATE";
-            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.UseVisualStyleBackColor = false;
             btnUpdate.Click += btnUpdate_Click;
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font("Courier New", 11F);
-            label9.Location = new Point(41, 399);
-            label9.Name = "label9";
-            label9.Size = new Size(76, 21);
-            label9.TabIndex = 21;
-            label9.Text = "Image:";
-            label9.Visible = false;
-            // 
-            // tbImage
-            // 
-            tbImage.Location = new Point(41, 426);
-            tbImage.Name = "tbImage";
-            tbImage.PlaceholderText = "Not implement yet. Can leave as null";
-            tbImage.Size = new Size(606, 30);
-            tbImage.TabIndex = 20;
-            tbImage.Visible = false;
             // 
             // label7
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Courier New", 11F);
-            label7.Location = new Point(41, 326);
+            label7.Location = new Point(41, 396);
             label7.Name = "label7";
             label7.Size = new Size(142, 21);
             label7.TabIndex = 19;
@@ -143,7 +124,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Courier New", 11F);
-            label8.Location = new Point(41, 247);
+            label8.Location = new Point(41, 317);
             label8.Name = "label8";
             label8.Size = new Size(197, 21);
             label8.TabIndex = 17;
@@ -151,17 +132,17 @@
             // 
             // tbRegisteredDoors
             // 
-            tbRegisteredDoors.Location = new Point(41, 274);
+            tbRegisteredDoors.Location = new Point(41, 344);
             tbRegisteredDoors.Name = "tbRegisteredDoors";
             tbRegisteredDoors.PlaceholderText = "If more than 1, separate by comma. Ex. A14, A15";
             tbRegisteredDoors.Size = new Size(606, 30);
-            tbRegisteredDoors.TabIndex = 16;
+            tbRegisteredDoors.TabIndex = 8;
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Courier New", 11F);
-            label5.Location = new Point(358, 165);
+            label5.Location = new Point(358, 235);
             label5.Name = "label5";
             label5.Size = new Size(164, 21);
             label5.TabIndex = 15;
@@ -169,17 +150,17 @@
             // 
             // tbPasswordHint
             // 
-            tbPasswordHint.Location = new Point(358, 192);
+            tbPasswordHint.Location = new Point(358, 262);
             tbPasswordHint.Name = "tbPasswordHint";
             tbPasswordHint.PlaceholderText = "Optional";
             tbPasswordHint.Size = new Size(289, 30);
-            tbPasswordHint.TabIndex = 14;
+            tbPasswordHint.TabIndex = 7;
             // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Courier New", 11F);
-            label6.Location = new Point(41, 165);
+            label6.Location = new Point(41, 235);
             label6.Name = "label6";
             label6.Size = new Size(153, 21);
             label6.TabIndex = 13;
@@ -187,11 +168,11 @@
             // 
             // tbPassword
             // 
-            tbPassword.Location = new Point(41, 192);
+            tbPassword.Location = new Point(41, 262);
             tbPassword.Name = "tbPassword";
             tbPassword.PlaceholderText = "Enter new password";
             tbPassword.Size = new Size(289, 30);
-            tbPassword.TabIndex = 12;
+            tbPassword.TabIndex = 6;
             // 
             // label3
             // 
@@ -217,8 +198,9 @@
             // 
             tbUsername.Location = new Point(41, 116);
             tbUsername.Name = "tbUsername";
+            tbUsername.PlaceholderText = "Enter username";
             tbUsername.Size = new Size(289, 30);
-            tbUsername.TabIndex = 8;
+            tbUsername.TabIndex = 3;
             // 
             // label2
             // 
@@ -234,8 +216,9 @@
             // 
             tbLastName.Location = new Point(358, 42);
             tbLastName.Name = "tbLastName";
+            tbLastName.PlaceholderText = "Enter last name";
             tbLastName.Size = new Size(289, 30);
-            tbLastName.TabIndex = 6;
+            tbLastName.TabIndex = 2;
             // 
             // label1
             // 
@@ -251,8 +234,28 @@
             // 
             tbFirstName.Location = new Point(41, 42);
             tbFirstName.Name = "tbFirstName";
+            tbFirstName.PlaceholderText = "Enter first name";
             tbFirstName.Size = new Size(289, 30);
-            tbFirstName.TabIndex = 4;
+            tbFirstName.TabIndex = 1;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Courier New", 11F);
+            label10.Location = new Point(41, 162);
+            label10.Name = "label10";
+            label10.Size = new Size(76, 21);
+            label10.TabIndex = 29;
+            label10.Text = "Email:";
+            // 
+            // tbEmail
+            // 
+            tbEmail.Location = new Point(41, 189);
+            tbEmail.Name = "tbEmail";
+            tbEmail.PlaceholderText = "Enter email";
+            tbEmail.Size = new Size(606, 30);
+            tbEmail.TabIndex = 5;
+            tbEmail.TabStop = false;
             // 
             // TenantUpdateForm
             // 
@@ -276,8 +279,6 @@
 
         private Panel panel1;
         private Button btnUpdate;
-        private Label label9;
-        private TextBox tbImage;
         private Label label7;
         private Label label8;
         private TextBox tbRegisteredDoors;
@@ -294,5 +295,7 @@
         private TextBox tbFirstName;
         private ComboBox tbGender;
         private ComboBox tbFingerprint;
+        private Label label10;
+        private TextBox tbEmail;
     }
 }
