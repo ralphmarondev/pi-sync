@@ -45,12 +45,16 @@
             tbLastName = new TextBox();
             label1 = new Label();
             tbFirstName = new TextBox();
+            label10 = new Label();
+            tbEmail = new TextBox();
             panel2.SuspendLayout();
             SuspendLayout();
             // 
             // panel2
             // 
             panel2.BackColor = SystemColors.Control;
+            panel2.Controls.Add(label10);
+            panel2.Controls.Add(tbEmail);
             panel2.Controls.Add(label9);
             panel2.Controls.Add(tbImage);
             panel2.Controls.Add(label7);
@@ -138,7 +142,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Courier New", 11F);
-            label5.Location = new Point(41, 169);
+            label5.Location = new Point(358, 171);
             label5.Name = "label5";
             label5.Size = new Size(164, 21);
             label5.TabIndex = 15;
@@ -147,7 +151,7 @@
             // tbPasswordHint
             // 
             tbPasswordHint.BackColor = SystemColors.Window;
-            tbPasswordHint.Location = new Point(41, 196);
+            tbPasswordHint.Location = new Point(358, 198);
             tbPasswordHint.Name = "tbPasswordHint";
             tbPasswordHint.PlaceholderText = "Optional";
             tbPasswordHint.ReadOnly = true;
@@ -230,6 +234,27 @@
             tbFirstName.Size = new Size(289, 30);
             tbFirstName.TabIndex = 4;
             // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Font = new Font("Courier New", 11F);
+            label10.Location = new Point(41, 171);
+            label10.Name = "label10";
+            label10.Size = new Size(76, 21);
+            label10.TabIndex = 33;
+            label10.Text = "Email:";
+            // 
+            // tbEmail
+            // 
+            tbEmail.BackColor = SystemColors.Window;
+            tbEmail.Location = new Point(41, 198);
+            tbEmail.Name = "tbEmail";
+            tbEmail.PlaceholderText = "Enter email";
+            tbEmail.ReadOnly = true;
+            tbEmail.Size = new Size(289, 30);
+            tbEmail.TabIndex = 32;
+            tbEmail.TabStop = false;
+            // 
             // TenantDetailsForm
             // 
             AutoScaleDimensions = new SizeF(12F, 22F);
@@ -267,5 +292,7 @@
         private TextBox tbLastName;
         private Label label1;
         private TextBox tbFirstName;
+        private Label label10;
+        private TextBox tbEmail;
     }
 }
