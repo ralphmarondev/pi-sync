@@ -21,7 +21,6 @@ pi-sync/
 ├── api/              ← You are here (backend)
 ├── android/          ← Android app
 ├── desktop/          ← Desktop client
-├── web/              ← Web client
 ├── raspberrypi/      ← Raspberry Pi scripts
 ├── README.md         ← Root documentation
 └── LICENSE
@@ -96,7 +95,8 @@ python manage.py migrate
 ### 6. Start the development server
 
 ```bash
-python manage.py runserver
+# python manage.py runserver
+sh run.sh
 ```
 
 Your API will now be accessible at `http://localhost:8000/`.
