@@ -7,7 +7,7 @@ from pyfingerprint.pyfingerprint import PyFingerprint
 import threading
 from lcd_utils import write_bottom
 
-API_URL = 'http://192.168.1.98:8000/api'
+API_URL = 'http://192.168.1.223:8000/api'
 
 def fetch_users_with_templates():
     try:

@@ -17,8 +17,8 @@ KEYSWITCH_PIN = 19  # Change this to your key switch pin
 keyswitch = Button(KEYSWITCH_PIN)
 
 # API endpoints
-STATUS_URL = 'http://192.168.1.98:8000/api/door/status/1/'
-CLOSE_URL = 'http://192.168.1.98:8000/api/door/close/1/'
+STATUS_URL = 'http://192.168.1.223:8000/api/door/status/1/'
+CLOSE_URL = 'http://192.168.1.223:8000/api/door/close/1/'
 
 # Track the last known state to avoid redundant switching
 last_state = None
