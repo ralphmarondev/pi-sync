@@ -45,6 +45,9 @@ class OverviewViewModel(
 
     private val _username = MutableStateFlow<String?>(null)
 
+    private val _gender = MutableStateFlow("")
+    val gender = _gender.asStateFlow()
+
     init {
         viewModelScope.launch {
             _isLoading.value = true
@@ -63,6 +66,7 @@ class OverviewViewModel(
                 _fullName.value = "${userDetail.firstName} ${userDetail.lastName}"
                 _email.value = userDetail.email.ifEmpty { _username.value ?: "No username proved" }
                 _image.value = userDetail.image
+                _gender.value = userDetail.gender
 
                 val registeredDoors = getDoorsByUsernameUseCase(
                     username = _username.value ?: "No username provided"

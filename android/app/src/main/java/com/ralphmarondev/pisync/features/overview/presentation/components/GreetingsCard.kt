@@ -30,9 +30,13 @@ fun GreetingsCard(
     modifier: Modifier = Modifier,
     fullName: String,
     email: String,
-    profilePictureUrl: String? = null
+    gender: String
 ) {
-    val image = profilePictureUrl ?: R.drawable.app_icon
+    val image = if (gender == "Male") {
+        R.drawable.user
+    } else {
+        R.drawable.girl
+    }
 
     ElevatedCard(
         modifier = modifier
