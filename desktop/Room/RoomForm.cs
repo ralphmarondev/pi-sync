@@ -24,6 +24,11 @@ namespace PiSync.Room
             //refreshTimer.Start();
         }
 
+        public void RefreshData()
+        {
+            SetupDataGridView();
+            FetchRoomsAsync();
+        }
 
         private void RoomForm_FormClosed(object sender, FormClosedEventArgs e)
         {
