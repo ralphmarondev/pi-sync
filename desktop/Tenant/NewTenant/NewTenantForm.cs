@@ -109,9 +109,12 @@ namespace PiSync.Tenant.NewTenant
             if (success)
             {
                 MessageBox.Show("Tenant registered successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                if (this.Owner is TenantForm parent)
+
+                TenantForm mainForm = ParentForm as TenantForm;
+
+                if (mainForm != null)
                 {
-                    parent.RefreshData();
+                    mainForm.RefreshData();
                 }
                 Hide();
             }
