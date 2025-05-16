@@ -27,8 +27,8 @@ echo -e "\n\033[1;35m✨ Created with love by Ralph Maron Eda 💜\033[0m"
 sleep 3
 
 x-terminal-emulator -e bash -c "sudo python3 solenoid.py; exec bash" &
-x-terminal-emulator -e bash -c "source .venv/bin/activate && python lcd_main.py; exec bash" &
-x-terminal-emulator -e bash -c "source .venv/bin/activate && python fingerprint.py; exec bash" &
+x-terminal-emulator -e bash -c "source .venv/bin/activate && python3 lcd_main.py; exec bash" &
+x-terminal-emulator -e bash -c "source .venv/bin/activate && python3 fingerprint.py; exec bash" &
 
 # 📝 Instructions:
 # Navigate to the folder containing run_cutie.sh first:
