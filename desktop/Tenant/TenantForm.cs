@@ -17,6 +17,12 @@ namespace PiSync.Tenant
             dataGridViewTenant.CellClick += dataGridViewTenant_Click;
         }
 
+        public void RefreshData()
+        {
+            SetupDataGridView();
+            FetchTenantsAsync();
+        }
+
         private void btnNewTenant_Click(object sender, EventArgs e)
         {
             NewTenantForm form = new NewTenantForm();
@@ -206,11 +212,11 @@ namespace PiSync.Tenant
             dataGridViewTenant.ClearSelection();
         }
 
-        public async void RefreshData()
-        {
-            FetchTenantsAsync();
-            SetupDataGridView();
-            PopulateTenants();
-        }
+        //public async void RefreshData()
+        //{
+        //    FetchTenantsAsync();
+        //    SetupDataGridView();
+        //    PopulateTenants();
+        //}
     }
 }
