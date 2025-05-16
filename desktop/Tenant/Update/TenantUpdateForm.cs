@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 using PiSync.Core.Helpers;
 using PiSync.Core.Model;
 using PiSync.Core.Network;
-using System.Text.Json.Serialization;
 
 namespace PiSync.Tenant.Update
 {
@@ -10,6 +10,7 @@ namespace PiSync.Tenant.Update
     {
         private int tenantId;
         private TenantUpdateMessage tenant;
+        private string? initial_fingerprint = null;
 
         public TenantUpdateForm(int tenantId)
         {
@@ -39,6 +40,14 @@ namespace PiSync.Tenant.Update
                     }
                 }
 
+                var selectedTemplate = tbFingerprint.Text.Trim();  // This will be null if nothing is selected  
+                if (selectedTemplate == "Select fingerprint")
+                {
+                    selectedTemplate = null;
+                }
+                System.Diagnostics.Debug.WriteLine($"tb fingerprint text: `{tbFingerprint.Text}`");
+                System.Diagnostics.Debug.WriteLine($"Selected template: `{selectedTemplate}`");
+
                 var updateTenant = new TenantUpdateRequest
                 {
                     FirstName = string.IsNullOrWhiteSpace(tbFirstName.Text) ? null : tbFirstName.Text.Trim(),
@@ -47,10 +56,11 @@ namespace PiSync.Tenant.Update
                     HintPassword = string.IsNullOrWhiteSpace(tbPasswordHint.Text) ? null : tbPasswordHint.Text.Trim(),
                     Gender = string.IsNullOrWhiteSpace(tbGender.Text) ? null : tbGender.Text.Trim(),
                     Email = string.IsNullOrWhiteSpace(tbEmail.Text) ? null : tbEmail.Text.Trim(),
-                    FingerprintTemplate = string.IsNullOrWhiteSpace(tbFingerprint.Text) ? null : tbFingerprint.Text.Trim(),
+                    FingerprintTemplate = selectedTemplate,
                     Password = string.IsNullOrWhiteSpace(tbPassword.Text) ? null : tbPassword.Text.Trim(),
                     RegisteredDoors = doorIds
                 };
+                System.Diagnostics.Debug.WriteLine($"Update tenant: {updateTenant}");
 
                 var json = System.Text.Json.JsonSerializer.Serialize(updateTenant);
                 System.Diagnostics.Debug.WriteLine($"Payload to send: {json}");
@@ -69,6 +79,62 @@ namespace PiSync.Tenant.Update
 
                 if (result?.success == true)
                 {
+                    // lets unassign it now;
+                    // endpoint is: /fingerprint/unassign/initial_fingerprint/
+                    // lets assign the new fingerprint if it is not null
+                    // endpoint is: /fingerprint/assign/selectedTemplate/
+                    if (initial_fingerprint != selectedTemplate)
+                    {
+                        try
+                        {
+                            async Task<HttpResponseMessage> PatchAsync(string url)
+                            {
+                                var method = new HttpMethod("PATCH");
+                                var request = new HttpRequestMessage(method, url)
+                                {
+                                    Content = new StringContent(string.Empty) // Empty content for PATCH
+                                };
+                                return await ApiService.httpClient.SendAsync(request);
+                            }
+
+                            // Unassign old fingerprint if it exists and is not default placeholder
+                            if (!string.IsNullOrWhiteSpace(initial_fingerprint) && initial_fingerprint != "Select fingerprint")
+                            {
+                                var unassignResponse = await PatchAsync($"fingerprint/unassign/{initial_fingerprint}/");
+                                if (!unassignResponse.IsSuccessStatusCode)
+                                {
+                                    var error = await unassignResponse.Content.ReadAsStringAsync();
+                                    System.Diagnostics.Debug.WriteLine($"Failed to unassign fingerprint {initial_fingerprint}: {error}");
+                                }
+                            }
+
+                            // If selectedTemplate is not null/empty/placeholder, assign it
+                            if (!string.IsNullOrWhiteSpace(selectedTemplate) && selectedTemplate != "Select fingerprint")
+                            {
+                                var assignResponse = await PatchAsync($"fingerprint/assign/{selectedTemplate}/");
+                                if (!assignResponse.IsSuccessStatusCode)
+                                {
+                                    var error = await assignResponse.Content.ReadAsStringAsync();
+                                    System.Diagnostics.Debug.WriteLine($"Failed to assign fingerprint {selectedTemplate}: {error}");
+                                }
+                            }
+                            else
+                            {
+                                // selectedTemplate is null/empty, so only unassignment is done (already done above)
+                                System.Diagnostics.Debug.WriteLine("Selected template is null or empty, only unassign performed.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Error during fingerprint assign/unassign: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        // initial_fingerprint == selectedTemplate, no change needed
+                        System.Diagnostics.Debug.WriteLine("Fingerprint unchanged, no assign/unassign performed.");
+                    }
+
                     MessageBox.Show("Tenant updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -132,6 +198,8 @@ namespace PiSync.Tenant.Update
             {
                 tbFingerprint.SelectedIndex = 0;
             }
+            initial_fingerprint = tbFingerprint.Text.Trim();
+            System.Diagnostics.Debug.WriteLine($"Initial fingerprint: `{initial_fingerprint}`");
         }
 
 
@@ -256,7 +324,7 @@ namespace PiSync.Tenant.Update
                 }
                 else
                 {
-                    tbFingerprint.Text = ""; 
+                    tbFingerprint.Text = "";
                 }
             }
         }
@@ -295,7 +363,6 @@ namespace PiSync.Tenant.Update
         public string? Email { get; set; }
 
         [JsonPropertyName("fingerprint_template")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? FingerprintTemplate { get; set; }
 
         [JsonPropertyName("password")]
