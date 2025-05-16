@@ -14,11 +14,20 @@ class AppPreferences(context: Context) {
         private const val SAVED_PASSWORD = "saved_password"
         private const val IP_ADDRESS = "ip_address"
         private const val CURRENT_USERNAME = "current_username"
+        private const val THEME_COLOR = "theme_color"
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         PREFERENCES_NAME, Context.MODE_PRIVATE
     )
+
+    fun setThemeColor(value: String) {
+        sharedPreferences.edit { putString(THEME_COLOR, value) }
+    }
+
+    fun getThemeColor(): String? {
+        return sharedPreferences.getString(THEME_COLOR, null)
+    }
 
     fun saveIpAddress(value: String) {
         sharedPreferences.edit { putString(IP_ADDRESS, value) }
