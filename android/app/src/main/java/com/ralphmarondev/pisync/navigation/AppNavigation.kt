@@ -35,65 +35,68 @@ fun AppNavigation(
     }
 
     PiSyncTheme(
-        darkTheme = themeState.darkTheme.value
-    ) {
-        NavHost(
-            navController = navController,
-            startDestination = startDestination
-        ) {
-            composable<Routes.Onboarding> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "Onboarding Screen",
-                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                        fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
-                        color = MaterialTheme.colorScheme.secondary,
-                        textAlign = TextAlign.Center
-                    )
+        darkTheme = themeState.darkTheme.value,
+        preferences = preferences,
+        dynamicColor = false,
+        content = {
+            NavHost(
+                navController = navController,
+                startDestination = startDestination
+            ) {
+                composable<Routes.Onboarding> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Onboarding Screen",
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                            color = MaterialTheme.colorScheme.secondary,
+                            textAlign = TextAlign.Center
+                        )
 
-                    Button(
-                        onClick = {
-                            preferences.setFirstLaunch()
-                            navController.navigate(Routes.Login) {
-                                popUpTo<Routes.Onboarding> { inclusive = true }
+                        Button(
+                            onClick = {
+                                preferences.setFirstLaunch()
+                                navController.navigate(Routes.Login) {
+                                    popUpTo<Routes.Onboarding> { inclusive = true }
+                                    launchSingleTop = true
+                                }
+                            }
+                        ) {
+                            Text(
+                                text = "Get Started",
+                                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                                fontWeight = MaterialTheme.typography.titleMedium.fontWeight
+                            )
+                        }
+                    }
+                }
+                composable<Routes.Login> {
+                    LoginScreen(
+                        onLoginSuccessful = {
+                            navController.navigate(Routes.Home) {
+                                popUpTo<Routes.Login> { inclusive = true }
                                 launchSingleTop = true
                             }
                         }
-                    ) {
-                        Text(
-                            text = "Get Started",
-                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                            fontWeight = MaterialTheme.typography.titleMedium.fontWeight
-                        )
-                    }
+                    )
+                }
+                composable<Routes.Home> {
+                    HomeScreen(
+                        onLogout = {
+                            navController.navigate(Routes.Login) {
+                                popUpTo(0) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                        }
+                    )
                 }
             }
-            composable<Routes.Login> {
-                LoginScreen(
-                    onLoginSuccessful = {
-                        navController.navigate(Routes.Home) {
-                            popUpTo<Routes.Login> { inclusive = true }
-                            launchSingleTop = true
-                        }
-                    }
-                )
-            }
-            composable<Routes.Home> {
-                HomeScreen(
-                    onLogout = {
-                        navController.navigate(Routes.Login) {
-                            popUpTo(0) { inclusive = true }
-                            launchSingleTop = true
-                        }
-                    }
-                )
-            }
         }
-    }
+    )
 }

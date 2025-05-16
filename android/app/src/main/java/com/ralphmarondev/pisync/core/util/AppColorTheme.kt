@@ -1,4 +1,8 @@
 package com.ralphmarondev.pisync.core.util
 
-class Color {
+class AppColorTheme {
+    companion object{
+        const val PURPLE = "purple"
+        const val GREEN = "green"
+    }
 }
