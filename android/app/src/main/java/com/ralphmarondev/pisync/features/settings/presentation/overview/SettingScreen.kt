@@ -44,7 +44,9 @@ import com.ralphmarondev.pisync.features.settings.presentation.overview.componen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
-    logout: () -> Unit
+    logout: () -> Unit,
+    navigateToAbout: () -> Unit,
+    navigateToDeveloper: () -> Unit
 ) {
     val themeState = LocalThemeState.current
 
@@ -112,7 +114,7 @@ fun SettingScreen(
                 HorizontalDivider(modifier = Modifier.padding(16.dp))
                 SettingItemCard(
                     modifier = Modifier
-                        .clickable { }
+                        .clickable { navigateToAbout() }
                         .fillMaxWidth()
                         .padding(16.dp),
                     label = "About",
@@ -120,7 +122,7 @@ fun SettingScreen(
                 )
                 SettingItemCard(
                     modifier = Modifier
-                        .clickable { }
+                        .clickable { navigateToDeveloper() }
                         .fillMaxWidth()
                         .padding(16.dp),
                     label = "Developer",
