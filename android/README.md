@@ -14,6 +14,7 @@ Progress we've made and to be done. More updates to come, stay tuned!
 
 ## Actions todo
 
-- Getting the user image from the api and display it on mobile app
+- Show image depending on gender [MALE | FEMALE]
 - Implement onboarding screen.
 - Change app icon, make it look better.
+- Change theme and font.
