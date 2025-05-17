@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
-import com.ralphmarondev.pisync.core.util.AppColorTheme
 import com.ralphmarondev.pisync.core.util.ThemeProvider
 import com.ralphmarondev.pisync.core.util.ThemeState
 import com.ralphmarondev.pisync.navigation.AppNavigation
@@ -22,7 +21,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         enableEdgeToEdge()
 
-        preferences.setThemeColor(AppColorTheme.GREEN)
         setContent {
             ThemeProvider(themeState = themeState) {
                 AppNavigation(preferences)
