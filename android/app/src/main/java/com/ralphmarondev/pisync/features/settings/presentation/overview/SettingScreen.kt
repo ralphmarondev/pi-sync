@@ -15,6 +15,7 @@ import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -43,7 +44,8 @@ import com.ralphmarondev.pisync.features.settings.presentation.overview.componen
 @Composable
 fun SettingScreen(
     logout: () -> Unit,
-    navigateToAbout: () -> Unit
+    navigateToAbout: () -> Unit,
+    navigateToAppTheme: () -> Unit
 ) {
     val themeState = LocalThemeState.current
 
@@ -116,6 +118,14 @@ fun SettingScreen(
                         .padding(16.dp),
                     label = "About",
                     imageVector = Icons.Outlined.Info
+                )
+                SettingItemCard(
+                    modifier = Modifier
+                        .clickable { navigateToAppTheme() }
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    label = "App Theme",
+                    imageVector = Icons.Outlined.SettingsApplications
                 )
                 SettingItemCard(
                     modifier = Modifier
