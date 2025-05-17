@@ -10,6 +10,9 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -114,6 +117,7 @@ fun PiSyncTheme(
     content: @Composable () -> Unit,
     preferences: AppPreferences
 ) {
+    val appTheme by remember { mutableStateOf(preferences.getThemeColor() ?: AppColorTheme.PURPLE) }
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
@@ -121,7 +125,7 @@ fun PiSyncTheme(
         }
 
         darkTheme -> {
-            if (preferences.getThemeColor() == AppColorTheme.PURPLE) {
+            if (appTheme == AppColorTheme.PURPLE) {
                 PurpleDarkColorScheme
             } else {
                 MintDarkColorScheme
@@ -129,7 +133,7 @@ fun PiSyncTheme(
         }
 
         else -> {
-            if (preferences.getThemeColor() == AppColorTheme.PURPLE) {
+            if (appTheme == AppColorTheme.PURPLE) {
                 PurpleLightColorScheme
             } else {
                 MintLightColorScheme

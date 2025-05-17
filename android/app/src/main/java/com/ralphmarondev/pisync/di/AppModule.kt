@@ -1,6 +1,7 @@
 package com.ralphmarondev.pisync.di
 
 import com.ralphmarondev.pisync.core.di.coreModule
+import com.ralphmarondev.pisync.features.app_theme.di.appThemeModule
 import com.ralphmarondev.pisync.features.auth.di.authModule
 import com.ralphmarondev.pisync.features.history.di.historyModule
 import com.ralphmarondev.pisync.features.home.di.homeModule
@@ -11,5 +12,6 @@ val appModule = listOf(
     authModule,
     homeModule,
     overviewModule,
-    historyModule
+    historyModule,
+    appThemeModule
 )
