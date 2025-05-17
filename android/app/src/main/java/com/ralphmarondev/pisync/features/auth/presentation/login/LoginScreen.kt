@@ -23,7 +23,6 @@ import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Password
-import androidx.compose.material.icons.outlined.SettingsInputAntenna
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -92,12 +91,6 @@ fun LoginScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = viewModel::toggleSetupIpDialog) {
-                        Icon(
-                            imageVector = Icons.Outlined.SettingsInputAntenna,
-                            contentDescription = "Settings"
-                        )
-                    }
                     IconButton(onClick = themeState::toggleTheme) {
                         val imageVector =
                             if (themeState.darkTheme.value) Icons.Outlined.LightMode else Icons.Outlined.DarkMode
