@@ -29,8 +29,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     onLogout: () -> Unit,
-    navigateToAbout: () -> Unit,
-    navigateToDeveloper: () -> Unit
+    navigateToAbout: () -> Unit
 ) {
     val viewModel: HomeViewModel = koinViewModel()
     val selectedIndex = viewModel.selectedIndex.collectAsState().value
@@ -97,7 +96,6 @@ fun HomeScreen(
             1 -> HistoryScreen()
             2 -> SettingScreen(
                 logout = onLogout,
-                navigateToDeveloper = navigateToDeveloper,
                 navigateToAbout = navigateToAbout
             )
         }

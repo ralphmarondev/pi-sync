@@ -15,7 +15,4 @@ object Routes {
 
     @Serializable
     data object About
-
-    @Serializable
-    data object Developer
 }
