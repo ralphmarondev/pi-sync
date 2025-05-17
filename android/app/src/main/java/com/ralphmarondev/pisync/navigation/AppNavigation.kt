@@ -20,7 +20,6 @@ import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.pisync.core.util.LocalThemeState
 import com.ralphmarondev.pisync.features.about.presentation.AboutScreen
 import com.ralphmarondev.pisync.features.auth.presentation.login.LoginScreen
-import com.ralphmarondev.pisync.features.developer.presentation.DeveloperScreen
 import com.ralphmarondev.pisync.features.home.presentation.HomeScreen
 import com.ralphmarondev.pisync.ui.theme.PiSyncTheme
 
@@ -100,23 +99,11 @@ fun AppNavigation(
                             navController.navigate(Routes.About) {
                                 launchSingleTop = true
                             }
-                        },
-                        navigateToDeveloper = {
-                            navController.navigate(Routes.Developer) {
-                                launchSingleTop = true
-                            }
                         }
                     )
                 }
                 composable<Routes.About> {
                     AboutScreen(
-                        navigateBack = {
-                            navController.navigateUp()
-                        }
-                    )
-                }
-                composable<Routes.Developer> {
-                    DeveloperScreen(
                         navigateBack = {
                             navController.navigateUp()
                         }

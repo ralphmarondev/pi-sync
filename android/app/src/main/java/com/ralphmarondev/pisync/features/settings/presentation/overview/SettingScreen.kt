@@ -15,8 +15,6 @@ import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.LogoDev
-import androidx.compose.material.icons.outlined.Source
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -45,8 +43,7 @@ import com.ralphmarondev.pisync.features.settings.presentation.overview.componen
 @Composable
 fun SettingScreen(
     logout: () -> Unit,
-    navigateToAbout: () -> Unit,
-    navigateToDeveloper: () -> Unit
+    navigateToAbout: () -> Unit
 ) {
     val themeState = LocalThemeState.current
 
@@ -119,22 +116,6 @@ fun SettingScreen(
                         .padding(16.dp),
                     label = "About",
                     imageVector = Icons.Outlined.Info
-                )
-                SettingItemCard(
-                    modifier = Modifier
-                        .clickable { navigateToDeveloper() }
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    label = "Developer",
-                    imageVector = Icons.Outlined.LogoDev
-                )
-                SettingItemCard(
-                    modifier = Modifier
-                        .clickable { }
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    label = "Licenses",
-                    imageVector = Icons.Outlined.Source
                 )
                 SettingItemCard(
                     modifier = Modifier
