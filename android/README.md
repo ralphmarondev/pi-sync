@@ -12,9 +12,9 @@ Progress we've made and to be done. More updates to come, stay tuned!
 - Getting password hint with username inputted.
 - Getting history list by room id
 - Show image depending on gender [MALE | FEMALE]
+- Changing theme.
+- Implement onboarding screen.
 
 ## Actions todo
 
-- Implement onboarding screen.
 - Change app icon, make it look better.
-- Change theme and font.
