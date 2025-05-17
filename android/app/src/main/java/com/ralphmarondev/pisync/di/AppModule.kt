@@ -5,6 +5,7 @@ import com.ralphmarondev.pisync.features.app_theme.di.appThemeModule
 import com.ralphmarondev.pisync.features.auth.di.authModule
 import com.ralphmarondev.pisync.features.history.di.historyModule
 import com.ralphmarondev.pisync.features.home.di.homeModule
+import com.ralphmarondev.pisync.features.onboarding.di.onboardingModule
 import com.ralphmarondev.pisync.features.overview.di.overviewModule
 
 val appModule = listOf(
@@ -13,5 +14,6 @@ val appModule = listOf(
     homeModule,
     overviewModule,
     historyModule,
-    appThemeModule
+    appThemeModule,
+    onboardingModule
 )
