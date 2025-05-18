@@ -3,6 +3,7 @@ from tkinter import messagebox
 import requests
 import base64
 from pyfingerprint.pyfingerprint import PyFingerprint
+from config import *
 
 # Variable to store the fingerprint template (Base64-encoded string)
 current_fingerprint_template = None
@@ -86,7 +87,7 @@ def save_fingerprint():
         'template': current_fingerprint_template
     }
 
-    api_url = "http://192.168.1.223:8000/api/fingerprint/enroll/"
+    api_url = f"{BASE_URL}fingerprint/enroll/"
 
     try:
         response = requests.post(api_url, json=data)

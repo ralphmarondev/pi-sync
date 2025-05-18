@@ -6,12 +6,11 @@ import time
 from pyfingerprint.pyfingerprint import PyFingerprint
 import threading
 from lcd_utils import write_bottom
-
-API_URL = 'http://192.168.1.223:8000/api'
+from config import *
 
 def fetch_users_with_templates():
     try:
-        response = requests.get(f'{API_URL}/users/')
+        response = requests.get(f'{BASE_URL}users/')
         if response.status_code == 200:
             users = response.json().get('users', [])
             templates = []
@@ -37,7 +36,7 @@ def fetch_users_with_templates():
 
 def fetch_template_detail(template_name):
     try:
-        response = requests.get(f'{API_URL}/fingerprint/details/{template_name}/')
+        response = requests.get(f'{BASE_URL}fingerprint/details/{template_name}/')
         if response.status_code == 200:
             return response.json().get('template')
         else:
@@ -64,7 +63,7 @@ def open_door_api(username):
             'username': username,
             'description': 'opened via fingerprint'
         }
-        response = requests.post(f'{API_URL}/door/open/1/', json=data)
+        response = requests.post(f'{BASE_URL}door/open/1/', json=data)
         if response.status_code == 200:
             print("Door opened successfully.")
         else:

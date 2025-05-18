@@ -3,6 +3,7 @@ import requests
 from gpiozero import OutputDevice, Button
 from lcd_utils import write_top
 from threading import Thread
+from config import *
 
 # Solenoid GPIO setup (ACTIVE-LOW relay)
 SOLENOID_PIN = 17
@@ -17,8 +18,8 @@ KEYSWITCH_PIN = 19  # Change this to your key switch pin
 keyswitch = Button(KEYSWITCH_PIN)
 
 # API endpoints
-STATUS_URL = 'http://192.168.1.223:8000/api/door/status/1/'
-CLOSE_URL = 'http://192.168.1.223:8000/api/door/close/1/'
+STATUS_URL = f'{BASE_URL}door/status/1/'
+CLOSE_URL = f'{BASE_URL}door/close/1/'
 
 # Track the last known state to avoid redundant switching
 last_state = None
