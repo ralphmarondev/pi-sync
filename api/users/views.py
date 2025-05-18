@@ -91,7 +91,7 @@ class UserLoginView(APIView):
 
 class UserListView(APIView):
     def get(self, request):
-        users = User.objects.filter(is_deleted=False)
+        users = User.objects.filter(is_deleted=False, is_superuser=False)
         serializer = UserSerializer(users, many=True)
 
         return Response(
