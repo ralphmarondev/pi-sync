@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using PiSync.Core.Model;
 using PiSync.Core.Network;
+using PiSync.Core.Utils;
 using PiSync.Home;
 
 namespace PiSync.Dashboard
@@ -11,6 +12,8 @@ namespace PiSync.Dashboard
         public DashboardForm()
         {
             InitializeComponent();
+
+            btnAdminName.Text = SessionManager.FullName;
         }
 
         private void DashboardForm_Load(object sender, EventArgs e)

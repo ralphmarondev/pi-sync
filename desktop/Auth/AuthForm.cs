@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using PiSync.Core.Model;
 using PiSync.Core.Network;
+using PiSync.Core.Utils;
 using PiSync.Home;
 
 namespace PiSync
@@ -112,6 +113,9 @@ namespace PiSync
                     MessageBox.Show("Only superusers are allowed to login.");
                     return;
                 }
+
+                SessionManager.FullName = $"{user.first_name} {user.last_name}";
+                SessionManager.Username = user.username;
 
                 MessageBox.Show("Login successful.");
                 var home = new HomeForm();
