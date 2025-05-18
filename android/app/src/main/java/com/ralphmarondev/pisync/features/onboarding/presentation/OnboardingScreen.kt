@@ -60,12 +60,12 @@ fun OnboardingScreen(
         Content(
             title = stringResource(R.string.title2),
             description = stringResource(R.string.description2),
-            image = R.drawable.cute_me
+            image = R.drawable.icpep_coea_csu_logo
         ),
         Content(
             title = stringResource(R.string.title3),
             description = stringResource(R.string.description3),
-            image = R.drawable.happy
+            image = R.drawable.get_started
         )
     )
 
@@ -89,7 +89,7 @@ fun OnboardingScreen(
                     painter = rememberAsyncImagePainter(screenContent[screenContentCount].image),
                     contentDescription = screenContent[screenContentCount].title,
                     modifier = Modifier
-                        .size(140.dp),
+                        .size(200.dp),
                     contentScale = ContentScale.Crop
                 )
             }
