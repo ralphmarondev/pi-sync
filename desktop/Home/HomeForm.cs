@@ -6,8 +6,8 @@
         {
             InitializeComponent();
 
-            // open room form by default :>
-            OpenRoomForm();
+            // open dashboard form by default :>
+            OpenDashboardForm();
         }
 
         private void btnDashboard_Click(object sender, EventArgs e)
