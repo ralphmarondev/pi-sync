@@ -255,5 +255,20 @@ namespace PiSync.Room
                 PopulateRooms(filterRooms);
             }
         }
+
+        private void lblTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove();
+        }
+
+        private void lblTitle_MouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp();
+        }
+
+        private void lblTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown();
+        }
     }
 }

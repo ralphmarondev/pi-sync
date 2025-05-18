@@ -92,6 +92,9 @@
             lblTitle.Size = new Size(93, 30);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "ROOMS";
+            lblTitle.MouseDown += lblTitle_MouseDown;
+            lblTitle.MouseMove += lblTitle_MouseMove;
+            lblTitle.MouseUp += lblTitle_MouseUp;
             // 
             // btnNewRoom
             // 

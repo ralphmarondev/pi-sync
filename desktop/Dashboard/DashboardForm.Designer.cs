@@ -58,6 +58,9 @@
             lblTitle.Size = new Size(157, 30);
             lblTitle.TabIndex = 1;
             lblTitle.Text = "DASHBOARD";
+            lblTitle.MouseDown += lblTitle_MouseDown;
+            lblTitle.MouseMove += lblTitle_MouseMove;
+            lblTitle.MouseUp += lblTitle_MouseUp;
             // 
             // panelRooms
             // 

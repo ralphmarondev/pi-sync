@@ -53,6 +53,9 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(875, 79);
             panel1.TabIndex = 0;
+            panel1.MouseDown += panel1_MouseDown;
+            panel1.MouseMove += panel1_MouseMove;
+            panel1.MouseUp += panel1_MouseUp;
             // 
             // btnNewTenant
             // 
@@ -101,6 +104,9 @@
             lblTitle.Size = new Size(125, 30);
             lblTitle.TabIndex = 2;
             lblTitle.Text = "TENANTS";
+            lblTitle.MouseDown += lblTitle_MouseDown;
+            lblTitle.MouseMove += lblTitle_MouseMove;
+            lblTitle.MouseUp += lblTitle_MouseUp;
             // 
             // panel2
             // 
