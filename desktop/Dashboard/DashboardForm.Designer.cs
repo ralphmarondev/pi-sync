@@ -28,15 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DashboardForm));
             panel1 = new Panel();
+            btnFullScreen = new PictureBox();
+            btnAdminName = new Label();
+            pictureBox1 = new PictureBox();
             lblTitle = new Label();
             panelRooms = new FlowLayoutPanel();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)btnFullScreen).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BackColor = Color.MediumPurple;
+            panel1.Controls.Add(btnFullScreen);
+            panel1.Controls.Add(btnAdminName);
+            panel1.Controls.Add(pictureBox1);
             panel1.Controls.Add(lblTitle);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
@@ -46,6 +55,45 @@
             panel1.MouseDown += panel1_MouseDown;
             panel1.MouseMove += panel1_MouseMove;
             panel1.MouseUp += panel1_MouseUp;
+            // 
+            // btnFullScreen
+            // 
+            btnFullScreen.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnFullScreen.BackColor = Color.White;
+            btnFullScreen.Cursor = Cursors.Hand;
+            btnFullScreen.Image = (Image)resources.GetObject("btnFullScreen.Image");
+            btnFullScreen.Location = new Point(823, 28);
+            btnFullScreen.Name = "btnFullScreen";
+            btnFullScreen.Size = new Size(40, 40);
+            btnFullScreen.SizeMode = PictureBoxSizeMode.Zoom;
+            btnFullScreen.TabIndex = 4;
+            btnFullScreen.TabStop = false;
+            btnFullScreen.Click += btnFullScreen_Click;
+            // 
+            // btnAdminName
+            // 
+            btnAdminName.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAdminName.AutoSize = true;
+            btnAdminName.Cursor = Cursors.Hand;
+            btnAdminName.ForeColor = Color.White;
+            btnAdminName.Location = new Point(468, 33);
+            btnAdminName.Name = "btnAdminName";
+            btnAdminName.Size = new Size(194, 25);
+            btnAdminName.TabIndex = 3;
+            btnAdminName.Text = "ADMINISTRATOR";
+            btnAdminName.Click += btnAdminName_Click;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pictureBox1.BackColor = Color.White;
+            pictureBox1.Image = Properties.Resources.icons8_test_account_80;
+            pictureBox1.Location = new Point(422, 28);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(40, 40);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 2;
+            pictureBox1.TabStop = false;
             // 
             // lblTitle
             // 
@@ -87,6 +135,8 @@
             Load += DashboardForm_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)btnFullScreen).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 
@@ -94,5 +144,8 @@
         private Label lblTitle;
         private Panel panel1;
         private FlowLayoutPanel panelRooms;
+        private PictureBox btnFullScreen;
+        private Label btnAdminName;
+        private PictureBox pictureBox1;
     }
 }

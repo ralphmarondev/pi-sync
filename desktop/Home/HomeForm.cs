@@ -119,5 +119,21 @@
         {
             OnMouseDown();
         }
+
+
+
+        #region FULL_SCREEN
+        public void ToggleFullScreen()
+        {
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+            }
+        }
+        #endregion FULL_SCREEN
     }
 }

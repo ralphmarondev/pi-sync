@@ -164,5 +164,20 @@ namespace PiSync.Dashboard
         {
             OnMouseDown();
         }
+
+        private void btnFullScreen_Click(object sender, EventArgs e)
+        {
+            HomeForm mainForm = ParentForm as HomeForm;
+
+            if (mainForm != null)
+            {
+                mainForm.ToggleFullScreen();
+            }
+        }
+
+        private void btnAdminName_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
