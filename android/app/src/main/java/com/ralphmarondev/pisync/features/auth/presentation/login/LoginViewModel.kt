@@ -7,6 +7,7 @@ import com.ralphmarondev.pisync.core.data.local.preferences.AppPreferences
 import com.ralphmarondev.pisync.core.domain.model.Result
 import com.ralphmarondev.pisync.features.auth.domain.usecases.ForgotPasswordUseCase
 import com.ralphmarondev.pisync.features.auth.domain.usecases.LoginUseCase
+import com.ralphmarondev.pisync.features.overview.domain.usecases.GetUserDetailByUsernameUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -14,7 +15,8 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val preferences: AppPreferences,
     private val loginUseCase: LoginUseCase,
-    private val forgotPasswordUseCase: ForgotPasswordUseCase
+    private val forgotPasswordUseCase: ForgotPasswordUseCase,
+    private val getUserDetailByUsernameUseCase: GetUserDetailByUsernameUseCase
 ) : ViewModel() {
 
     private val _username = MutableStateFlow(preferences.getRememberedUsername() ?: "")
@@ -97,6 +99,15 @@ class LoginViewModel(
 
             try {
                 if (loginUseCase(username, password)) {
+                    val userDetail = getUserDetailByUsernameUseCase(username)
+                    if (userDetail.isSuperUser) {
+                        _response.value = Result(
+                            success = false,
+                            message = "Login failed. You are trying to login with a superuser account."
+                        )
+                        return@launch
+                    }
+
                     _response.value = Result(
                         success = true,
                         message = "Login successful"
