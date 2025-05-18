@@ -95,6 +95,7 @@
             btnUpdate.TabIndex = 10;
             btnUpdate.Text = "UPDATE";
             btnUpdate.UseVisualStyleBackColor = false;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // label5
             // 
