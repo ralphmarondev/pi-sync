@@ -82,6 +82,9 @@
             btnAdminName.TabIndex = 3;
             btnAdminName.Text = "ADMINISTRATOR";
             btnAdminName.Click += btnAdminName_Click;
+            btnAdminName.MouseDown += btnAdminName_MouseDown;
+            btnAdminName.MouseMove += btnAdminName_MouseMove;
+            btnAdminName.MouseUp += btnAdminName_MouseUp;
             // 
             // pictureBox1
             // 
@@ -94,6 +97,9 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
+            pictureBox1.MouseDown += pictureBox1_MouseDown;
+            pictureBox1.MouseMove += pictureBox1_MouseMove;
+            pictureBox1.MouseUp += pictureBox1_MouseUp;
             // 
             // lblTitle
             // 

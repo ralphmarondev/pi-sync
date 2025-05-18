@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using PiSync.Admin;
 using PiSync.Core.Model;
 using PiSync.Core.Network;
 using PiSync.Core.Utils;
@@ -180,7 +181,39 @@ namespace PiSync.Dashboard
 
         private void btnAdminName_Click(object sender, EventArgs e)
         {
+            AdminForm adminForm = new AdminForm();
 
+            adminForm.ShowDialog(this);
+        }
+
+        private void btnAdminName_MouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove();
+        }
+
+        private void btnAdminName_MouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp();
+        }
+
+        private void btnAdminName_MouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown();
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            OnMouseMove();
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            OnMouseUp();
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            OnMouseDown();
         }
     }
 }
