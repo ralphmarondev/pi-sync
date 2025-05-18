@@ -33,7 +33,7 @@ fun AppNavigation(
         content = {
             NavHost(
                 navController = navController,
-                startDestination = Routes.Onboarding//startDestination
+                startDestination = startDestination
             ) {
                 composable<Routes.Onboarding> {
                     OnboardingScreen(
