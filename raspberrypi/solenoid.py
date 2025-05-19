@@ -37,7 +37,8 @@ def unlock_solenoid():
     # Close on the API
     try:
         response = requests.post(CLOSE_URL, json={
-            "description": "closed after 10s via solenoid auto-control"
+            "description": "closed after 10s via solenoid auto-control",
+            "username": "raspberrypi"
         }, timeout=5)
         if response.status_code == 200:
             print("✅ API door closed successfully.")
