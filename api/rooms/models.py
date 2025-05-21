@@ -5,6 +5,7 @@ class Door(models.Model):
     name = models.CharField(max_length=200, null=True, blank=True, unique=True)
     is_active = models.BooleanField(default=True)
     is_open = models.BooleanField(default=False)
+    allow_admin_access = models.BooleanField(default=True)
     create_date = models.DateTimeField(auto_now=True)
     created_by = models.CharField(max_length=200, default="Admin")
     is_deleted = models.BooleanField(default=False)

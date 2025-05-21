@@ -236,3 +236,49 @@ class GetDoorDetailByNameView(APIView):
                 },
                 status=status.HTTP_404_NOT_FOUND
             )
+
+class ToggleAllowAdminAccessView(APIView):
+    def post(self, request, pk):
+        try:
+            door = Door.objects.get(pk=pk, is_deleted=False)
+        except Door.DoesNotExist:
+            return Response(
+                data={
+                    'success': False,
+                    'message': 'Door not found'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        door.allow_admin_access = not door.allow_admin_access
+        door.save(update_fields=['allow_admin_access'])
+
+        return Response(
+            data={
+                'success': True,
+                'message': f"'allow_admin_access' toggled to {door.allow_admin_access}",
+                'allow_admin_access': door.allow_admin_access
+            },
+            status=status.HTTP_200_OK
+        )
+
+class GetAllowAdminAccessView(APIView):
+    def get(self, request, pk):
+        try:
+            door = Door.objects.get(pk=pk, is_deleted=False)
+        except Door.DoesNotExist:
+            return Response(
+                data={
+                    'success': False,
+                    'message': 'Door not found'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response(
+            data={
+                'success': True,
+                'allow_admin_access': door.allow_admin_access
+            },
+            status=status.HTTP_200_OK
+        )

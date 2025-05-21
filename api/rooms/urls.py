@@ -15,4 +15,8 @@ urlpatterns = [
 
     # updates for desktop lol
     path('door/name/<str:name>/', GetDoorDetailByNameView.as_view(), name='door_detail_by_name'),
+
+    # for privacy purposes lol
+    path('door/toggle-admin-access/<int:pk>/', ToggleAdminAccessView.as_view(), name='toggle_admin_access'),
+    path('door/admin-access/<int:pk>/', GetAdminAccessView.as_view(), name='get_admin_access'),
 ]
