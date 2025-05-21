@@ -18,4 +18,7 @@ object Routes {
 
     @Serializable
     data object AppTheme
+
+    @Serializable
+    data object Privacy
 }

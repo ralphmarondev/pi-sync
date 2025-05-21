@@ -12,6 +12,7 @@ import com.ralphmarondev.pisync.features.app_theme.presentation.AppThemeScreen
 import com.ralphmarondev.pisync.features.auth.presentation.login.LoginScreen
 import com.ralphmarondev.pisync.features.home.presentation.HomeScreen
 import com.ralphmarondev.pisync.features.onboarding.presentation.OnboardingScreen
+import com.ralphmarondev.pisync.features.privacy.presentation.PrivacyScreen
 import com.ralphmarondev.pisync.ui.theme.PiSyncTheme
 
 @Composable
@@ -72,6 +73,11 @@ fun AppNavigation(
                             navController.navigate(Routes.AppTheme) {
                                 launchSingleTop = true
                             }
+                        },
+                        navigateToPrivacy = {
+                            navController.navigate(Routes.Privacy) {
+                                launchSingleTop = true
+                            }
                         }
                     )
                 }
@@ -84,6 +90,13 @@ fun AppNavigation(
                 }
                 composable<Routes.AppTheme> {
                     AppThemeScreen(
+                        navigateBack = {
+                            navController.navigateUp()
+                        }
+                    )
+                }
+                composable<Routes.Privacy> {
+                    PrivacyScreen(
                         navigateBack = {
                             navController.navigateUp()
                         }

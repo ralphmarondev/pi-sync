@@ -8,5 +8,6 @@
         <domain includeSubdomains="true">192.168.1.99</domain> <!-- On Triesha mae boarding -->
         <domain includeSubdomains="true">192.168.68.116</domain>
         <domain includeSubdomains="true">192.168.1.223</domain>
+        <domain includeSubdomains="true">192.168.1.98</domain>
     </domain-config>
 </network-security-config>

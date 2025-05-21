@@ -19,7 +19,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 //const val IP_ADDRESS = "192.168.100.96" // on jam
 //const val IP_ADDRESS = "192.168.68.132" // on boarding
 //const val IP_ADDRESS = "192.168.1.99" // on triesha mae boarding
-const val IP_ADDRESS = "192.168.68.116"
+//const val IP_ADDRESS = "192.168.68.116"
+const val IP_ADDRESS = "192.168.1.98"
 
 //const val IP_ADDRESS = "192.168.1.223"
 //const val IP_ADDRESS = "10.0.2.2"
