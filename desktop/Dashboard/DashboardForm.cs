@@ -78,6 +78,14 @@ namespace PiSync.Dashboard
             System.Diagnostics.Debug.WriteLine($"Clicked door: {doorInfo.doorName}");
 
             var (doorId, doorName, isOpen) = doorInfo;
+
+            bool isAllowed = await IsAdminAccessAllowedAsync(doorId);
+            if (!isAllowed)
+            {
+                MessageBox.Show($"You are not allowed to open/close '{doorName}' as admin access is disabled by tenant.", "Access denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
             bool shouldOpen = !isOpen;
 
             await SendDoorActionAsync(doorId, shouldOpen);
@@ -106,6 +114,27 @@ namespace PiSync.Dashboard
                 MessageBox.Show($"Failed to {(open ? "open" : "close")} door: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private async Task<bool> IsAdminAccessAllowedAsync(int doorId)
+        {
+            try
+            {
+                var response = await ApiService.httpClient.GetFromJsonAsync<AdminAccessResponse>($"door/admin-access/{doorId}/");
+                return response?.allow_admin_access ?? false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to check admin access: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        private class AdminAccessResponse
+        {
+            public bool success { get; set; }
+            public bool allow_admin_access { get; set; }
+        }
+
 
         #region DRAG_AND_DROP
         private bool dragging = false;
